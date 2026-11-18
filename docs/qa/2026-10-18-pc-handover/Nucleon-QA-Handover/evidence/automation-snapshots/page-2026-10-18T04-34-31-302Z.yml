@@ -1,0 +1,62 @@
+- generic [ref=e2]:
+  - banner [ref=e11]:
+    - link "Nucleon Payment extensions" [ref=e12] [cursor=pointer]:
+      - /url: "#/"
+      - generic [ref=e13]: Nucleon
+      - generic [ref=e14]: Payment extensions
+    - group "Acting as" [ref=e15]:
+      - button "Staff" [pressed] [ref=e16] [cursor=pointer]
+      - button "Owner" [ref=e17] [cursor=pointer]
+    - paragraph [ref=e18]:
+      - generic [ref=e20]: Agent ready
+    - link "Records" [ref=e21] [cursor=pointer]:
+      - /url: "#/records"
+    - link "Demo c onsole" [ref=e22] [cursor=pointer]:
+      - /url: "#/console"
+    - button "Sign out" [ref=e23] [cursor=pointer]
+  - generic [ref=e24]:
+    - navigation "Cases" [ref=e25]:
+      - generic [ref=e26]:
+        - generic [ref=e27]: New request
+        - textbox "New request" [ref=e28]:
+          - /placeholder: Paste the customer's message
+        - alert
+        - alert
+        - generic [ref=e29]:
+          - button "Send to the agent" [ref=e30] [cursor=pointer]
+          - group [ref=e31]:
+            - generic "Try a sample" [ref=e32] [cursor=pointer]
+      - generic [ref=e33]:
+        - generic [ref=e34]:
+          - heading "For you" [level=2] [ref=e35]
+          - list [ref=e36]:
+            - listitem [ref=e37]:
+              - button "Customer not identified yet Hi, Harbour here - can we move our invoice to 30 October? 17 Oct, 2:54 pm Needs your answer" [ref=e38] [cursor=pointer]:
+                - generic [ref=e39]: Customer not identified yet
+                - generic [ref=e40]: Hi, Harbour here - can we move our invoice to 30 October?
+                - time [ref=e41]: 17 Oct, 2:54 pm
+                - generic [ref=e42]: Needs your answer
+        - generic [ref=e43]:
+          - heading "Other cases" [level=2] [ref=e44]
+          - list [ref=e45]:
+            - listitem [ref=e46]:
+              - button "Release check café (fictional) RC-1, to Fri 6 Nov 18 Oct, 2:33 pm Approved to Fri 6 Nov" [ref=e47] [cursor=pointer]:
+                - generic [ref=e48]: Release check café (fictional)
+                - generic [ref=e49]: RC-1, to Fri 6 Nov
+                - time [ref=e50]: 18 Oct, 2:33 pm
+                - generic [ref=e51]: Approved to Fri 6 Nov
+            - listitem [ref=e52]:
+              - button "Harbour Demo Supplies DEMO-101, to Fri 30 Oct 16 Oct, 11:19 pm With the owner" [ref=e53] [cursor=pointer]:
+                - generic [ref=e54]: Harbour Demo Supplies
+                - generic [ref=e55]: DEMO-101, to Fri 30 Oct
+                - time [ref=e56]: 16 Oct, 11:19 pm
+                - generic [ref=e57]: With the owner
+            - listitem [ref=e58]:
+              - button "Harbour Demo Logistics DEMO-201, to Fri 23 Oct 17 Oct, 1:13 am With the owner" [ref=e59] [cursor=pointer]:
+                - generic [ref=e60]: Harbour Demo Logistics
+                - generic [ref=e61]: DEMO-201, to Fri 23 Oct
+                - time [ref=e62]: 17 Oct, 1:13 am
+                - generic [ref=e63]: With the owner
+    - main [ref=e64]:
+      - paragraph [ref=e66]: One case needs you. Choose it from the list.
+  - contentinfo [ref=e67]: Fictional demo data. Nothing is sent to customers, and only the owner decides an outcome.

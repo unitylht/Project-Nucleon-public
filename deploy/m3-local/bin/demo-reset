@@ -1,0 +1,17 @@
+#!/bin/zsh
+# Puts the local Nucleon demo back to the clean fictional data (policy version 0, advisory, nothing decided) for a live demo.
+# Keeps a copy of the current database first (backup/pre-reset-<time>.sqlite3). Codes, tokens, tool switches and LibreChat stay as they are.
+set -e
+L=$HOME/Developer/nucleon-local; REPO=$HOME/Developer/Project-Nucleon; DB=$L/data/records.sqlite3
+$L/bin/nucleon-local stop
+B=$L/backup/pre-reset-$(date +%Y%m%d-%H%M%S).sqlite3
+sqlite3 $DB ".backup '$B'"; chmod 600 $B; echo "kept the old data in $B"
+(cd $REPO && python3 prototype/delegation_demo.py --db $DB --replace >/dev/null)
+$L/bin/nucleon-local start
+sqlite3 $DB "select 'policy versions: ' || count(*) from delegation_policies; select 'live decisions: ' || count(*) from decision_cases where dataset = 'live';"
+echo "clean demo data loaded: policy version 0 (advisory). Save the demo policy on the Owner page as the first live step."
+# Qwen needs its 32768-token context: at LM Studio's default 8192 the decision tool results overflow it, and the agent loses track and loops
+# (docs/KNOWN-LIMITATIONS.md L-002). A manual load has no idle unload.
+CTX=$($HOME/.lmstudio/bin/lms ps --json 2>/dev/null | python3 -c 'import json,sys; print(next((m.get("contextLength") for m in json.load(sys.stdin) if m.get("identifier") == "qwen3.5-35b-a3b"), ""))' 2>/dev/null)
+if [[ $CTX == 32768 ]]; then echo "Qwen loaded with context 32768: OK"
+else echo "WARNING: Qwen context is '${CTX:-not loaded}', not 32768. Run: ~/.lmstudio/bin/lms unload qwen3.5-35b-a3b; ~/.lmstudio/bin/lms load qwen3.5-35b-a3b --context-length 32768 --identifier qwen3.5-35b-a3b -y"; fi

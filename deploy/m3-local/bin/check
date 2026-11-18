@@ -1,0 +1,45 @@
+#!/bin/zsh
+# Daily checks for the local M3 development environment (no model, minutes).
+#   check            unit tests (Records on 3.9 and 3.12, Lab), delegation page check
+#   check --mcp      also run the MCP check against the running local services
+#   check --quick    Records on 3.12 and Lab only
+# Exit status 0 only if every selected check passes. Fictional data only.
+set -u
+REPO=${NUCLEON_REPO:-$HOME/Developer/Project-Nucleon}
+L=${NUCLEON_LOCAL:-$HOME/Developer/nucleon-local}
+PY39=${NUCLEON_PY39:-python3}
+PY312=${NUCLEON_PY312:-$L/venv/bin/python}
+export PYTHONDONTWRITEBYTECODE=1
+quick=0; mcp=0
+for a in "$@"; do case $a in --quick) quick=1;; --mcp) mcp=1;; *) echo "usage: check [--quick] [--mcp]" >&2; exit 2;; esac; done
+fail=0
+run() { # name, command...
+  local name=$1; shift
+  local t0=$(date +%s)
+  local out
+  if out=$("$@" 2>&1); then
+    printf 'PASS  %-28s %4ss  %s\n' "$name" $(( $(date +%s) - t0 )) "$(print -r -- "$out" | grep -E '^(Ran|PASS|OK|[0-9]+ tool)' | tail -1)"
+  else
+    fail=1
+    printf 'FAIL  %-28s %4ss\n' "$name" $(( $(date +%s) - t0 ))
+    print -r -- "$out" | tail -25
+  fi
+}
+cd "$REPO" || exit 2
+echo "repo: $(git -C "$REPO" rev-parse --short HEAD) ($(git -C "$REPO" branch --show-current 2>/dev/null || echo detached))"
+if (( quick == 0 )); then
+  run "records py3.9"  "$PY39"  -W ignore -m unittest discover -s prototype -p 'test_*.py'
+fi
+run "records py3.12"   "$PY312" -W ignore -m unittest discover -s prototype -p 'test_*.py'
+run "lab py3.12"       "$PY312" -m unittest discover -s lab/tests -q
+if (( quick == 0 )); then
+  run "delegation page check" "$PY39" deploy/delegation_page_check.py
+  [ -f deploy/home_page_check.py ] && run "home page check (~95s)" "$PY39" deploy/home_page_check.py
+  [ -f deploy/action_page_check.py ] && run "action page check" "$PY39" deploy/action_page_check.py
+  [ -f deploy/review_page_check.py ] && run "review page check (~60s)" "$PY39" deploy/review_page_check.py
+  [ -f deploy/dashboard_page_check.py ] && run "dashboard page check (~60s)" "$PY39" deploy/dashboard_page_check.py
+fi
+if (( mcp == 1 )); then
+  run "mcp check (live services)" "$PY312" "$L/tests/mcp_check.py"
+fi
+(( fail == 0 )) && echo "ALL PASS" || { echo "SOME CHECKS FAILED"; exit 1; }

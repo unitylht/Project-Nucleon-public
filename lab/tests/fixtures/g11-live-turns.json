@@ -1,0 +1,954 @@
+[
+ {
+  "user": {
+   "seq": 85,
+   "role": "staff",
+   "text": "Customer 0018: which of their invoices were due on 16 August 2026, how much was each for, and is any of them still owed?"
+  },
+  "agent": {
+   "seq": 86,
+   "text": "Invoice 8: original amount VND 1,452,292,200 (as recorded), the original invoice amount; Still owed: not recorded; the original invoice amount is VND 1,452,292,200 (as recorded); originally due Sat 28 Feb 2026; No payment is allocated to this invoice.",
+   "card": {
+    "tools": [
+     {
+      "id": "4KhbxkFwkAEOVjO7kBeGYCLpZfemhrrN",
+      "name": "findCustomers",
+      "args": {
+       "query": "0018"
+      },
+      "ok": true,
+      "result": {
+       "count": 1,
+       "matches": [
+        {
+         "customerId": "customer_638b6cc2d2c4a363",
+         "name": "Customer 0018",
+         "code": "C-0017"
+        }
+       ],
+       "subject": {
+        "customerId": "customer_638b6cc2d2c4a363",
+        "name": "Customer 0018"
+       }
+      }
+     },
+     {
+      "id": "fKKhERCEVsHqD1plyJge808gJLQO6VfR",
+      "name": "invoices",
+      "args": {
+       "customerId": "customer_638b6cc2d2c4a363",
+       "which": "all"
+      },
+      "ok": true,
+      "result": {
+       "customerId": "customer_638b6cc2d2c4a363",
+       "name": "Customer 0018",
+       "which": "all",
+       "asOf": "2026-10-23",
+       "asOfText": "Fri 23 Oct 2026",
+       "invoiceCount": 32,
+       "invoices": [
+        {
+         "invoiceId": "invoice_20e489446dd50691",
+         "reference": "55",
+         "status": "open",
+         "dueDate": "2025-10-08",
+         "dueDateText": "Wed 8 Oct 2025",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Wed 8 Oct 2025",
+         "totalText": "VND 332,640,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 332,640,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_7780ab57fbf546f5",
+         "reference": "57",
+         "status": "open",
+         "dueDate": "2025-10-11",
+         "dueDateText": "Sat 11 Oct 2025",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Sat 11 Oct 2025",
+         "totalText": "VND 486,000,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 486,000,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_331bc3b6a0c31e3b",
+         "reference": "61",
+         "status": "open",
+         "dueDate": "2025-10-15",
+         "dueDateText": "Wed 15 Oct 2025",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Wed 15 Oct 2025",
+         "totalText": "VND 289,980,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 289,980,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_3ef1f09d2e330297",
+         "reference": "63",
+         "status": "settled",
+         "dueDate": "2025-10-31",
+         "dueDateText": "Fri 31 Oct 2025",
+         "daysOverdue": null,
+         "stillOwed": "VND 0",
+         "mark": "at most, from allocated payments",
+         "amountText": "VND 0 (at most, from allocated payments)",
+         "amountAsOf": null,
+         "originalDueText": "Fri 31 Oct 2025",
+         "totalText": "VND 432,000,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: VND 0 (at most, derived: the invoice amount VND 432,000,000 (as recorded) less VND 432,000,000 (as recorded) allocated from payments); settled: the allocated payments cover the whole invoice.",
+         "allocations": [
+          {
+           "paymentReference": "BCV2509032",
+           "receivedDate": "2025-11-06",
+           "receivedDateText": "Thu 6 Nov 2025",
+           "amountText": "VND 432,000,000 (as recorded)",
+           "enteredByText": "From the import of NTK Co 12mon - Python cleaned.xlsx on Fri 23 Oct 2026"
+          }
+         ],
+         "allocationsText": "Payment BCV2509032, received Thu 6 Nov 2025: VND 432,000,000 (as recorded) allocated.",
+         "settled": true
+        },
+        {
+         "invoiceId": "invoice_0ac36ebed9eb9ce9",
+         "reference": "69",
+         "status": "settled",
+         "dueDate": "2025-11-22",
+         "dueDateText": "Sat 22 Nov 2025",
+         "daysOverdue": null,
+         "stillOwed": "VND 0",
+         "mark": "at most, from allocated payments",
+         "amountText": "VND 0 (at most, from allocated payments)",
+         "amountAsOf": null,
+         "originalDueText": "Sat 22 Nov 2025",
+         "totalText": "VND 233,280,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: VND 0 (at most, derived: the invoice amount VND 233,280,000 (as recorded) less VND 233,280,000 (as recorded) allocated from payments); settled: the allocated payments cover the whole invoice.",
+         "allocations": [
+          {
+           "paymentReference": "BCV2509038",
+           "receivedDate": "2025-11-27",
+           "receivedDateText": "Thu 27 Nov 2025",
+           "amountText": "VND 233,280,000 (as recorded)",
+           "enteredByText": "From the import of NTK Co 12mon - Python cleaned.xlsx on Fri 23 Oct 2026"
+          }
+         ],
+         "allocationsText": "Payment BCV2509038, received Thu 27 Nov 2025: VND 233,280,000 (as recorded) allocated.",
+         "settled": true
+        },
+        {
+         "invoiceId": "invoice_4b1c5792fec8a728",
+         "reference": "5",
+         "status": "settled",
+         "dueDate": "2026-02-22",
+         "dueDateText": "Sun 22 Feb 2026",
+         "daysOverdue": null,
+         "stillOwed": "VND 0",
+         "mark": "at most, from allocated payments",
+         "amountText": "VND 0 (at most, from allocated payments)",
+         "amountAsOf": null,
+         "originalDueText": "Sun 22 Feb 2026",
+         "totalText": "VND 138,672,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: VND 0 (at most, derived: the invoice amount VND 138,672,000 (as recorded) less VND 138,672,000 (as recorded) allocated from payments); settled: the allocated payments cover the whole invoice.",
+         "allocations": [
+          {
+           "paymentReference": "BC26000022",
+           "receivedDate": "2026-03-03",
+           "receivedDateText": "Tue 3 Mar 2026",
+           "amountText": "VND 138,672,000 (as recorded)",
+           "enteredByText": "From the import of NTK Co 12mon - Python cleaned.xlsx on Fri 23 Oct 2026"
+          }
+         ],
+         "allocationsText": "Payment BC26000022, received Tue 3 Mar 2026: VND 138,672,000 (as recorded) allocated.",
+         "settled": true
+        },
+        {
+         "invoiceId": "invoice_5747137d61f034d7",
+         "reference": "8",
+         "status": "open",
+         "dueDate": "2026-02-28",
+         "dueDateText": "Sat 28 Feb 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Sat 28 Feb 2026",
+         "totalText": "VND 1,452,292,200 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 1,452,292,200 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_1bb3ac4dcbf755e1",
+         "reference": "13",
+         "status": "open",
+         "dueDate": "2026-04-04",
+         "dueDateText": "Sat 4 Apr 2026",
+         "daysOverdue": null,
+         "stillOwed": "VND 5,832,000",
+         "mark": "at most, from allocated payments",
+         "amountText": "VND 5,832,000 (at most, from allocated payments)",
+         "amountAsOf": null,
+         "originalDueText": "Sat 4 Apr 2026",
+         "totalText": "VND 271,080,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: VND 5,832,000 (at most, derived: the invoice amount VND 271,080,000 (as recorded) less VND 265,248,000 (as recorded) allocated from payments).",
+         "allocations": [
+          {
+           "paymentReference": "BC26000035",
+           "receivedDate": "2026-04-09",
+           "receivedDateText": "Thu 9 Apr 2026",
+           "amountText": "VND 265,248,000 (as recorded)",
+           "enteredByText": "From the import of NTK Co 12mon - Python cleaned.xlsx on Fri 23 Oct 2026"
+          }
+         ],
+         "allocationsText": "Payment BC26000035, received Thu 9 Apr 2026: VND 265,248,000 (as recorded) allocated.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_0a4c0dd60fbb7451",
+         "reference": "24",
+         "status": "open",
+         "dueDate": "2026-05-09",
+         "dueDateText": "Sat 9 May 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Sat 9 May 2026",
+         "totalText": "VND 171,720,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 171,720,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_18adb18c7656f990",
+         "reference": "00000009",
+         "status": "settled",
+         "dueDate": "2026-05-29",
+         "dueDateText": "Fri 29 May 2026",
+         "daysOverdue": null,
+         "stillOwed": "VND 0",
+         "mark": "at most, from allocated payments",
+         "amountText": "VND 0 (at most, from allocated payments)",
+         "amountAsOf": null,
+         "originalDueText": "Fri 29 May 2026",
+         "totalText": "VND 273,294,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: VND 0 (at most, derived: the invoice amount VND 273,294,000 (as recorded) less VND 273,294,000 (as recorded) allocated from payments); settled: the allocated payments cover the whole invoice.",
+         "allocations": [
+          {
+           "paymentReference": "BC26000057",
+           "receivedDate": "2026-05-29",
+           "receivedDateText": "Fri 29 May 2026",
+           "amountText": "VND 273,294,000 (as recorded)",
+           "enteredByText": "From the import of NTK Co 12mon - Python cleaned.xlsx on Fri 23 Oct 2026"
+          }
+         ],
+         "allocationsText": "Payment BC26000057, received Fri 29 May 2026: VND 273,294,000 (as recorded) allocated.",
+         "settled": true
+        },
+        {
+         "invoiceId": "invoice_17560756c20cb771",
+         "reference": "00000011",
+         "status": "settled",
+         "dueDate": "2026-06-05",
+         "dueDateText": "Fri 5 Jun 2026",
+         "daysOverdue": null,
+         "stillOwed": "VND 0",
+         "mark": "at most, from allocated payments",
+         "amountText": "VND 0 (at most, from allocated payments)",
+         "amountAsOf": null,
+         "originalDueText": "Fri 5 Jun 2026",
+         "totalText": "VND 473,526,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: VND 0 (at most, derived: the invoice amount VND 473,526,000 (as recorded) less VND 473,526,000 (as recorded) allocated from payments); settled: the allocated payments cover the whole invoice.",
+         "allocations": [
+          {
+           "paymentReference": "BC26000064",
+           "receivedDate": "2026-06-16",
+           "receivedDateText": "Tue 16 Jun 2026",
+           "amountText": "VND 473,526,000 (as recorded)",
+           "enteredByText": "From the import of NTK Co 12mon - Python cleaned.xlsx on Fri 23 Oct 2026"
+          }
+         ],
+         "allocationsText": "Payment BC26000064, received Tue 16 Jun 2026: VND 473,526,000 (as recorded) allocated.",
+         "settled": true
+        },
+        {
+         "invoiceId": "invoice_fb0ec29e6a2e01ae",
+         "reference": "00000020",
+         "status": "open",
+         "dueDate": "2026-06-14",
+         "dueDateText": "Sun 14 Jun 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Sun 14 Jun 2026",
+         "totalText": "VND 485,514,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 485,514,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_92f7c9f5e6e32fc9",
+         "reference": "00000026",
+         "status": "settled",
+         "dueDate": "2026-06-24",
+         "dueDateText": "Wed 24 Jun 2026",
+         "daysOverdue": null,
+         "stillOwed": "VND 0",
+         "mark": "at most, from allocated payments",
+         "amountText": "VND 0 (at most, from allocated payments)",
+         "amountAsOf": null,
+         "originalDueText": "Wed 24 Jun 2026",
+         "totalText": "VND 230,310,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: VND 0 (at most, derived: the invoice amount VND 230,310,000 (as recorded) less VND 230,310,000 (as recorded) allocated from payments); settled: the allocated payments cover the whole invoice.",
+         "allocations": [
+          {
+           "paymentReference": "BC26000071",
+           "receivedDate": "2026-06-30",
+           "receivedDateText": "Tue 30 Jun 2026",
+           "amountText": "VND 230,310,000 (as recorded)",
+           "enteredByText": "From the import of NTK Co 12mon - Python cleaned.xlsx on Fri 23 Oct 2026"
+          }
+         ],
+         "allocationsText": "Payment BC26000071, received Tue 30 Jun 2026: VND 230,310,000 (as recorded) allocated.",
+         "settled": true
+        },
+        {
+         "invoiceId": "invoice_a317f8fb8b5dffc1",
+         "reference": "00000028",
+         "status": "settled",
+         "dueDate": "2026-07-03",
+         "dueDateText": "Fri 3 Jul 2026",
+         "daysOverdue": null,
+         "stillOwed": "VND 0",
+         "mark": "at most, from allocated payments",
+         "amountText": "VND 0 (at most, from allocated payments)",
+         "amountAsOf": null,
+         "originalDueText": "Fri 3 Jul 2026",
+         "totalText": "VND 479,520,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: VND 0 (at most, derived: the invoice amount VND 479,520,000 (as recorded) less VND 479,520,000 (as recorded) allocated from payments); settled: the allocated payments cover the whole invoice.",
+         "allocations": [
+          {
+           "paymentReference": "BC26000076",
+           "receivedDate": "2026-07-09",
+           "receivedDateText": "Thu 9 Jul 2026",
+           "amountText": "VND 479,520,000 (as recorded)",
+           "enteredByText": "From the import of NTK Co 12mon - Python cleaned.xlsx on Fri 23 Oct 2026"
+          }
+         ],
+         "allocationsText": "Payment BC26000076, received Thu 9 Jul 2026: VND 479,520,000 (as recorded) allocated.",
+         "settled": true
+        },
+        {
+         "invoiceId": "invoice_f659e14643496c13",
+         "reference": "00000033",
+         "status": "settled",
+         "dueDate": "2026-07-12",
+         "dueDateText": "Sun 12 Jul 2026",
+         "daysOverdue": null,
+         "stillOwed": "VND 0",
+         "mark": "at most, from allocated payments",
+         "amountText": "VND 0 (at most, from allocated payments)",
+         "amountAsOf": null,
+         "originalDueText": "Sun 12 Jul 2026",
+         "totalText": "VND 171,720,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: VND 0 (at most, derived: the invoice amount VND 171,720,000 (as recorded) less VND 171,720,000 (as recorded) allocated from payments); settled: the allocated payments cover the whole invoice.",
+         "allocations": [
+          {
+           "paymentReference": "BC26000081",
+           "receivedDate": "2026-07-16",
+           "receivedDateText": "Thu 16 Jul 2026",
+           "amountText": "VND 171,720,000 (as recorded)",
+           "enteredByText": "From the import of NTK Co 12mon - Python cleaned.xlsx on Fri 23 Oct 2026"
+          }
+         ],
+         "allocationsText": "Payment BC26000081, received Thu 16 Jul 2026: VND 171,720,000 (as recorded) allocated.",
+         "settled": true
+        },
+        {
+         "invoiceId": "invoice_db19b4ea96297c30",
+         "reference": "00000042",
+         "status": "open",
+         "dueDate": "2026-08-01",
+         "dueDateText": "Sat 1 Aug 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Sat 1 Aug 2026",
+         "totalText": "VND 349,839,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 349,839,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_bcde35b6c2658067",
+         "reference": "00000040",
+         "status": "settled",
+         "dueDate": "2026-07-30",
+         "dueDateText": "Thu 30 Jul 2026",
+         "daysOverdue": null,
+         "stillOwed": "VND 0",
+         "mark": "at most, from allocated payments",
+         "amountText": "VND 0 (at most, from allocated payments)",
+         "amountAsOf": null,
+         "originalDueText": "Thu 30 Jul 2026",
+         "totalText": "VND 162,000,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: VND 0 (at most, derived: the invoice amount VND 162,000,000 (as recorded) less VND 162,000,000 (as recorded) allocated from payments); settled: the allocated payments cover the whole invoice.",
+         "allocations": [
+          {
+           "paymentReference": "BC26000089",
+           "receivedDate": "2026-07-31",
+           "receivedDateText": "Fri 31 Jul 2026",
+           "amountText": "VND 162,000,000 (as recorded)",
+           "enteredByText": "From the import of NTK Co 12mon - Python cleaned.xlsx on Fri 23 Oct 2026"
+          }
+         ],
+         "allocationsText": "Payment BC26000089, received Fri 31 Jul 2026: VND 162,000,000 (as recorded) allocated.",
+         "settled": true
+        },
+        {
+         "invoiceId": "invoice_a07ba295568b908a",
+         "reference": "00000041",
+         "status": "open",
+         "dueDate": "2026-08-01",
+         "dueDateText": "Sat 1 Aug 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Sat 1 Aug 2026",
+         "totalText": "VND 193,050,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 193,050,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_0ab6f807a303ad72",
+         "reference": "00000048",
+         "status": "open",
+         "dueDate": "2026-08-16",
+         "dueDateText": "Sun 16 Aug 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Sun 16 Aug 2026",
+         "totalText": "VND 65,124,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 65,124,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_766e4459726c8a15",
+         "reference": "00000047",
+         "status": "open",
+         "dueDate": "2026-08-16",
+         "dueDateText": "Sun 16 Aug 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Sun 16 Aug 2026",
+         "totalText": "VND 348,462,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 348,462,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_626ffa3b8cbe2a36",
+         "reference": "00000049",
+         "status": "open",
+         "dueDate": "2026-08-16",
+         "dueDateText": "Sun 16 Aug 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Sun 16 Aug 2026",
+         "totalText": "VND 291,978,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 291,978,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_59d9c3dc5570c69b",
+         "reference": "00000051",
+         "status": "open",
+         "dueDate": "2026-08-19",
+         "dueDateText": "Wed 19 Aug 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Wed 19 Aug 2026",
+         "totalText": "VND 586,116,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 586,116,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_53df18673f189acc",
+         "reference": "00000054",
+         "status": "settled",
+         "dueDate": "2026-08-29",
+         "dueDateText": "Sat 29 Aug 2026",
+         "daysOverdue": null,
+         "stillOwed": "VND 0",
+         "mark": "at most, from allocated payments",
+         "amountText": "VND 0 (at most, from allocated payments)",
+         "amountAsOf": null,
+         "originalDueText": "Sat 29 Aug 2026",
+         "totalText": "VND 85,779,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: VND 0 (at most, derived: the invoice amount VND 85,779,000 (as recorded) less VND 85,779,000 (as recorded) allocated from payments); settled: the allocated payments cover the whole invoice.",
+         "allocations": [
+          {
+           "paymentReference": "BCV2509028",
+           "receivedDate": "2025-10-10",
+           "receivedDateText": "Fri 10 Oct 2025",
+           "amountText": "VND 85,779,000 (as recorded)",
+           "enteredByText": "From the import of NTK Co 12mon - Python cleaned.xlsx on Fri 23 Oct 2026"
+          }
+         ],
+         "allocationsText": "Payment BCV2509028, received Fri 10 Oct 2025: VND 85,779,000 (as recorded) allocated.",
+         "settled": true
+        },
+        {
+         "invoiceId": "invoice_14b57a5ec7dd2149",
+         "reference": "00000056",
+         "status": "open",
+         "dueDate": "2026-08-30",
+         "dueDateText": "Sun 30 Aug 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Sun 30 Aug 2026",
+         "totalText": "VND 122,310,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 122,310,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_d526094f5e3ed09d",
+         "reference": "00000055",
+         "status": "open",
+         "dueDate": "2026-08-30",
+         "dueDateText": "Sun 30 Aug 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Sun 30 Aug 2026",
+         "totalText": "VND 202,500,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 202,500,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_c12b88d4bb4ada3b",
+         "reference": "00000059",
+         "status": "open",
+         "dueDate": "2026-09-03",
+         "dueDateText": "Thu 3 Sep 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Thu 3 Sep 2026",
+         "totalText": "VND 758,322,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 758,322,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_e627049a10592072",
+         "reference": "00000062",
+         "status": "open",
+         "dueDate": "2026-09-13",
+         "dueDateText": "Sun 13 Sep 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Sun 13 Sep 2026",
+         "totalText": "VND 160,920,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 160,920,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_76a62c93973814bc",
+         "reference": "00000070",
+         "status": "open",
+         "dueDate": "2026-09-23",
+         "dueDateText": "Wed 23 Sep 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Wed 23 Sep 2026",
+         "totalText": "VND 162,000,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 162,000,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_3b1c7f9cee967965",
+         "reference": "00000073",
+         "status": "open",
+         "dueDate": "2026-09-28",
+         "dueDateText": "Mon 28 Sep 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Mon 28 Sep 2026",
+         "totalText": "VND 815,386,500 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 815,386,500 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_c1c41ffa07a9be80",
+         "reference": "00000078",
+         "status": "open",
+         "dueDate": "2026-10-10",
+         "dueDateText": "Sat 10 Oct 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Sat 10 Oct 2026",
+         "totalText": "VND 231,660,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 231,660,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_4b7412a5433a286c",
+         "reference": "00000082",
+         "status": "open",
+         "dueDate": "2026-10-18",
+         "dueDateText": "Sun 18 Oct 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Sun 18 Oct 2026",
+         "totalText": "VND 1,007,599,500 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 1,007,599,500 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        },
+        {
+         "invoiceId": "invoice_d677eb64ae539f0b",
+         "reference": "00000084",
+         "status": "open",
+         "dueDate": "2026-10-21",
+         "dueDateText": "Wed 21 Oct 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Wed 21 Oct 2026",
+         "totalText": "VND 236,898,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 236,898,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false
+        }
+       ],
+       "unmatchedText": "11 payments of this customer (VND 6,533,497,800 (as recorded) in all) are not allocated to any invoice.",
+       "subject": {
+        "customerId": "customer_638b6cc2d2c4a363",
+        "name": "Customer 0018"
+       }
+      }
+     }
+    ],
+    "detail": "summary",
+    "withheld": "part",
+    "subject": {
+     "customerId": "customer_638b6cc2d2c4a363",
+     "name": "Customer 0018"
+    },
+    "cards": [
+     {
+      "kind": "invoices",
+      "primary": true
+     }
+    ],
+    "activity": [
+     {
+      "tool": "findCustomers",
+      "label": "Finding the customer…"
+     },
+     {
+      "tool": "invoices",
+      "label": "Reading the invoices…"
+     }
+    ],
+    "notes": []
+   },
+   "meta": {
+    "promptVersion": "lab-v0.12",
+    "model": "gemma-rp",
+    "latencyMs": 31162,
+    "modelRequests": null
+   }
+  }
+ },
+ {
+  "user": {
+   "seq": 99,
+   "role": "owner",
+   "text": "Customer 0018: which of their invoices were due on 16 August 2026, how much was each for, and is any of them still owed?"
+  },
+  "agent": {
+   "seq": 100,
+   "text": "Invoice 00000048: original amount VND 65,124,000 (as recorded), the original invoice amount; Still owed is not recorded; the original invoice amount is VND 65,124,000 (as recorded). No payment is allocated to this invoice.",
+   "card": {
+    "tools": [
+     {
+      "id": "iCMyOf2TxKTjgbiEn9lSQ1pIrvAyZGQV",
+      "name": "invoices",
+      "args": {
+       "customerId": "0018",
+       "which": "all",
+       "dueOn": "2026-08-16"
+      },
+      "ok": true,
+      "result": {
+       "customerId": "customer_638b6cc2d2c4a363",
+       "name": "Customer 0018",
+       "which": "all",
+       "asOf": "2026-10-23",
+       "asOfText": "Fri 23 Oct 2026",
+       "invoiceCount": 3,
+       "invoices": [
+        {
+         "invoiceId": "invoice_0ab6f807a303ad72",
+         "reference": "00000048",
+         "status": "open",
+         "dueDate": "2026-08-16",
+         "dueDateText": "Sun 16 Aug 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Sun 16 Aug 2026",
+         "totalText": "VND 65,124,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 65,124,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false,
+         "matchedOn": "original_due"
+        },
+        {
+         "invoiceId": "invoice_766e4459726c8a15",
+         "reference": "00000047",
+         "status": "open",
+         "dueDate": "2026-08-16",
+         "dueDateText": "Sun 16 Aug 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Sun 16 Aug 2026",
+         "totalText": "VND 348,462,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 348,462,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false,
+         "matchedOn": "original_due"
+        },
+        {
+         "invoiceId": "invoice_626ffa3b8cbe2a36",
+         "reference": "00000049",
+         "status": "open",
+         "dueDate": "2026-08-16",
+         "dueDateText": "Sun 16 Aug 2026",
+         "daysOverdue": null,
+         "stillOwed": null,
+         "mark": "not recorded",
+         "amountText": "not recorded",
+         "amountAsOf": null,
+         "originalDueText": "Sun 16 Aug 2026",
+         "totalText": "VND 291,978,000 (as recorded), the original invoice amount",
+         "stillOwedText": "Still owed: not recorded; the original invoice amount is VND 291,978,000 (as recorded).",
+         "allocations": [],
+         "allocationsText": "No payment is allocated to this invoice.",
+         "settled": false,
+         "matchedOn": "original_due"
+        }
+       ],
+       "filter": {
+        "dueOn": "2026-08-16",
+        "dueOnText": "Sun 16 Aug 2026",
+        "text": "due on Sun 16 Aug 2026 (original or approved)",
+        "noneText": null
+       },
+       "unmatchedText": "11 payments of this customer (VND 6,533,497,800 (as recorded) in all) are not allocated to any invoice.",
+       "subject": {
+        "customerId": "customer_638b6cc2d2c4a363",
+        "name": "Customer 0018"
+       }
+      }
+     }
+    ],
+    "detail": "summary",
+    "withheld": null,
+    "subject": {
+     "customerId": "customer_638b6cc2d2c4a363",
+     "name": "Customer 0018"
+    },
+    "cards": [
+     {
+      "kind": "invoices",
+      "primary": true
+     }
+    ],
+    "activity": [
+     {
+      "tool": "invoices",
+      "label": "Reading the invoices…"
+     }
+    ],
+    "notes": []
+   },
+   "meta": {
+    "promptVersion": "lab-v0.13",
+    "model": "gemma-rp",
+    "latencyMs": 17245,
+    "modelRequests": 2
+   }
+  }
+ },
+ {
+  "user": {
+   "seq": 101,
+   "role": "owner",
+   "text": "And which Customer 0018 invoices were due on 17 August 2026?"
+  },
+  "agent": {
+   "seq": 102,
+   "text": "No invoice of Customer 0018 has Mon 17 Aug 2026 as its due date (original or approved).",
+   "card": {
+    "tools": [
+     {
+      "id": "ckOmTLKHibzRN4PGjxHIAV3Xv7XVNTn5",
+      "name": "invoices",
+      "args": {
+       "customerId": "0018",
+       "which": "all",
+       "dueOn": "2026-08-17"
+      },
+      "ok": true,
+      "result": {
+       "customerId": "customer_638b6cc2d2c4a363",
+       "name": "Customer 0018",
+       "which": "all",
+       "asOf": "2026-10-23",
+       "asOfText": "Fri 23 Oct 2026",
+       "invoiceCount": 0,
+       "invoices": [],
+       "filter": {
+        "dueOn": "2026-08-17",
+        "dueOnText": "Mon 17 Aug 2026",
+        "text": "due on Mon 17 Aug 2026 (original or approved)",
+        "noneText": "No invoice of Customer 0018 has Mon 17 Aug 2026 as its due date (original or approved)."
+       },
+       "unmatchedText": "11 payments of this customer (VND 6,533,497,800 (as recorded) in all) are not allocated to any invoice.",
+       "subject": {
+        "customerId": "customer_638b6cc2d2c4a363",
+        "name": "Customer 0018"
+       }
+      }
+     }
+    ],
+    "detail": "summary",
+    "withheld": null,
+    "subject": {
+     "customerId": "customer_638b6cc2d2c4a363",
+     "name": "Customer 0018"
+    },
+    "cards": [
+     {
+      "kind": "invoices",
+      "primary": true
+     }
+    ],
+    "activity": [
+     {
+      "tool": "invoices",
+      "label": "Reading the invoices…"
+     }
+    ],
+    "notes": []
+   },
+   "meta": {
+    "promptVersion": "lab-v0.13",
+    "model": "gemma-rp",
+    "latencyMs": 10177,
+    "modelRequests": 2
+   }
+  }
+ }
+]

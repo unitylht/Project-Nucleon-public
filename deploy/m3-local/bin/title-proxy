@@ -1,0 +1,262 @@
+#!/usr/bin/env python3
+"""A pass-through proxy in front of LM Studio (127.0.0.1:1235 -> 127.0.0.1:1234) with one job: when LibreChat asks for a
+conversation TITLE, pre-fill an empty think block so Qwen answers at once instead of reasoning for ~2,000 characters
+(measured 1 Nov 2026: 6-8 s per title, longer than the reply; with the pre-fill 0.2 s). A second job since 4 Nov 2026: when
+the last user message repeats an earlier user message of the same chat word for word, a short Nucleon note is appended to it
+(the model answered such repeats from its earlier turns, with no tool call, after the Owner had decided outside the chat;
+a rule in the system prompt did not hold against four identical turns, a note next to the message does). Everything else
+is forwarded byte for byte, streaming included. A third job since 11 Nov 2026: a Staff message asking for more time that
+names no invoice, or no date or number of days, gets a note telling the model to ask and to call no decision tool (see vague_extension). A title request is recognised by the marker at the start of the (single) user
+message: LibreChat's default title instruction, or the marker "[title]" (removed before forwarding).
+Usage: title-proxy [--port 1235] [--upstream 127.0.0.1:1234]   Log: one line per request on stdout."""
+import argparse, http.client, http.server, json, socketserver, sys, time
+
+MARKER = '[title]'
+# LibreChat 0.8.8 sends the agents' title request as ONE user message that starts with its default instruction below
+# (the agents endpoint ignores a custom titlePrompt, checked 1 Nov 2026). The marker is kept as a second, explicit way in.
+DEFAULT_TITLE_PREFIX = 'Provide a concise, 5-word-or-less title for the conversation'
+DEBUG = False   # True: log the shape of short, unmatched requests (helps when LibreChat changes its title prompt)
+PREFILL = {'role': 'assistant', 'content': '<think>\n\n</think>\n\n'}
+REPEAT_NOTE = ('\n\n[Nucleon note: this message repeats an earlier message of this chat word for word. Treat it as new: something may '
+               'have changed outside the chat since (the Owner decides in Nucleon), so do not answer from earlier turns or earlier tool '
+               'results. If it is a request, run the steps and call resolveDecision for it again; if it is a question, answer it from a '
+               'fresh tool call.]')
+
+# A third job since 11 Nov 2026: a Staff message that asks for more time on an invoice but gives no new date or number of days, or names no invoice.
+# On the real-data instance the model answered "Customer 0010 wants more time to pay." by choosing the customer's largest open invoice and exactly the
+# longest extension the Owner allows, and the backend, seeing a complete request inside the policy, approved it. The instructions already say "ask, do not
+# guess"; as with repeats, a note beside the message holds where the system prompt did not. Only for requests that carry the decision tool (the Staff
+# assistant): the Owner's read-only assistant is never told to ask.
+import re
+EXT_INTENT = re.compile(r"\b(more time|extra time|longer to pay|more (?:day|week|month)s?|extension|extend\w*|pay(ing|s)?( it| this| them| us)? later|later payment date|delay\w*|postpon\w*|push\w* back|defer\w*)\b", re.I)
+STATUS_Q = re.compile(r"\b(status|where does|where is|what happened|any update|decided yet|has the owner|did the owner|was it approved|is it approved)\b", re.I)
+MONTH = r"(jan|feb|mar|apr|may|jun|jul|aug|sep|sept|oct|nov|dec)[a-z]*"
+WHEN = re.compile(r"(\b\d{1,2}(st|nd|rd|th)?\s+(of\s+)?" + MONTH + r"\b|\b" + MONTH + r"\.?\s+\d{1,2}\b|\b\d{1,4}[/.-]\d{1,2}([/.-]\d{1,4})?\b"
+                  r"|\b(\d+|one|two|three|four|five|six|seven|eight|nine|ten|a|an|another|couple of)[\s-]+(more\s+|extra\s+|further\s+|additional\s+)?(day|week|month|fortnight)s?\b"
+                  r"|\b(next|this|end of|end of the|the end of|the end of the)\s+(week|month|year|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b|\btomorrow\b|\bfortnight\b|\b" + MONTH + r"\s+\d{4}\b)", re.I)
+INVOICE = re.compile(r"\b(invoice|inv|bill)\b\.?\s*(no\.?|number|#)?\s*[:#]?\s*[A-Za-z]*-?\d+|\b[A-Za-z]{2,}-\d{2,}\b|\b\d{6,}\b", re.I)
+
+
+def vague_extension(text):
+    """What a more-time request leaves out: [] (nothing, or not such a request), else a list of 'invoice' and/or 'date'."""
+    if not EXT_INTENT.search(text) or STATUS_Q.search(text):
+        return []
+    return ([] if INVOICE.search(text) else ['invoice']) + ([] if WHEN.search(text) else ['date'])
+
+
+def vague_note(missing):
+    what = {('invoice',): 'names no invoice', ('date',): 'gives no new payment date and no number of days', ('invoice', 'date'): 'names no invoice and gives no new payment date or number of days'}[tuple(missing)]
+    ask = {('invoice',): 'which invoice it is about', ('date',): 'until what date, or for how many days', ('invoice', 'date'): 'which invoice it is about, and until what date'}[tuple(missing)]
+    return ('\n\n[Nucleon note: this message asks for more time but ' + what + '. Do not choose ' + ('an invoice' if 'invoice' in missing else 'a date') +
+            (', a date or a number of days' if missing == ['invoice', 'date'] else ' or a number of days' if missing == ['date'] else '') +
+            ' yourself, and do not take the longest extension the policy allows. Ask Staff one short question: ' + ask + '? Call no decision tool this turn.]')
+
+
+def has_decision_tool(data):
+    return any('resolveDecision' in str((t.get('function') or {}).get('name') or t.get('name') or '') for t in (data.get('tools') or []) if isinstance(t, dict))
+
+
+def append_note(message, note):
+    c = message.get('content')
+    if isinstance(c, str):
+        message['content'] = c.rstrip() + note
+    elif isinstance(c, list):
+        parts = [x for x in c if isinstance(x, dict) and x.get('type') == 'text']
+        if parts:
+            parts[-1]['text'] = (parts[-1].get('text') or '').rstrip() + note
+        else:
+            c.append({'type': 'text', 'text': note.strip()})
+
+
+def _text(content):
+    if isinstance(content, str):
+        return content
+    if isinstance(content, list):   # multimodal parts
+        return ' '.join(p.get('text', '') for p in content if isinstance(p, dict) and p.get('type') == 'text')
+    return ''
+
+
+def _norm(text):
+    return ' '.join(text.split()).strip().lower()
+
+
+def is_repeat(messages):
+    """The last message is a user message whose text equals an earlier user message's text (whitespace and case aside)."""
+    if not messages or messages[-1].get('role') != 'user':
+        return False
+    last = _norm(_text(messages[-1].get('content')))
+    if not last or last.startswith(MARKER) or last.startswith(DEFAULT_TITLE_PREFIX.lower()):
+        return False
+    return any(m.get('role') == 'user' and _norm(_text(m.get('content'))) == last for m in messages[:-1])
+
+
+def note_repeat(messages):
+    """Appends REPEAT_NOTE to the last user message (a string, or the last text part of a list)."""
+    last = messages[-1]
+    c = last.get('content')
+    if isinstance(c, str):
+        last['content'] = c.rstrip() + REPEAT_NOTE
+    elif isinstance(c, list):
+        parts = [p for p in c if isinstance(p, dict) and p.get('type') == 'text']
+        if parts:
+            parts[-1]['text'] = (parts[-1].get('text') or '').rstrip() + REPEAT_NOTE
+        else:
+            c.append({'type': 'text', 'text': REPEAT_NOTE.strip()})
+HOP = {'host', 'content-length', 'transfer-encoding', 'connection', 'keep-alive'}
+
+
+def is_title(messages):
+    users = [m for m in messages if m.get('role') == 'user']
+    if len(users) != 1 or messages[-1].get('role') != 'user':
+        return False
+    c = users[0].get('content')
+    return isinstance(c, str) and (c.lstrip().startswith(MARKER) or c.lstrip().startswith(DEFAULT_TITLE_PREFIX))
+
+
+def rewrite(body):
+    """Returns (new_body_bytes, what): what is 'title', 'repeat', 'vague' or ''."""
+    try:
+        data = json.loads(body)
+        msgs = data.get('messages')
+        if not isinstance(msgs, list):
+            return body, ''
+        if is_repeat(msgs):
+            note_repeat(msgs)
+            return json.dumps(data).encode(), 'repeat'
+        # the newest user message of the turn, also on the later rounds of the same turn (tool results follow it then)
+        users = [m for m in msgs if isinstance(m, dict) and m.get('role') == 'user']
+        if users and has_decision_tool(data) and not is_title(msgs):
+            last = _text(users[-1].get('content'))
+            missing = vague_extension(last)
+            # 12 Nov 2026: the answer to "which invoice, until when?" may itself leave one of them out. It is read together with the vague request before it.
+            if not missing and len(users) > 1 and msgs[-1] is users[-1] and len(last) < 200 and not STATUS_Q.search(last) and (INVOICE.search(last) or WHEN.search(last)):
+                first = vague_extension(_text(users[-2].get('content')).split('[Nucleon note:')[0])
+                if first:
+                    both = vague_extension(_text(users[-2].get('content')).split('[Nucleon note:')[0] + ' ' + last)
+                    missing = [m for m in both if m in first]
+            if missing and '[Nucleon note:' not in last:
+                append_note(users[-1], vague_note(missing))
+                return json.dumps(data).encode(), 'vague'
+        if not is_title(msgs):
+            return body, ''
+        last = msgs[-1]
+        if last['content'].lstrip().startswith(MARKER):
+            last['content'] = last['content'].lstrip()[len(MARKER):].lstrip()
+        msgs.append(dict(PREFILL))
+        data.setdefault('max_tokens', 60)
+        return json.dumps(data).encode(), 'title'
+    except (ValueError, AttributeError, TypeError):
+        return body, ''
+
+
+class Handler(http.server.BaseHTTPRequestHandler):
+    protocol_version = 'HTTP/1.1'
+    upstream = '127.0.0.1:1234'
+
+    def log_message(self, *a):   # quiet; we log ourselves
+        pass
+
+    def _proxy(self):
+        t0 = time.time()
+        n = int(self.headers.get('Content-Length') or 0)
+        body = self.rfile.read(n) if n else b''
+        title = ''
+        if self.command == 'POST' and self.path.rstrip('/').endswith('/chat/completions') and body:
+            body, title = rewrite(body)
+            if not title and DEBUG:
+                try:
+                    ms = json.loads(body).get('messages') or []
+                    if len(ms) <= 3:
+                        print('  debug: ' + ' | '.join('%s: %s' % (m.get('role'), (m.get('content') if isinstance(m.get('content'), str) else json.dumps(m.get('content')))[:90].replace('\n', ' ')) for m in ms), flush=True)
+                except Exception:
+                    pass
+        headers = {k: v for k, v in self.headers.items() if k.lower() not in HOP}
+        headers['Content-Length'] = str(len(body))
+        conn = http.client.HTTPConnection(self.upstream, timeout=600)
+        try:
+            conn.request(self.command, self.path, body=body if body else None, headers=headers)
+            resp = conn.getresponse()
+            self.send_response(resp.status, resp.reason)
+            for k, v in resp.getheaders():
+                if k.lower() not in HOP:
+                    self.send_header(k, v)
+            self.send_header('Transfer-Encoding', 'chunked')
+            self.send_header('Connection', 'close')
+            self.end_headers()
+            total = 0
+            while True:
+                chunk = resp.read(8192)
+                if not chunk:
+                    break
+                total += len(chunk)
+                self.wfile.write(b'%x\r\n%s\r\n' % (len(chunk), chunk))
+                self.wfile.flush()
+            self.wfile.write(b'0\r\n\r\n')
+            print('%s %s %s%s -> %d, %d bytes, %.2fs' % (time.strftime('%H:%M:%S'), self.command, self.path,
+                  {'title': ' [title: prefilled]', 'repeat': ' [repeat: noted]', 'vague': ' [vague request: noted]'}.get(title, ''), resp.status, total, time.time() - t0), flush=True)
+        except Exception as e:   # upstream down or client gone
+            print('%s %s %s failed: %s' % (time.strftime('%H:%M:%S'), self.command, self.path, e), flush=True)
+            try:
+                self.send_response(502); self.send_header('Content-Type', 'application/json'); self.send_header('Connection', 'close'); self.end_headers()
+                self.wfile.write(json.dumps({'error': {'message': 'title-proxy: upstream LM Studio did not answer: %s' % e}}).encode())
+            except Exception:
+                pass
+        finally:
+            conn.close()
+
+    do_GET = do_POST = do_DELETE = do_PUT = _proxy
+
+
+class Server(socketserver.ThreadingMixIn, http.server.HTTPServer):
+    daemon_threads = True
+    allow_reuse_address = True
+
+
+if __name__ == '__main__':
+    ap = argparse.ArgumentParser(description=__doc__.split('\n\n')[0])
+    ap.add_argument('--port', type=int, default=1235)
+    ap.add_argument('--upstream', default='127.0.0.1:1234')
+    ap.add_argument('--selftest', action='store_true', help='check the rewrites on fixed requests and exit')
+    a = ap.parse_args()
+    if a.selftest:
+        req = lambda ms: json.dumps({'messages': ms}).encode()
+        ask = {'role': 'user', 'content': 'Bayview is asking for $9, should I approve?'}
+        b, w = rewrite(req([{'role': 'system', 'content': 's'}, ask, {'role': 'assistant', 'content': 'no'}, {'role': 'user', 'content': ' bayview is asking for $9,  should I approve? '}]))
+        assert w == 'repeat' and json.loads(b)['messages'][-1]['content'].endswith(REPEAT_NOTE) and json.loads(b)['messages'][1]['content'] == ask['content'], w
+        assert rewrite(req([ask, {'role': 'assistant', 'content': 'no'}, {'role': 'user', 'content': 'Bayview is asking for $12, should I approve?'}]))[1] == ''
+        assert rewrite(req([ask, {'role': 'assistant', 'content': 'no'}, ask, {'role': 'assistant', 'content': 'no'}, {'role': 'tool', 'content': 'x'}]))[1] == ''   # a tool turn, not a user message
+        b, w = rewrite(req([ask, {'role': 'assistant', 'content': 'no'}, {'role': 'user', 'content': [{'type': 'text', 'text': ask['content']}]}]))
+        assert w == 'repeat' and json.loads(b)['messages'][-1]['content'][0]['text'].endswith(REPEAT_NOTE)
+        assert rewrite(req([{'role': 'user', 'content': DEFAULT_TITLE_PREFIX + ' x'}]))[1] == 'title'
+        assert rewrite(req([{'role': 'user', 'content': 'hello'}]))[1] == ''
+        # 11 Nov 2026: more-time requests that leave out the invoice or the date
+        V = vague_extension
+        assert V('Customer 0010 wants more time to pay.') == ['invoice', 'date']
+        assert V('Customer 0010 wants more time on invoice 00000080.') == ['date']
+        assert V('Customer 0010 wants two more weeks.') == ['invoice'] and V('Customer 0010 asks for a 15-day extension.') == ['invoice']   # 12 Nov 2026: "15-day" was read as no days
+        assert V('Bayview asks to extend DEMO-301 to 10 November.') == []
+        assert V('They ask to pay invoice 00000087 on 20 November 2026 instead of its due date; can we give an extension?') == []
+        assert V('Customer 0016 asks for 90 more days on invoice 00000068 because business is slow.') == []
+        assert V('Customer 0014 asks to pay invoice 00000999 two weeks later.') == []
+        assert V('Can we push back the invoice for Cityside until the end of the month?') == ['invoice'] and V('Extend invoice 59 by a fortnight') == []
+        assert V('What is the status of the extension for Customer 0003?') == [] and V('A new customer wants VND 50,000,000 of goods on 30-day credit.') == []
+        assert V('Northside Cafe is a new customer and wants AUD 800 of stock on 14-day terms; they paid a deposit.') == []
+        staff = {'tools': [{'type': 'function', 'function': {'name': 'resolveDecision_mcp_nucleon-local-staff'}}]}
+        vreq = lambda ms, extra: json.dumps({'messages': ms, **extra}).encode()
+        vague = {'role': 'user', 'content': 'Customer 0010 wants more time to pay.'}
+        b, w = rewrite(vreq([{'role': 'system', 'content': 's'}, dict(vague)], staff))
+        assert w == 'vague' and 'Call no decision tool this turn.]' in json.loads(b)['messages'][-1]['content'] and 'which invoice it is about, and until what date?' in json.loads(b)['messages'][-1]['content']
+        b, w = rewrite(vreq([dict(vague), {'role': 'assistant', 'content': '', 'tool_calls': []}, {'role': 'tool', 'content': 'x'}], staff))   # a later round of the same turn
+        assert w == 'vague' and json.loads(b)['messages'][0]['content'].endswith('this turn.]')
+        assert rewrite(vreq([dict(vague)], {}))[1] == '' and rewrite(vreq([dict(vague)], {'tools': [{'type': 'function', 'function': {'name': 'doctor_mcp_nucleon-local-owner'}}]}))[1] == ''   # not the Staff assistant
+        assert rewrite(vreq([dict(vague), {'role': 'assistant', 'content': 'Which invoice, and until when?'}, {'role': 'user', 'content': 'Invoice 00000080, until 15 December 2026.'}], staff))[1] == ''
+        b, w = rewrite(vreq([dict(vague), {'role': 'assistant', 'content': 'Which invoice, and until when?'}, {'role': 'user', 'content': 'It is invoice 00000080.'}], staff))
+        assert w == 'vague' and 'until what date, or for how many days?' in json.loads(b)['messages'][-1]['content'], w   # the answer still gives no date
+        assert rewrite(vreq([dict(vague), {'role': 'assistant', 'content': 'Which invoice, and until when?'}, {'role': 'user', 'content': 'Never mind. What does Customer 0003 owe?'}], staff))[1] == ''   # a change of subject is left alone
+        assert rewrite(vreq([{'role': 'user', 'content': 'What does Customer 0003 owe?'}, {'role': 'assistant', 'content': 'x'}, {'role': 'user', 'content': 'And Customer 0004?'}], staff))[1] == ''
+        b, w = rewrite(vreq([{'role': 'user', 'content': 'Customer 0010 wants more time on invoice 00000080.'}], staff))
+        assert w == 'vague' and 'until what date, or for how many days?' in json.loads(b)['messages'][-1]['content']
+        print('title-proxy selftest ok'); sys.exit(0)
+    Handler.upstream = a.upstream
+    print('title-proxy listening on 127.0.0.1:%d -> %s' % (a.port, a.upstream), flush=True)
+    Server(('127.0.0.1', a.port), Handler).serve_forever()

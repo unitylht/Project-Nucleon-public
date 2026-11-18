@@ -1,0 +1,12 @@
+Your tag is HL1018U
+
+Use this exact tag in the guide's names, invoice numbers, messages and source labels.
+Your CSV files already use it. No editing is needed on your first run.
+In a pair, use one person's folder and tag for both roles.
+Use a new tag throughout if you repeat the run.
+
+Source labels
+HL1018U Invoice test
+HL1018U Invalid preview
+HL1018U Payment test
+HL1018U Revert test

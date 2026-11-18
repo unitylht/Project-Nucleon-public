@@ -1,0 +1,21 @@
+#!/bin/zsh
+# Puts the local Nucleon demo into the state at the end of the video recording (28 Oct, run 3): policy version 1 saved,
+# Northside approved by the agent, Harbourline waiting for the Owner, Lakeside approved after Staff filled in the form.
+# The video's three chats are still in LibreChat (admin account) and their cards point at this data, so they can be
+# reopened and clicked through without the agent running again. Keeps a copy of the current database first, like demo-reset.
+# Back to clean data: bin/demo-reset.
+set -e
+L=$HOME/Developer/nucleon-local; DB=$L/data/records.sqlite3; SNAP=$L/snapshots/after-video-20261028.sqlite3
+LC=https://creditease.dracooz.top
+[[ -f $SNAP ]] || { echo "missing $SNAP" >&2; exit 1; }
+$L/bin/nucleon-local stop
+B=$L/backup/pre-video-state-$(date +%Y%m%d-%H%M%S).sqlite3
+sqlite3 $DB ".backup '$B'"; chmod 600 $B; echo "kept the old data in $B"
+sqlite3 $DB ".restore '$SNAP'"
+$L/bin/nucleon-local start
+sqlite3 $DB "select 'policy versions: ' || count(*) from delegation_policies; select '  ' || replace(subject, 'customer_demo_', '') || ': ' || status from decision_cases where dataset = 'live' order by created_at;"
+echo "end-of-video data loaded. The video's chats (LibreChat, admin account):"
+echo "  Northside   $LC/c/2bb8988d-3935-5316-b8e4-1518c8ee8df5"
+echo "  Harbourline $LC/c/3049c2f4-c804-5048-b450-5e08ef3a6325"
+echo "  Lakeside    $LC/c/50116008-331e-5eb4-9c48-d845f087e07b"
+echo "Nucleon restarted, so sign in to Nucleon again (Staff and Owner). Back to clean data: $L/bin/demo-reset"

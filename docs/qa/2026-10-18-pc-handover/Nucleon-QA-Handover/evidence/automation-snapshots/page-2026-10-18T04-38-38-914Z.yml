@@ -1,0 +1,137 @@
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e4914]:
+      - link "Nucleon Payment extensions" [ref=e4915] [cursor=pointer]:
+        - /url: "#/"
+        - generic [ref=e4916]: Nucleon
+        - generic [ref=e4917]: Payment extensions
+      - group "Acting as" [ref=e4918]:
+        - button "Staff" [pressed] [ref=e4919] [cursor=pointer]
+        - button "Owner" [ref=e4920] [cursor=pointer]
+      - paragraph [ref=e4921]:
+        - generic [ref=e4923]: Agent ready
+      - link "Records" [ref=e4924] [cursor=pointer]:
+        - /url: "#/records"
+      - link "Demo c onsole" [ref=e4925] [cursor=pointer]:
+        - /url: "#/console"
+      - button "Sign out" [ref=e4926] [cursor=pointer]
+    - generic [ref=e4927]:
+      - navigation "Cases" [ref=e4928]:
+        - generic [ref=e4929]:
+          - generic [ref=e4930]: New request
+          - textbox "New request" [ref=e4931]:
+            - /placeholder: Paste the customer's message
+          - alert
+          - alert
+          - generic [ref=e4932]:
+            - button "Send to the agent" [ref=e4933] [cursor=pointer]
+            - group [ref=e4934]:
+              - generic "Try a sample" [ref=e4935] [cursor=pointer]
+        - generic [ref=e4936]:
+          - generic [ref=e5041]:
+            - heading "For you" [level=2] [ref=e5042]
+            - list [ref=e5043]:
+              - listitem [ref=e5044]:
+                - button "Customer not identified yet Hi, Harbour here - can we move our invoice to 30 October? 17 Oct, 2:54 pm Needs your answer" [ref=e5045] [cursor=pointer]:
+                  - generic [ref=e5046]: Customer not identified yet
+                  - generic [ref=e5047]: Hi, Harbour here - can we move our invoice to 30 October?
+                  - time [ref=e5048]: 17 Oct, 2:54 pm
+                  - generic [ref=e5049]: Needs your answer
+          - generic [ref=e5050]:
+            - heading "Other cases" [level=2] [ref=e5051]
+            - list [ref=e5052]:
+              - listitem [ref=e5053]:
+                - button "CL1018T Manual A fictional CL1018T-001, to Sat 14 Nov 18 Oct, 3:37 pm Approved to Sat 14 Nov" [ref=e5054] [cursor=pointer]:
+                  - generic [ref=e5055]: CL1018T Manual A fictional
+                  - generic [ref=e5056]: CL1018T-001, to Sat 14 Nov
+                  - time [ref=e5057]: 18 Oct, 3:37 pm
+                  - generic [ref=e5058]: Approved to Sat 14 Nov
+              - listitem [ref=e5059]:
+                - button "Release check café (fictional) RC-1, to Fri 6 Nov 18 Oct, 2:33 pm Approved to Fri 6 Nov" [ref=e5060] [cursor=pointer]:
+                  - generic [ref=e5061]: Release check café (fictional)
+                  - generic [ref=e5062]: RC-1, to Fri 6 Nov
+                  - time [ref=e5063]: 18 Oct, 2:33 pm
+                  - generic [ref=e5064]: Approved to Fri 6 Nov
+              - listitem [ref=e5065]:
+                - button "Harbour Demo Supplies DEMO-101, to Fri 30 Oct 16 Oct, 11:19 pm With the owner" [ref=e5066] [cursor=pointer]:
+                  - generic [ref=e5067]: Harbour Demo Supplies
+                  - generic [ref=e5068]: DEMO-101, to Fri 30 Oct
+                  - time [ref=e5069]: 16 Oct, 11:19 pm
+                  - generic [ref=e5070]: With the owner
+              - listitem [ref=e5071]:
+                - button "Harbour Demo Logistics DEMO-201, to Fri 23 Oct 17 Oct, 1:13 am With the owner" [ref=e5072] [cursor=pointer]:
+                  - generic [ref=e5073]: Harbour Demo Logistics
+                  - generic [ref=e5074]: DEMO-201, to Fri 23 Oct
+                  - time [ref=e5075]: 17 Oct, 1:13 am
+                  - generic [ref=e5076]: With the owner
+      - main [ref=e4973]:
+        - article [ref=e4974]:
+          - generic [ref=e4975]:
+            - generic [ref=e4976]:
+              - heading "CL1018T Manual A fictional" [level=1] [ref=e4977]
+              - generic [ref=e4978]: Invoice CL1018T-001
+            - paragraph [ref=e4979]: "Approved. New payment date: Sat 14 Nov 2026."
+            - paragraph [ref=e4980]: Prepared by the Gemma agent, running locally.
+          - generic [aria-hidden] [ref=e4981]:
+            - generic [ref=e4983]:
+              - generic [ref=e4984]: Today
+              - generic [ref=e4985]: Fri 16 Oct
+            - generic [ref=e4986]:
+              - generic [ref=e4987]: Approved
+              - generic [ref=e4988]: Sat 14 Nov
+          - generic [ref=e4989]:
+            - generic [ref=e4990]:
+              - region [ref=e4991]:
+                - heading "Key facts" [level=2] [ref=e4992]
+                - generic [ref=e4993]:
+                  - generic [ref=e4994]:
+                    - term [ref=e4995]: Outstanding
+                    - definition [ref=e4996]: Not recorded
+                  - generic [ref=e4997]:
+                    - term [ref=e4998]: Previous due date
+                    - definition [ref=e4999]: Not on record
+                  - generic [ref=e5000]:
+                    - term [ref=e5001]: Asked to pay on
+                    - definition [ref=e5002]: Sat 14 Nov 2026
+                  - generic [ref=e5003]:
+                    - term [ref=e5004]: Extension
+                    - definition [ref=e5005]: Not calculated
+                  - generic [ref=e5006]:
+                    - term [ref=e5007]: Overdue today
+                    - definition [ref=e5008]: Unknown
+                - paragraph [ref=e5009]: Calculated by the app from the invoice record. No due date is on record, so the day counts aren't calculated. Today is fixed at Fri 16 Oct 2026 for this demo.
+              - region [ref=e5010]:
+                - heading "What the customer wrote" [level=2] [ref=e5011]
+                - blockquote [ref=e5012]:
+                  - text: Test CL1018T.
+                  - mark [ref=e5013]: Could we pay invoice CL1018T-001 on 14 November 2026 instead
+                  - generic [ref=e5014]: (the request)
+                  - text: "?"
+                - paragraph [ref=e5015]: "Their words as received, not verified. Underlined: the request, as picked out by the agent."
+              - region [ref=e5016]:
+                - heading "Worth checking" [level=2] [ref=e5017]
+                - list [ref=e5018]:
+                  - listitem [ref=e5019]: Invoice CL1018T-001 exists for more than one customer; staff chose the one for CL1018T Manual A fictional.
+                  - listitem [ref=e5020]: No due date is on record for this invoice (no payment terms recorded), so the extension length and days overdue are not calculated.
+                  - listitem [ref=e5021]: No amount still owed is recorded for this invoice, so the brief does not say how much is outstanding.
+              - region [ref=e5022]:
+                - heading "What the owner has noted" [level=2] [ref=e5023]
+                - paragraph [ref=e5024]:
+                  - text: CL1018T fictional test customer. Prefers a written payment date.
+                  - generic [ref=e5025]: CL1018T Manual A fictional
+                - paragraph [ref=e5026]: Confirmed by the owner. Practice data.
+            - complementary [ref=e5027]:
+              - heading "Reply to send" [level=2] [ref=e5028]
+              - generic [ref=e5029]: Your payment extension for invoice CL1018T-001 is approved. The new payment date is 2026-11-14.
+              - button "Copy reply" [active] [ref=e5030] [cursor=pointer]
+              - paragraph [ref=e5031]: Not sent. Paste it into your usual email.
+              - paragraph [ref=e5032]: "Owner's reason: Fictional test onlyDecided 18 Oct, 3:38 pm, for this invoice only."
+          - generic [ref=e5033]:
+            - group [ref=e5034]:
+              - generic "Evidence and sources" [ref=e5035] [cursor=pointer]
+            - group [ref=e5036]:
+              - generic "Activity" [ref=e5037] [cursor=pointer]
+            - group [ref=e5038]:
+              - generic "Technical details" [ref=e5039] [cursor=pointer]
+    - contentinfo [ref=e5040]: Fictional demo data. Nothing is sent to customers, and only the owner decides an outcome.
+  - status [ref=e799]: Reply copied

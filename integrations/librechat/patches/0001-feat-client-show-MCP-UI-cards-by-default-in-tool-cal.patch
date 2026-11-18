@@ -1,0 +1,851 @@
+From 15c5316ce343036c610ee96c901bd5f08d0a8b13 Mon Sep 17 00:00:00 2001
+From: Nucleon Dev <dev@localhost>
+Date: Mon, 26 Oct 2026 01:48:33 +1100
+Subject: [PATCH] feat(client): show MCP-UI cards by default in tool calls
+
+A tool call whose attachments carry a renderable MCP-UI resource (text/html
+ui_resources) now opens by default, and the group containing it no longer
+auto-collapses over it. The card renders first; the raw tool output moves
+behind a collapsed "Output" disclosure, then Parameters. Calls without a
+card, the global autoExpandTools preference, the iframe sandbox, the
+renderer and onUIAction handling are unchanged.
+
+- MCPUIResource/supported.ts: isSupportedUIResource + getSupportedUIResources
+- ToolCall: open when a card is present; reveal once on late arrival
+- ToolCallGroup: no auto-collapse with a card; reveal once on late arrival
+- ToolCallInfo: card-first layout with Output disclosure
+- tests: unit + real-renderer integration (sandbox attr, caveat in srcdoc)
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ .../Chat/Messages/Content/ToolCall.tsx        |  22 ++-
+ .../Chat/Messages/Content/ToolCallGroup.tsx   |  22 +++
+ .../Chat/Messages/Content/ToolCallInfo.tsx    | 100 ++++++-----
+ .../Content/__tests__/ToolCall.mcpui.test.tsx | 126 +++++++++++++
+ .../Content/__tests__/ToolCall.test.tsx       | 167 ++++++++++++++++++
+ .../Content/__tests__/ToolCallGroup.test.tsx  |  75 ++++++++
+ .../Content/__tests__/ToolCallInfo.test.tsx   |  92 ++++++++++
+ .../src/components/MCPUIResource/Renderer.tsx |  10 +-
+ .../src/components/MCPUIResource/supported.ts |  25 +++
+ 9 files changed, 584 insertions(+), 55 deletions(-)
+ create mode 100644 client/src/components/Chat/Messages/Content/__tests__/ToolCall.mcpui.test.tsx
+ create mode 100644 client/src/components/MCPUIResource/supported.ts
+
+diff --git a/client/src/components/Chat/Messages/Content/ToolCall.tsx b/client/src/components/Chat/Messages/Content/ToolCall.tsx
+index 7222763..6fd088f 100644
+--- a/client/src/components/Chat/Messages/Content/ToolCall.tsx
++++ b/client/src/components/Chat/Messages/Content/ToolCall.tsx
+@@ -1,4 +1,4 @@
+-import { useMemo, useState, useEffect, useCallback } from 'react';
++import { useMemo, useRef, useState, useEffect, useCallback } from 'react';
+ import { useRecoilValue } from 'recoil';
+ import { Button } from '@librechat/client';
+ import {
+@@ -9,6 +9,7 @@ import {
+   splitToolCallName,
+ } from 'librechat-data-provider';
+ import type { TAttachment, PartMetadata } from 'librechat-data-provider';
++import { getSupportedUIResources } from '~/components/MCPUIResource/supported';
+ import { useLocalize, useProgress, useExpandCollapse, useLazyCollapseBody } from '~/hooks';
+ import { cn, getToolDisplayLabel, logger, openInNewTab } from '~/utils';
+ import { ToolIcon, getToolIconType, isError } from './ToolOutput';
+@@ -66,7 +67,13 @@ export default function ToolCall({
+   const [oauthBinding, setOAuthBinding] = useState<'pending' | 'bound' | 'failed'>('pending');
+   const autoExpand = useRecoilValue(store.autoExpandTools);
+   const hasOutput = (output?.length ?? 0) > 0;
+-  const [showInfo, setShowInfo] = useState(() => autoExpand && hasOutput);
++  /** A call that produced an MCP-UI card opens by default: the card is the answer, and a
++   *  collapsed row would hide it from a reader (and from a model-omitted caveat inside it). */
++  const hasCard = useMemo(() => getSupportedUIResources(attachments).length > 0, [attachments]);
++  const [showInfo, setShowInfo] = useState(() => (autoExpand && hasOutput) || hasCard);
++  /** Reveals once: a card that arrives after first render (completion, hydration) opens the
++   *  row a single time, and later renders never override the reader's own collapse. */
++  const cardRevealedRef = useRef(hasCard);
+   const { style: expandStyle, ref: expandRef } = useExpandCollapse(showInfo);
+   const { shouldRenderBody, mountBody, handleTransitionEnd } = useLazyCollapseBody(showInfo);
+ 
+@@ -76,6 +83,13 @@ export default function ToolCall({
+     }
+   }, [autoExpand, hasOutput]);
+ 
++  useEffect(() => {
++    if (hasCard && !cardRevealedRef.current) {
++      cardRevealedRef.current = true;
++      setShowInfo(true);
++    }
++  }, [hasCard]);
++
+   const parsedAuthUrl = useMemo(() => {
+     if (!auth) {
+       return null;
+@@ -198,8 +212,8 @@ export default function ToolCall({
+   }, [_args]) as string | undefined;
+ 
+   const hasInfo = useMemo(
+-    () => (args?.length ?? 0) > 0 || (output?.length ?? 0) > 0,
+-    [args, output],
++    () => (args?.length ?? 0) > 0 || (output?.length ?? 0) > 0 || hasCard,
++    [args, output, hasCard],
+   );
+ 
+   const authDomain = useMemo(() => {
+diff --git a/client/src/components/Chat/Messages/Content/ToolCallGroup.tsx b/client/src/components/Chat/Messages/Content/ToolCallGroup.tsx
+index f54ecf7..8662dd0 100644
+--- a/client/src/components/Chat/Messages/Content/ToolCallGroup.tsx
++++ b/client/src/components/Chat/Messages/Content/ToolCallGroup.tsx
+@@ -21,6 +21,7 @@ import {
+   useFailedReveal,
+   useFailedRevealTrigger,
+ } from './reveal';
++import { getSupportedUIResources } from '~/components/MCPUIResource/supported';
+ import { useLocalize, useExpandCollapse, scheduleMessageContentLayoutReconcile } from '~/hooks';
+ import { ASK_USER_QUESTION, getSubmittedAskAnswer } from '~/utils/approval';
+ import { ToolAuthWarning, ToolAuthWarningContext } from './auth';
+@@ -283,8 +284,15 @@ export default function ToolCallGroup({
+    *  a completed reasoning-bearing group leaves "Open Thinking Dropdowns by
+    *  Default" with no visible effect until the user opens the action group by
+    *  hand (on reload the body is not even mounted). */
++  /** A card inside the group is the answer the reader came for, so the group neither
++   *  auto-collapses over it nor hides it behind a collapsed header. */
++  const hasCard = useMemo(
++    () => getSupportedUIResources(sourceAttachments ?? groupAttachments).length > 0,
++    [sourceAttachments, groupAttachments],
++  );
+   const autoCollapse =
+     !autoExpand &&
++    !hasCard &&
+     !(showThinking && hasReasoning) &&
+     allCompleted &&
+     (count >= 1 || activityLabelText.length > 0);
+@@ -323,6 +331,20 @@ export default function ToolCallGroup({
+     }
+   }, [autoCollapse, userOverride]);
+ 
++  /** A card that arrives after the group first rendered (completion, hydration) opens it a
++   *  single time; the reader's own collapse is recorded in `userOverride` and wins. */
++  const cardRevealedRef = useRef(hasCard);
++  useEffect(() => {
++    if (!hasCard || cardRevealedRef.current) {
++      return;
++    }
++    cardRevealedRef.current = true;
++    if (!userOverride && !suppressAutoExpand) {
++      setShouldRenderBody(true);
++      setIsExpanded(true);
++    }
++  }, [hasCard, userOverride, suppressAutoExpand]);
++
+   const handleToggle = useCallback(() => {
+     const nextExpanded = !isExpanded;
+     setUserOverride(true);
+diff --git a/client/src/components/Chat/Messages/Content/ToolCallInfo.tsx b/client/src/components/Chat/Messages/Content/ToolCallInfo.tsx
+index de8713b..d32a56c 100644
+--- a/client/src/components/Chat/Messages/Content/ToolCallInfo.tsx
++++ b/client/src/components/Chat/Messages/Content/ToolCallInfo.tsx
+@@ -1,8 +1,9 @@
+ import { useState, useMemo } from 'react';
++import type { ReactNode } from 'react';
+ import { ChevronDown } from 'lucide-react';
+-import { Tools } from 'librechat-data-provider';
+-import type { TAttachment, UIResource } from 'librechat-data-provider';
+-import UIResourceRenderer, { isSupportedUIResource } from '~/components/MCPUIResource/Renderer';
++import type { TAttachment } from 'librechat-data-provider';
++import { getSupportedUIResources } from '~/components/MCPUIResource/supported';
++import UIResourceRenderer from '~/components/MCPUIResource/Renderer';
+ import { useOptionalMessagesOperations } from '~/Providers';
+ import { useLocalize, useExpandCollapse } from '~/hooks';
+ import UIResourceCarousel from './UIResourceCarousel';
+@@ -92,6 +93,39 @@ function InputRenderer({ input }: { input: string }) {
+   }
+ }
+ 
++/** A collapsed-by-default section: a text button that reveals `children`. */
++function Disclosure({ label, children }: { label: string; children: ReactNode }) {
++  const [open, setOpen] = useState(false);
++  const { style: expandStyle, ref: expandRef } = useExpandCollapse(open);
++  return (
++    <>
++      <button
++        type="button"
++        className={cn(
++          'inline-flex items-center gap-1 text-xs text-text-secondary',
++          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-heavy',
++        )}
++        onClick={() => setOpen((prev) => !prev)}
++        aria-expanded={open}
++      >
++        <span>{label}</span>
++        <ChevronDown
++          className={cn(
++            'size-3 shrink-0 transition-transform duration-200 ease-out',
++            open && 'rotate-180',
++          )}
++          aria-hidden="true"
++        />
++      </button>
++      <div style={expandStyle}>
++        <div className="overflow-hidden pt-1" ref={expandRef}>
++          {children}
++        </div>
++      </div>
++    </>
++  );
++}
++
+ export default function ToolCallInfo({
+   input,
+   output,
+@@ -103,8 +137,6 @@ export default function ToolCallInfo({
+ }) {
+   const localize = useLocalize();
+   const { ask } = useOptionalMessagesOperations();
+-  const [showParams, setShowParams] = useState(false);
+-  const { style: paramsExpandStyle, ref: paramsExpandRef } = useExpandCollapse(showParams);
+ 
+   const hasParams = useMemo(() => {
+     if (!input || input.trim().length === 0) {
+@@ -121,48 +153,15 @@ export default function ToolCallInfo({
+     return input.trim().length > 0;
+   }, [input]);
+ 
+-  const uiResources: UIResource[] =
+-    attachments
+-      ?.filter((attachment) => attachment.type === Tools.ui_resources)
+-      .flatMap((attachment) => {
+-        return attachment[Tools.ui_resources] as UIResource[];
+-      })
+-      .filter(isSupportedUIResource) ?? [];
++  const uiResources = getSupportedUIResources(attachments);
++  const hasCard = uiResources.length > 0;
+ 
+   return (
+     <div className="w-full px-3 py-3.5">
+-      {output && <OutputRenderer text={output} />}
+-      {output && hasParams && <div className="my-2 border-t border-border-light" />}
+-      {hasParams && (
++      {/* A card is the answer the reader came for: it leads, and the raw tool output that
++          produced it stays one click away instead of pushing the card below the fold. */}
++      {hasCard && (
+         <>
+-          <button
+-            type="button"
+-            className={cn(
+-              'inline-flex items-center gap-1 text-xs text-text-secondary',
+-              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-heavy',
+-            )}
+-            onClick={() => setShowParams((prev) => !prev)}
+-            aria-expanded={showParams}
+-          >
+-            <span>{localize('com_ui_parameters')}</span>
+-            <ChevronDown
+-              className={cn(
+-                'size-3 shrink-0 transition-transform duration-200 ease-out',
+-                showParams && 'rotate-180',
+-              )}
+-              aria-hidden="true"
+-            />
+-          </button>
+-          <div style={paramsExpandStyle}>
+-            <div className="overflow-hidden pt-1" ref={paramsExpandRef}>
+-              <InputRenderer input={input} />
+-            </div>
+-          </div>
+-        </>
+-      )}
+-      {uiResources.length > 0 && (
+-        <>
+-          {(hasParams || output) && <div className="my-2 border-t border-border-light" />}
+           {uiResources.length > 1 && <UIResourceCarousel uiResources={uiResources} />}
+           {uiResources.length === 1 && (
+             <UIResourceRenderer
+@@ -173,8 +172,23 @@ export default function ToolCallInfo({
+               }}
+             />
+           )}
++          {(hasParams || output) && <div className="my-2 border-t border-border-light" />}
+         </>
+       )}
++      {output &&
++        (hasCard ? (
++          <Disclosure label={localize('com_ui_output')}>
++            <OutputRenderer text={output} />
++          </Disclosure>
++        ) : (
++          <OutputRenderer text={output} />
++        ))}
++      {output && hasParams && <div className="my-2 border-t border-border-light" />}
++      {hasParams && (
++        <Disclosure label={localize('com_ui_parameters')}>
++          <InputRenderer input={input} />
++        </Disclosure>
++      )}
+     </div>
+   );
+ }
+diff --git a/client/src/components/Chat/Messages/Content/__tests__/ToolCall.mcpui.test.tsx b/client/src/components/Chat/Messages/Content/__tests__/ToolCall.mcpui.test.tsx
+new file mode 100644
+index 0000000..618b244
+--- /dev/null
++++ b/client/src/components/Chat/Messages/Content/__tests__/ToolCall.mcpui.test.tsx
+@@ -0,0 +1,126 @@
++import React from 'react';
++import { RecoilRoot } from 'recoil';
++import { Tools } from 'librechat-data-provider';
++import { render, screen, fireEvent } from '@testing-library/react';
++import type { TAttachment } from 'librechat-data-provider';
++import ToolCall from '../ToolCall';
++
++/**
++ * Integration: the real ToolCall, ToolCallInfo and MCP-UI renderer together. Only localisation
++ * and the progress timer are stubbed; everything that decides whether the card is visible and
++ * how it is sandboxed is the production code.
++ */
++jest.mock('~/hooks', () => ({
++  useLocalize: () => (key: string, values?: Record<string, string>) =>
++    ({
++      com_ui_output: 'Output',
++      com_ui_parameters: 'Parameters',
++      com_assistants_completed_function: `Completed ${values?.[0]}`,
++    })[key] ?? key,
++  useProgress: (p: number) => (p >= 1 ? 1 : p),
++  useExpandCollapse: (isExpanded: boolean) => ({
++    style: { display: 'grid', gridTemplateRows: isExpanded ? '1fr' : '0fr' },
++    ref: { current: null },
++  }),
++  useLazyCollapseBody: jest.requireActual('~/hooks/Messages/useLazyCollapseBody').default,
++}));
++
++jest.mock('~/hooks/MCP', () => ({
++  useMCPIconMap: () => new Map(),
++  useMCPServerNames: () => [],
++}));
++
++jest.mock('~/Providers', () => ({
++  useOptionalMessagesOperations: () => ({ ask: jest.fn() }),
++}));
++
++jest.mock('../Parts', () => ({ AttachmentGroup: () => null }));
++
++/** A fictional card in the shape an MCP server returns it: figures plus an unconfirmed caveat the
++ *  model's own answer may leave out. Nothing here names a product, server or customer. */
++const CAVEAT = 'Unconfirmed: this amount is worked out and has not been confirmed.';
++const CARD_HTML = `<!doctype html><html><body><h1>Harbour Demo Supplies</h1><p>Amount due: AUD 2,580.00</p><p class="caveat">${CAVEAT}</p></body></html>`;
++
++const cardAttachment = (toolCallId: string, text = CARD_HTML): TAttachment =>
++  ({
++    type: Tools.ui_resources,
++    messageId: 'm1',
++    toolCallId,
++    conversationId: 'c1',
++    [Tools.ui_resources]: [
++      {
++        resourceId: `r-${toolCallId}`,
++        uri: `ui://demo/${toolCallId}`,
++        mimeType: 'text/html',
++        text,
++      },
++    ],
++  }) as unknown as TAttachment;
++
++const props = {
++  args: '{"customer":"C-DEMO-02"}',
++  name: 'customerOverview_mcp_demo',
++  output: '{"amount":"AUD 2,580.00"}',
++  initialProgress: 1,
++  isSubmitting: false,
++  toolCallId: 'tc1',
++};
++
++const renderCall = (attachments?: TAttachment[]) =>
++  render(
++    <RecoilRoot>
++      <ToolCall {...props} attachments={attachments} />
++      <p data-testid="final-answer">{'The amount due is AUD 2,580.00.'}</p>
++    </RecoilRoot>,
++  );
++
++describe('ToolCall with a real MCP-UI card', () => {
++  it('shows the card without a click, with a caveat the final answer omits', () => {
++    renderCall([cardAttachment('tc1')]);
++    const iframe = document.querySelector('iframe') as HTMLIFrameElement;
++    expect(iframe).not.toBeNull();
++    expect(iframe.getAttribute('srcdoc')).toContain(CAVEAT);
++    expect(screen.getByTestId('final-answer').textContent).not.toContain('Unconfirmed');
++    expect(document.querySelector('[data-tool-call-output-id="tc1"]')).toHaveStyle({
++      gridTemplateRows: '1fr',
++    });
++  });
++
++  it('puts the card above the raw output and keeps the raw output reachable', () => {
++    renderCall([cardAttachment('tc1')]);
++    const iframe = document.querySelector('iframe') as HTMLIFrameElement;
++    const toggle = screen.getByRole('button', { name: /Output/ });
++    expect(toggle).toHaveAttribute('aria-expanded', 'false');
++    expect(iframe.compareDocumentPosition(toggle) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
++    fireEvent.click(toggle);
++    expect(toggle).toHaveAttribute('aria-expanded', 'true');
++    expect(toggle.nextElementSibling).toHaveTextContent('2,580.00');
++  });
++
++  it('renders the card in a script-only sandbox, never same-origin', () => {
++    renderCall([cardAttachment('tc1')]);
++    const iframe = document.querySelector('iframe') as HTMLIFrameElement;
++    expect(iframe.getAttribute('sandbox')).toBe('allow-scripts');
++  });
++
++  it('does not render any iframe for a call without a card, and keeps it closed', () => {
++    renderCall(undefined);
++    expect(document.querySelector('iframe')).toBeNull();
++    expect(document.querySelector('[data-tool-call-output-id="tc1"]')).toHaveStyle({
++      gridTemplateRows: '0fr',
++    });
++  });
++
++  it('opens when the saved attachment is hydrated after the first render', () => {
++    const { rerender } = renderCall(undefined);
++    expect(document.querySelector('iframe')).toBeNull();
++    rerender(
++      <RecoilRoot>
++        <ToolCall {...props} attachments={[cardAttachment('tc1')]} />
++      </RecoilRoot>,
++    );
++    expect(
++      (document.querySelector('iframe') as HTMLIFrameElement).getAttribute('srcdoc'),
++    ).toContain(CAVEAT);
++  });
++});
+diff --git a/client/src/components/Chat/Messages/Content/__tests__/ToolCall.test.tsx b/client/src/components/Chat/Messages/Content/__tests__/ToolCall.test.tsx
+index d2ef0c0..834060e 100644
+--- a/client/src/components/Chat/Messages/Content/__tests__/ToolCall.test.tsx
++++ b/client/src/components/Chat/Messages/Content/__tests__/ToolCall.test.tsx
+@@ -5,6 +5,7 @@ import { render, screen, waitFor, fireEvent } from '@testing-library/react';
+ import { ToolAuthWarningContext } from '../auth';
+ import ToolCall from '../ToolCall';
+ import { logger } from '~/utils';
++import store from '~/store';
+ 
+ // Mock dependencies
+ jest.mock('~/hooks', () => ({
+@@ -803,3 +804,169 @@ describe('ToolCall failure fast path', () => {
+     expect(screen.getByTestId('subtitle')).toHaveTextContent('HTTP 429 from github.com');
+   });
+ });
++
++describe('ToolCall MCP-UI card visibility', () => {
++  const cardAttachment = (toolCallId: string) =>
++    [
++      {
++        type: Tools.ui_resources,
++        messageId: 'm1',
++        toolCallId,
++        conversationId: 'c1',
++        [Tools.ui_resources]: [
++          {
++            resourceId: `res-${toolCallId}`,
++            uri: `ui://test/${toolCallId}`,
++            mimeType: 'text/html',
++            text: '<p>card</p>',
++          },
++        ],
++      },
++    ] as any;
++  const unsupportedAttachment = (toolCallId: string) =>
++    [
++      {
++        type: Tools.ui_resources,
++        messageId: 'm1',
++        toolCallId,
++        conversationId: 'c1',
++        [Tools.ui_resources]: [
++          { resourceId: 'x', uri: 'ui://x', mimeType: 'text/uri-list', text: 'https://x' },
++        ],
++      },
++    ] as any;
++  const baseProps = {
++    args: '{"q":"a"}',
++    name: 'customerOverview',
++    output: 'raw output',
++    initialProgress: 1,
++    isSubmitting: false,
++  };
++  const panelOf = (container: HTMLElement, id: string) =>
++    container.querySelector(`[data-tool-call-output-id="${id}"]`) as HTMLElement;
++  const wrap = (el: React.ReactElement) => <RecoilRoot>{el}</RecoilRoot>;
++
++  it('opens a call that carries a card without any click', () => {
++    const { container } = render(
++      wrap(<ToolCall {...baseProps} toolCallId="tc1" attachments={cardAttachment('tc1')} />),
++    );
++    expect(panelOf(container, 'tc1').style.gridTemplateRows).toBe('1fr');
++    expect(screen.getByTestId('tool-call-info')).toBeInTheDocument();
++    expect(screen.getByTestId('tool-call-info').getAttribute('data-attachments')).toContain(
++      'res-tc1',
++    );
++  });
++
++  it('keeps a call without a card closed by default', () => {
++    const { container } = render(wrap(<ToolCall {...baseProps} toolCallId="tc1" />));
++    expect(panelOf(container, 'tc1').style.gridTemplateRows).toBe('0fr');
++    expect(screen.queryByTestId('tool-call-info')).not.toBeInTheDocument();
++  });
++
++  it('does not treat unsupported ui_resources as a card', () => {
++    const { container } = render(
++      wrap(<ToolCall {...baseProps} toolCallId="tc1" attachments={unsupportedAttachment('tc1')} />),
++    );
++    expect(panelOf(container, 'tc1').style.gridTemplateRows).toBe('0fr');
++  });
++
++  it('still honours the global auto-expand preference for calls without a card', () => {
++    const { container } = render(
++      <RecoilRoot initializeState={({ set }) => set(store.autoExpandTools, true)}>
++        <ToolCall {...baseProps} toolCallId="tc1" />
++      </RecoilRoot>,
++    );
++    expect(panelOf(container, 'tc1').style.gridTemplateRows).toBe('1fr');
++  });
++
++  it('respects a manual collapse across rerenders', () => {
++    const attachments = cardAttachment('tc1');
++    const { container, rerender } = render(
++      wrap(<ToolCall {...baseProps} toolCallId="tc1" attachments={attachments} />),
++    );
++    expect(panelOf(container, 'tc1').style.gridTemplateRows).toBe('1fr');
++    fireEvent.click(screen.getByTestId('progress-text'));
++    expect(panelOf(container, 'tc1').style.gridTemplateRows).toBe('0fr');
++
++    rerender(
++      wrap(
++        <ToolCall {...baseProps} output="new output" toolCallId="tc1" attachments={attachments} />,
++      ),
++    );
++    rerender(
++      wrap(
++        <ToolCall
++          {...baseProps}
++          output="new output"
++          toolCallId="tc1"
++          attachments={cardAttachment('tc1')}
++        />,
++      ),
++    );
++    expect(panelOf(container, 'tc1').style.gridTemplateRows).toBe('0fr');
++
++    fireEvent.click(screen.getByTestId('progress-text'));
++    expect(panelOf(container, 'tc1').style.gridTemplateRows).toBe('1fr');
++  });
++
++  it('opens once when the card arrives after the first render, then leaves the reader in control', () => {
++    const { container, rerender } = render(
++      wrap(
++        <ToolCall {...baseProps} output="" toolCallId="tc1" initialProgress={0.5} isSubmitting />,
++      ),
++    );
++    expect(panelOf(container, 'tc1').style.gridTemplateRows).toBe('0fr');
++
++    rerender(
++      wrap(<ToolCall {...baseProps} toolCallId="tc1" attachments={cardAttachment('tc1')} />),
++    );
++    expect(panelOf(container, 'tc1').style.gridTemplateRows).toBe('1fr');
++
++    fireEvent.click(screen.getByTestId('progress-text'));
++    expect(panelOf(container, 'tc1').style.gridTemplateRows).toBe('0fr');
++    rerender(
++      wrap(<ToolCall {...baseProps} toolCallId="tc1" attachments={cardAttachment('tc1')} />),
++    );
++    expect(panelOf(container, 'tc1').style.gridTemplateRows).toBe('0fr');
++  });
++
++  it('opens a saved message rendered with its attachments on first mount', () => {
++    const { container } = render(
++      wrap(
++        <ToolCall
++          {...baseProps}
++          toolCallId="saved"
++          attachments={cardAttachment('saved')}
++          runStepStatus="completed"
++        />,
++      ),
++    );
++    expect(panelOf(container, 'saved').style.gridTemplateRows).toBe('1fr');
++  });
++
++  it('opens only the call that has a card in a mixed set and keeps outputs attached', () => {
++    const { container } = render(
++      wrap(
++        <>
++          <ToolCall {...baseProps} name="findCustomers" output="plain A" toolCallId="a" />
++          <ToolCall
++            {...baseProps}
++            name="customerOverview"
++            output="card B"
++            toolCallId="b"
++            attachments={cardAttachment('b')}
++          />
++          <ToolCall {...baseProps} name="invoices" output="plain C" toolCallId="c" />
++        </>,
++      ),
++    );
++    expect(panelOf(container, 'a').style.gridTemplateRows).toBe('0fr');
++    expect(panelOf(container, 'b').style.gridTemplateRows).toBe('1fr');
++    expect(panelOf(container, 'c').style.gridTemplateRows).toBe('0fr');
++    const info = panelOf(container, 'b').querySelector('[data-testid="tool-call-info"]');
++    expect(info).not.toBeNull();
++    expect(info!.textContent).toContain('card B');
++    expect(info!.getAttribute('data-attachments')).toContain('res-b');
++    expect(container.querySelectorAll('[data-testid="tool-call-info"]')).toHaveLength(1);
++  });
++});
+diff --git a/client/src/components/Chat/Messages/Content/__tests__/ToolCallGroup.test.tsx b/client/src/components/Chat/Messages/Content/__tests__/ToolCallGroup.test.tsx
+index f7a811d..30a312f 100644
+--- a/client/src/components/Chat/Messages/Content/__tests__/ToolCallGroup.test.tsx
++++ b/client/src/components/Chat/Messages/Content/__tests__/ToolCallGroup.test.tsx
+@@ -1377,3 +1377,78 @@ describe('ToolCallGroup failure fast path', () => {
+     expect(screen.getByTestId('tool-call-group-panel').firstElementChild).toHaveClass('pl-6');
+   });
+ });
++
++describe('ToolCallGroup MCP-UI card visibility', () => {
++  const cardAttachment = (toolCallId: string): TAttachment =>
++    ({
++      type: Tools.ui_resources,
++      messageId: 'm1',
++      toolCallId,
++      conversationId: 'c1',
++      [Tools.ui_resources]: [
++        {
++          resourceId: `res-${toolCallId}`,
++          uri: `ui://test/${toolCallId}`,
++          mimeType: 'text/html',
++          text: '<p>card</p>',
++        },
++      ],
++    }) as unknown as TAttachment;
++  const groupParts = [
++    { part: makePart('t1'), idx: 0 },
++    { part: makePart('t2'), idx: 1 },
++  ];
++  const propsFor = (
++    sourceAttachments?: TAttachment[],
++  ): React.ComponentProps<typeof ToolCallGroup> => ({
++    parts: groupParts,
++    isSubmitting: false,
++    isLast: false,
++    showThinking: false,
++    lastContentIdx: 1,
++    sourceAttachments,
++    renderPart: (_p, idx) => (
++      <div data-testid={`card-inner-${idx}`} key={idx}>
++        {'inner'}
++      </div>
++    ),
++  });
++  const wrap = (props: React.ComponentProps<typeof ToolCallGroup>) => (
++    <RecoilRoot>
++      <ToolCallGroup {...props} />
++    </RecoilRoot>
++  );
++  const header = () => screen.getByRole('button', { name: /^Ran 2 actions/ });
++
++  beforeEach(() => {
++    mockMCPServerNames.length = 0;
++  });
++
++  it('keeps a completed group without a card collapsed', () => {
++    render(wrap(propsFor([])));
++    expect(header()).toHaveAttribute('aria-expanded', 'false');
++  });
++
++  it('opens a completed group when one of its calls produced a card', () => {
++    render(wrap(propsFor([cardAttachment('t2')])));
++    expect(header()).toHaveAttribute('aria-expanded', 'true');
++    expect(screen.getByTestId('card-inner-1')).toBeInTheDocument();
++  });
++
++  it('opens once when the card is hydrated after the first render', () => {
++    const { rerender } = render(wrap(propsFor([])));
++    expect(header()).toHaveAttribute('aria-expanded', 'false');
++    rerender(wrap(propsFor([cardAttachment('t1')])));
++    expect(header()).toHaveAttribute('aria-expanded', 'true');
++    expect(screen.getByTestId('card-inner-0')).toBeInTheDocument();
++  });
++
++  it('does not reopen after the reader collapses it', () => {
++    const { rerender } = render(wrap(propsFor([cardAttachment('t1')])));
++    fireEvent.click(header());
++    expect(header()).toHaveAttribute('aria-expanded', 'false');
++    rerender(wrap(propsFor([cardAttachment('t1')])));
++    rerender(wrap(propsFor([cardAttachment('t1'), cardAttachment('t2')])));
++    expect(header()).toHaveAttribute('aria-expanded', 'false');
++  });
++});
+diff --git a/client/src/components/Chat/Messages/Content/__tests__/ToolCallInfo.test.tsx b/client/src/components/Chat/Messages/Content/__tests__/ToolCallInfo.test.tsx
+index bd47bfd..d3476c8 100644
+--- a/client/src/components/Chat/Messages/Content/__tests__/ToolCallInfo.test.tsx
++++ b/client/src/components/Chat/Messages/Content/__tests__/ToolCallInfo.test.tsx
+@@ -11,6 +11,7 @@ jest.mock('~/hooks', () => ({
+   useLocalize: () => (key: string) => {
+     const translations: Record<string, string> = {
+       com_ui_parameters: 'Parameters',
++      com_ui_output: 'Output',
+     };
+     return translations[key] || key;
+   },
+@@ -358,4 +359,95 @@ describe('ToolCallInfo', () => {
+       );
+     });
+   });
++  describe('card-first layout', () => {
++    const card = {
++      resourceId: 'card-1',
++      uri: 'ui://test/card-1',
++      mimeType: 'text/html',
++      text: '<p>card</p>',
++    };
++    const cardAttachments = (): TAttachment[] => [
++      {
++        type: Tools.ui_resources,
++        messageId: 'm',
++        toolCallId: 't',
++        conversationId: 'c',
++        [Tools.ui_resources]: [card] as any,
++      },
++    ];
++    const mockCardElement = () =>
++      (UIResourceRenderer as unknown as jest.Mock).mockImplementation(() => (
++        <div data-testid="card" />
++      ));
++
++    afterEach(() => {
++      (UIResourceRenderer as unknown as jest.Mock).mockImplementation(() => null);
++    });
++
++    it('renders the card before the raw output and the parameters', () => {
++      mockCardElement();
++      render(
++        <ToolCallInfo {...mockProps} output="raw tool output" attachments={cardAttachments()} />,
++      );
++      const cardEl = screen.getByTestId('card');
++      const outputEl = screen.getByTestId('output-renderer');
++      const paramsButton = screen.getByRole('button', { name: /Parameters/ });
++      expect(
++        cardEl.compareDocumentPosition(outputEl) & Node.DOCUMENT_POSITION_FOLLOWING,
++      ).toBeTruthy();
++      expect(
++        outputEl.compareDocumentPosition(paramsButton) & Node.DOCUMENT_POSITION_FOLLOWING,
++      ).toBeTruthy();
++    });
++
++    it('keeps the raw output behind a collapsed disclosure that can be opened', () => {
++      mockCardElement();
++      render(
++        <ToolCallInfo {...mockProps} output="raw tool output" attachments={cardAttachments()} />,
++      );
++      const toggle = screen.getByRole('button', { name: /Output/ });
++      expect(toggle).toHaveAttribute('aria-expanded', 'false');
++      expect(screen.getByTestId('output-renderer')).toHaveTextContent('raw tool output');
++      fireEvent.click(toggle);
++      expect(toggle).toHaveAttribute('aria-expanded', 'true');
++      fireEvent.click(toggle);
++      expect(toggle).toHaveAttribute('aria-expanded', 'false');
++    });
++
++    it('renders only the card when the call has a card but no output or parameters', () => {
++      mockCardElement();
++      render(<ToolCallInfo input="" attachments={cardAttachments()} />);
++      expect(screen.getByTestId('card')).toBeInTheDocument();
++      expect(screen.queryByRole('button')).not.toBeInTheDocument();
++      expect(screen.queryByTestId('output-renderer')).not.toBeInTheDocument();
++    });
++
++    it('leaves the layout of a call without a card unchanged: output first, no output disclosure', () => {
++      render(<ToolCallInfo {...mockProps} output="raw tool output" />);
++      const wrapper = screen.getByTestId('output-renderer').parentElement as HTMLElement;
++      expect(wrapper.firstElementChild).toBe(screen.getByTestId('output-renderer'));
++      expect(screen.queryByRole('button', { name: /Output/ })).not.toBeInTheDocument();
++      expect(screen.getByRole('button', { name: /Parameters/ })).toHaveAttribute(
++        'aria-expanded',
++        'false',
++      );
++      expect(UIResourceRenderer).not.toHaveBeenCalled();
++    });
++
++    it('ignores ui_resources whose mime type is not renderable HTML', () => {
++      mockCardElement();
++      const attachments: TAttachment[] = [
++        {
++          type: Tools.ui_resources,
++          messageId: 'm',
++          toolCallId: 't',
++          conversationId: 'c',
++          [Tools.ui_resources]: [{ ...card, mimeType: 'text/uri-list' }] as any,
++        },
++      ];
++      render(<ToolCallInfo {...mockProps} output="raw" attachments={attachments} />);
++      expect(screen.queryByTestId('card')).not.toBeInTheDocument();
++      expect(screen.queryByRole('button', { name: /Output/ })).not.toBeInTheDocument();
++    });
++  });
+ });
+diff --git a/client/src/components/MCPUIResource/Renderer.tsx b/client/src/components/MCPUIResource/Renderer.tsx
+index f5bc460..973935d 100644
+--- a/client/src/components/MCPUIResource/Renderer.tsx
++++ b/client/src/components/MCPUIResource/Renderer.tsx
+@@ -1,6 +1,7 @@
+ import { UIResourceRenderer as LegacyUIResourceRenderer } from '@mcp-ui/client';
+ import type { UIResource } from 'librechat-data-provider';
+ import type { ComponentProps } from 'react';
++import { isSupportedUIResource } from './supported';
+ 
+ type LegacyRendererProps = ComponentProps<typeof LegacyUIResourceRenderer>;
+ 
+@@ -11,14 +12,7 @@ type UIResourceRendererProps = Omit<
+   resource: UIResource;
+ };
+ 
+-export function isSupportedUIResource(
+-  resource: UIResource | null | undefined,
+-): resource is UIResource {
+-  return (
+-    typeof resource?.mimeType === 'string' &&
+-    resource.mimeType.split(';', 1)[0].trim().toLowerCase() === 'text/html'
+-  );
+-}
++export { isSupportedUIResource };
+ 
+ /** Restricts legacy MCP-UI rendering to sandboxed inline HTML resources. */
+ export default function UIResourceRenderer({
+diff --git a/client/src/components/MCPUIResource/supported.ts b/client/src/components/MCPUIResource/supported.ts
+new file mode 100644
+index 0000000..014cd1c
+--- /dev/null
++++ b/client/src/components/MCPUIResource/supported.ts
+@@ -0,0 +1,25 @@
++import { Tools } from 'librechat-data-provider';
++import type { TAttachment, UIResource } from 'librechat-data-provider';
++
++export function isSupportedUIResource(
++  resource: UIResource | null | undefined,
++): resource is UIResource {
++  return (
++    typeof resource?.mimeType === 'string' &&
++    resource.mimeType.split(';', 1)[0].trim().toLowerCase() === 'text/html'
++  );
++}
++
++/**
++ * The renderable MCP-UI resources carried by a tool call's attachments. This is the single
++ * definition of "this call produced a card": ToolCallInfo renders exactly this list, and
++ * ToolCall / ToolCallGroup use it to decide whether to reveal the call by default.
++ */
++export function getSupportedUIResources(attachments?: TAttachment[] | null): UIResource[] {
++  return (
++    attachments
++      ?.filter((attachment) => attachment.type === Tools.ui_resources)
++      .flatMap((attachment) => attachment[Tools.ui_resources] as UIResource[])
++      .filter(isSupportedUIResource) ?? []
++  );
++}
+-- 
+2.39.5 (Apple Git-154)
+

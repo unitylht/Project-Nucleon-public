@@ -1,0 +1,361 @@
+{
+ "resolve": {
+  "actionId": null,
+  "authority": {
+   "digest": "00009684faf42f33",
+   "mode": "delegated",
+   "paused": false,
+   "source": "owner_delegation_policy",
+   "version": 1
+  },
+  "caseId": "case_5cdcbfdf0fcdb681",
+  "communication": {
+   "note": "Nucleon sent nothing to the customer. Staff informs the customer.",
+   "sent": false
+  },
+  "comparables": [
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Heron Catering Supplies (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.4502,
+    "fictional": true,
+    "id": "fx-tr-08",
+    "kind": "trial_credit",
+    "outcome": "late",
+    "ownerDecision": "decline",
+    "sameCustomer": false,
+    "similarity": 0.69,
+    "summary": "Fictional trial credit: order AUD 5,000.00, exposure AUD 3,500.00, 30-day terms"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Gannet Wholesale (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.5793,
+    "fictional": true,
+    "id": "fx-tr-07",
+    "kind": "trial_credit",
+    "outcome": "defaulted",
+    "ownerDecision": "decline",
+    "sameCustomer": false,
+    "similarity": 0.633,
+    "summary": "Fictional trial credit: order AUD 4,000.00, exposure AUD 3,000.00, 30-day terms"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Foxglove Patisserie (fictional)",
+    "dataset": "fictional_example",
+    "distance": 1.5166,
+    "fictional": true,
+    "id": "fx-tr-06",
+    "kind": "trial_credit",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.397,
+    "summary": "Fictional trial credit: order AUD 1,200.00, exposure AUD 900.00, 14-day terms"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Dunmore Juice Bar (fictional)",
+    "dataset": "fictional_example",
+    "distance": 1.699,
+    "fictional": true,
+    "id": "fx-tr-04",
+    "kind": "trial_credit",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.371,
+    "summary": "Fictional trial credit: order AUD 1,000.00, exposure AUD 750.00, 14-day terms"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Ibis Row Provisions (fictional)",
+    "dataset": "fictional_example",
+    "distance": 1.7594,
+    "fictional": true,
+    "id": "fx-tr-09",
+    "kind": "trial_credit",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.362,
+    "summary": "Fictional trial credit: order AUD 1,600.00, exposure AUD 800.00, 14-day terms"
+   }
+  ],
+  "createdAt": "2026-10-26T12:43:01.512728+00:00",
+  "customer": {
+   "id": "customer_demo_harbourline",
+   "name": "Harbourline Catering (fictional)"
+  },
+  "dataset": "live",
+  "decision": null,
+  "evidence": {
+   "contradictions": [],
+   "depositNotes": [],
+   "depositShare": "0.2",
+   "depositSources": [
+    {
+     "amount": 100000,
+     "counted": true,
+     "level": "recorded_payment",
+     "notCounted": null,
+     "receivedDate": "2026-10-22",
+     "receivedDateText": "Thu 22 Oct 2026",
+     "recordId": "payment_demo_021",
+     "reference": "DEP-HL-01",
+     "source": "records",
+     "text": "AUD 1,000.00 — a recorded payment in Nucleon Records; reference DEP-HL-01, received Thu 22 Oct 2026"
+    }
+   ],
+   "exposure": 400000,
+   "insufficient": [],
+   "items": [
+    {
+     "detail": "The records for this customer are complete: no unreadable amount, missing due date or unplaced payment.",
+     "key": "records_complete",
+     "label": "Records complete",
+     "status": "verified"
+    },
+    {
+     "detail": "AUD 1,000.00 verified; at least AUD 1,250.00 is needed (a deposit share of 0.25 of the order).",
+     "key": "deposit",
+     "label": "Deposit",
+     "status": "missing"
+    },
+    {
+     "detail": "No business identity is on file.",
+     "key": "business_identity",
+     "label": "Business identity",
+     "status": "missing"
+    },
+    {
+     "detail": "Exposure of AUD 4,000.00 is over AUD 1,000.00, so a trade reference is needed.",
+     "key": "trade_reference",
+     "label": "Trade reference",
+     "status": "missing"
+    }
+   ],
+   "missing": [
+    {
+     "detail": "AUD 1,000.00 verified; at least AUD 1,250.00 is needed (a deposit share of 0.25 of the order).",
+     "key": "deposit",
+     "label": "Deposit",
+     "need": {
+      "atLeast": 125000,
+      "fields": [
+       "amount",
+       "receivedDate",
+       "reference",
+       "basis"
+      ],
+      "how": "Confirm a deposit you have seen yourself: its amount, the date received and its reference, and how you know: in the bank account, or on a receipt or remittance document. What the customer says does not count. A deposit Staff checked is accepted when the exposure is AUD 600.00 or less.",
+      "kind": "deposit",
+      "recordPayment": false,
+      "staffCheckedUpTo": "AUD 600.00"
+     },
+     "status": "missing"
+    },
+    {
+     "detail": "No business identity is on file.",
+     "key": "business_identity",
+     "label": "Business identity",
+     "need": {
+      "fields": [
+       "registration",
+       "tradingName",
+       "basis"
+      ],
+      "how": "Confirm the business registration and trading name, and say whether you saw them in a registry lookup or on a document.",
+      "kind": "business_identity"
+     },
+     "status": "missing"
+    },
+    {
+     "detail": "Exposure of AUD 4,000.00 is over AUD 1,000.00, so a trade reference is needed.",
+     "key": "trade_reference",
+     "label": "Trade reference",
+     "need": {
+      "fields": [
+       "referee",
+       "summary"
+      ],
+      "how": "Record who gave the reference and what they said.",
+      "kind": "trade_reference"
+     },
+     "status": "missing"
+    }
+   ],
+   "status": "missing",
+   "verifiedDeposit": 100000
+  },
+  "evidenceLink": null,
+  "handling": "owner_review",
+  "keyFacts": {
+   "asOfDate": "2026-10-24",
+   "asOfDateText": "Sat 24 Oct 2026",
+   "depositShare": "0.2",
+   "depositSources": [
+    {
+     "amount": {
+      "currency": "AUD",
+      "minorUnits": "100000",
+      "scale": 2,
+      "text": "AUD 1,000.00"
+     },
+     "counted": true,
+     "level": "recorded_payment",
+     "levelText": "a recorded payment in Nucleon Records",
+     "notCounted": null,
+     "receivedDate": "2026-10-22",
+     "receivedDateText": "Thu 22 Oct 2026",
+     "reference": "DEP-HL-01",
+     "text": "AUD 1,000.00 — a recorded payment in Nucleon Records; reference DEP-HL-01, received Thu 22 Oct 2026"
+    }
+   ],
+   "dueDateIfApproved": "2026-11-07",
+   "dueDateIfApprovedText": "Sat 7 Nov 2026",
+   "exposure": {
+    "currency": "AUD",
+    "minorUnits": "400000",
+    "scale": 2,
+    "text": "AUD 4,000.00"
+   },
+   "kind": "trial_credit",
+   "orderAmount": {
+    "currency": "AUD",
+    "minorUnits": "500000",
+    "scale": 2,
+    "text": "AUD 5,000.00"
+   },
+   "termsDays": 14,
+   "verifiedDeposit": {
+    "currency": "AUD",
+    "minorUnits": "100000",
+    "scale": 2,
+    "text": "AUD 1,000.00"
+   }
+  },
+  "kind": "trial_credit",
+  "needs": [],
+  "outcome": null,
+  "policyChangedSinceAssessment": false,
+  "reasons": [
+   "Outside the policy: Exposure of this decision: AUD 4,000.00 is over the limit of AUD 1,000.00.",
+   "Outside the policy: The customer's total exposure after this decision: AUD 4,000.00 is over the limit of AUD 1,500.00. This is the RECORDED exposure; the records are not confirmed complete.",
+   "Outside the policy: Autonomous approvals in 30 days (with this one): AUD 5,080.00 is over the limit of AUD 5,000.00.",
+   "Outside the policy: Trial credit exposure: AUD 4,000.00 is over the limit of AUD 600.00.",
+   "Evidence Staff can provide is missing: deposit, business identity, trade reference."
+  ],
+  "recommendation": {
+   "context": null,
+   "reasoning": "Fictional: a reliable customer, an ordinary request.",
+   "recommendation": "approve",
+   "text": "The assistant recommended approval"
+  },
+  "reliability": {
+   "comparablesDeclinedMajority": false,
+   "evaluation": {
+    "agreement": "1",
+    "dataset": "fictional_evaluation",
+    "outcomes": {
+     "late": 1,
+     "repaid": 4
+    },
+    "ownerApproved": 5,
+    "ownerDeclined": 0,
+    "reviewed": 6,
+    "wouldApprove": 5
+   },
+   "label": "SIMULATION on fictional evaluation cases: it shows how this policy would have compared with a fictional Owner's decisions, not how it performs on real credit decisions.",
+   "live": {
+    "agreement": null,
+    "dataset": "live",
+    "outcomes": {},
+    "ownerApproved": 0,
+    "ownerDeclined": 0,
+    "reviewed": 0,
+    "wouldApprove": 0
+   },
+   "required": true,
+   "rule": "at least 5 cases the policy would approve and Owner agreement of at least 0.8",
+   "sentence": "Track record established: the policy would approve 5 of 6 held-out fictional evaluation cases in this category, and the fictional Owner approved 5 of them. SIMULATION on fictional evaluation cases: it shows how this policy would have compared with a fictional Owner's decisions, not how it performs on real credit decisions.",
+   "simulation": true,
+   "status": "established"
+  },
+  "requestId": null,
+  "risk": {
+   "checks": [
+    {
+     "key": "decision_exposure",
+     "label": "Exposure of this decision",
+     "sentence": "Exposure of this decision: AUD 4,000.00 is over the limit of AUD 1,000.00.",
+     "status": "fail"
+    },
+    {
+     "key": "customer_exposure",
+     "label": "The customer's total exposure after this decision",
+     "sentence": "The customer's total exposure after this decision: AUD 4,000.00 is over the limit of AUD 1,500.00. This is the RECORDED exposure; the records are not confirmed complete.",
+     "status": "fail"
+    },
+    {
+     "key": "autonomous_30d",
+     "label": "Autonomous approvals in 30 days (with this one)",
+     "sentence": "Autonomous approvals in 30 days (with this one): AUD 5,080.00 is over the limit of AUD 5,000.00.",
+     "status": "fail"
+    },
+    {
+     "key": "trial_in_force",
+     "label": "A trial credit already in force",
+     "sentence": "No trial credit for this customer is in force.",
+     "status": "pass"
+    },
+    {
+     "key": "first_credit",
+     "label": "First credit",
+     "sentence": "The customer has no earlier invoices.",
+     "status": "pass"
+    },
+    {
+     "key": "trial_exposure",
+     "label": "Trial credit exposure",
+     "sentence": "Trial credit exposure: AUD 4,000.00 is over the limit of AUD 600.00.",
+     "status": "fail"
+    },
+    {
+     "key": "trial_terms",
+     "label": "Terms",
+     "sentence": "Terms: 14 days is within the limit of 30 days.",
+     "status": "pass"
+    }
+   ],
+   "failing": [
+    "Exposure of this decision: AUD 4,000.00 is over the limit of AUD 1,000.00.",
+    "The customer's total exposure after this decision: AUD 4,000.00 is over the limit of AUD 1,500.00. This is the RECORDED exposure; the records are not confirmed complete.",
+    "Autonomous approvals in 30 days (with this one): AUD 5,080.00 is over the limit of AUD 5,000.00.",
+    "Trial credit exposure: AUD 4,000.00 is over the limit of AUD 600.00."
+   ],
+   "status": "outside",
+   "unknown": []
+  },
+  "status": "awaiting_owner",
+  "statusText": "Not approved: It is outside what the Owner delegated (exposure of this decision), so the Owner decides with the assistant's recommendation. Nothing has been approved or sent.",
+  "subject": {
+   "customerId": "customer_demo_harbourline",
+   "name": "Harbourline Catering (fictional)"
+  },
+  "updatedAt": "2026-10-26T12:43:01.512734+00:00",
+  "version": 1,
+  "warnings": [
+   "The customer's total exposure (AUD 4,000.00) is the RECORDED exposure: the records are not confirmed complete, so more may be owed.",
+   "Exposure of this decision: AUD 4,000.00 is over the limit of AUD 1,000.00.",
+   "The customer's total exposure after this decision: AUD 4,000.00 is over the limit of AUD 1,500.00. This is the RECORDED exposure; the records are not confirmed complete.",
+   "Autonomous approvals in 30 days (with this one): AUD 5,080.00 is over the limit of AUD 5,000.00.",
+   "Trial credit exposure: AUD 4,000.00 is over the limit of AUD 600.00.",
+   "Evidence Staff can provide is missing: deposit, business identity, trade reference."
+  ],
+  "why": "it is outside what the Owner delegated (exposure of this decision)"
+ }
+}

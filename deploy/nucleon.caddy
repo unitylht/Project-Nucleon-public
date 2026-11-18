@@ -1,0 +1,42 @@
+# Caddy site for the deployed prototype. Installed copy: ~/.config/caddy/sites/nucleon.caddy,
+# imported by the main Caddyfile ("import /Users/jason/.config/caddy/sites/*.caddy").
+# Caddy obtains and renews the Let's Encrypt certificate. The backend binds 127.0.0.1 only.
+nucleon.dracooz.top {
+	# The Lab (reuse experiment, same branch): the Lab service on 8622 and its own records instance on 8623, each with the
+	# prefix stripped. Caddy sorts same-named directives that have a single path matcher by path length, longest first
+	# (Caddyfile docs, "Directives", "Sorting algorithm"), and handle_path blocks are mutually exclusive like handle blocks, so
+	# /lab/records/* is tried before /lab/* whatever their order in this file; the unmatched reverse_proxy below still comes last.
+	# The records instance's cookies (nucleonl_*, Path=/lab) reach both /lab/api/ and /lab/records/api/; the Lab forwards the
+	# Cookie header to 127.0.0.1:8623 itself, not through Caddy. flush_interval -1: no response buffering for the Lab's
+	# server-sent events (Caddy also flushes text/event-stream on its own).
+	redir /lab /lab/ 301
+	redir /lab/records /lab/records/ 301
+	handle_path /lab/records/* {
+		reverse_proxy 127.0.0.1:8623 {
+			header_up X-Real-IP {remote_host}
+		}
+	}
+	handle_path /lab/* {
+		reverse_proxy 127.0.0.1:8622 {
+			header_up X-Real-IP {remote_host}
+			flush_interval -1
+		}
+	}
+	# The agent-coordinator preview (branch explore/agent-coordinator-20261019): its own backend, database and cookies,
+	# under /preview/. Caddy strips the prefix; the app's URLs are relative, so it serves at / and at /preview/ alike.
+	redir /preview /preview/ 301
+	handle_path /preview/* {
+		reverse_proxy 127.0.0.1:8621 {
+			header_up X-Real-IP {remote_host}
+		}
+	}
+	reverse_proxy 127.0.0.1:8620 {
+		header_up X-Real-IP {remote_host}
+	}
+	log {
+		output file /Users/jason/Library/Logs/nucleon/caddy-access.log {
+			roll_size 10MiB
+			roll_keep 5
+		}
+	}
+}

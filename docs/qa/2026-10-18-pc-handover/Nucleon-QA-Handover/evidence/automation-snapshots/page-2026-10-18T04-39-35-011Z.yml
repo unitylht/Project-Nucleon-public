@@ -1,0 +1,540 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e6349]:
+      - link "Nucleon Payment extensions" [ref=e6350] [cursor=pointer]:
+        - /url: "#/"
+        - generic [ref=e6351]: Nucleon
+        - generic [ref=e6352]: Payment extensions
+      - group "Acting as" [ref=e6353]:
+        - button "Staff" [pressed] [ref=e6354] [cursor=pointer]
+        - button "Owner" [ref=e6355] [cursor=pointer]
+      - paragraph [ref=e6356]:
+        - generic [ref=e6358]: Agent ready
+      - link "Records" [ref=e6359] [cursor=pointer]:
+        - /url: "#/records"
+      - link "Demo c onsole" [ref=e6360] [cursor=pointer]:
+        - /url: "#/console"
+      - button "Sign out" [ref=e6361] [cursor=pointer]
+    - main [ref=e6362]:
+      - heading "Records" [level=1] [ref=e6363]
+      - paragraph [ref=e6364]: "Practice workspace: everything here is fictional. Today is Fri 16 Oct 2026. Amounts in AUD."
+      - region [ref=e6365]:
+        - heading "Setup" [level=2] [ref=e6366]
+        - paragraph [ref=e6367]: "Ready: staff can send requests to the agent."
+        - heading "Required to start" [level=3] [ref=e6368]
+        - list [ref=e6369]:
+          - listitem [ref=e6370]:
+            - generic [ref=e6371]: Done
+            - generic [ref=e6372]:
+              - text: "Workspace type: real or practice"
+              - generic [ref=e6373]: Practice data is fictional; a real workspace never loads the sample.
+          - listitem [ref=e6374]:
+            - generic [ref=e6375]: Done
+            - generic [ref=e6376]:
+              - text: Currency, decimal places and time zone
+              - generic [ref=e6377]: Needed to read amounts and dates safely.
+          - listitem [ref=e6378]:
+            - generic [ref=e6379]: Done
+            - generic [ref=e6380]:
+              - text: At least one customer with an open invoice
+              - generic [ref=e6381]: 7 customers, 10 open invoices. A case needs the invoice it is about.
+        - heading "Recommended for reliable answers" [level=3] [ref=e6382]
+        - list [ref=e6383]:
+          - listitem [ref=e6384]:
+            - generic [ref=e6385]: Partly done
+            - generic [ref=e6386]:
+              - text: Due dates on open invoices
+              - generic [ref=e6387]: 7 of 10 open invoices have a due date. Without one, a case shows the due date as not on record. Payment terms can be written as a note for now; they are not used in calculations yet.
+          - listitem [ref=e6388]:
+            - generic [ref=e6389]: Partly done
+            - generic [ref=e6390]:
+              - text: Amount still owed, with the date it was stated
+              - generic [ref=e6391]: 5 of 10 open invoices have one. Without it, a case shows the amount owed as not recorded.
+        - heading "Good to have" [level=3] [ref=e6392]
+        - list [ref=e6393]:
+          - listitem [ref=e6394]:
+            - generic [ref=e6395]: Done
+            - generic [ref=e6396]:
+              - text: What you already know about customers or the business
+              - generic [ref=e6397]: 3 confirmed notes. Optional; you can add notes at any time.
+        - paragraph [ref=e6398]: "Credit limits, scores or ratings, contact details and full customer history are not needed for payment extensions. Not in this version: payment terms used in calculations, credit-note documents (record a credit held for the customer instead), and ledger or XLSX imports."
+      - region [ref=e6399]:
+        - heading "Customers and invoices" [level=2] [ref=e6400]
+        - table [ref=e6402]:
+          - rowgroup [ref=e6403]:
+            - row [ref=e6404]:
+              - columnheader "Invoice" [ref=e6405]
+              - columnheader "Date" [ref=e6406]
+              - columnheader "Amount" [ref=e6407]
+              - columnheader "Due" [ref=e6408]
+              - columnheader "Still owed" [ref=e6409]
+              - columnheader "Source" [ref=e6410]
+              - columnheader [ref=e6411]
+          - rowgroup [ref=e6412]:
+            - row [ref=e6413]:
+              - rowheader "Harbour Demo Supplies C-DEMO-01 Add an opening balance Invoices not confirmed complete · payments not confirmed complete" [ref=e6414]:
+                - text: Harbour Demo Supplies C-DEMO-01
+                - button "Add an opening balance" [ref=e6415] [cursor=pointer]
+                - generic [ref=e6416]: Invoices not confirmed complete · payments not confirmed complete
+              - cell [ref=e6417]:
+                - button "Correct" [ref=e6418] [cursor=pointer]
+                - button "Remove" [ref=e6419] [cursor=pointer]
+            - row [ref=e6420]:
+              - cell "DEMO-101" [ref=e6421]
+              - cell "—" [ref=e6422]
+              - cell "—" [ref=e6423]
+              - cell "Tue 20 Oct" [ref=e6424]
+              - cell "AUD 1,250.00" [ref=e6425]
+              - cell "Sample" [ref=e6426]
+              - cell [ref=e6427]:
+                - button "Correct" [ref=e6428] [cursor=pointer]
+                - button "Remove" [ref=e6429] [cursor=pointer]
+            - row [ref=e6430]:
+              - rowheader "Harbour Demo Logistics C-DEMO-02 Add an opening balance Invoices not confirmed complete · payments not confirmed complete" [ref=e6431]:
+                - text: Harbour Demo Logistics C-DEMO-02
+                - button "Add an opening balance" [ref=e6432] [cursor=pointer]
+                - generic [ref=e6433]: Invoices not confirmed complete · payments not confirmed complete
+              - cell [ref=e6434]:
+                - button "Correct" [ref=e6435] [cursor=pointer]
+                - button "Remove" [ref=e6436] [cursor=pointer]
+            - row [ref=e6437]:
+              - cell "DEMO-201" [ref=e6438]
+              - cell "—" [ref=e6439]
+              - cell "—" [ref=e6440]
+              - cell "Fri 9 Oct" [ref=e6441]
+              - cell "AUD 480.00" [ref=e6442]
+              - cell "Sample" [ref=e6443]
+              - cell [ref=e6444]:
+                - button "Correct" [ref=e6445] [cursor=pointer]
+                - button "Remove" [ref=e6446] [cursor=pointer]
+            - row [ref=e6447]:
+              - cell "DEMO-202" [ref=e6448]
+              - cell "—" [ref=e6449]
+              - cell "—" [ref=e6450]
+              - cell "Fri 6 Nov" [ref=e6451]
+              - cell "AUD 2,100.00" [ref=e6452]
+              - cell "Sample" [ref=e6453]
+              - cell [ref=e6454]:
+                - button "Correct" [ref=e6455] [cursor=pointer]
+                - button "Remove" [ref=e6456] [cursor=pointer]
+            - row [ref=e6457]:
+              - 'rowheader "Release check café (fictional) C-0003 Invoices AUD 2,500.00 · payments and credits AUD 600.00 · unallocated AUD 0.00 Opening balance AUD 1,500.00 owed as at Mon 28 Sep · Accountant''s balance list (fictional) · no credits in it Correct Remove Balance from it: AUD 1,900.00. The whole account, not one invoice. Invoices not confirmed complete (latest Wed 30 Sep) · payments complete to Fri 16 Oct (latest Wed 7 Oct)" [ref=e6458]':
+                - text: Release check café (fictional) C-0003
+                - generic [ref=e6459]: Invoices AUD 2,500.00 · payments and credits AUD 600.00 · unallocated AUD 0.00
+                - generic [ref=e6460]:
+                  - text: Opening balance AUD 1,500.00 owed as at Mon 28 Sep · Accountant's balance list (fictional) · no credits in it
+                  - button "Correct" [ref=e6461] [cursor=pointer]
+                  - button "Remove" [ref=e6462] [cursor=pointer]
+                - generic [ref=e6463]: "Balance from it: AUD 1,900.00. The whole account, not one invoice."
+                - generic [ref=e6464]: Invoices not confirmed complete (latest Wed 30 Sep) · payments complete to Fri 16 Oct (latest Wed 7 Oct)
+              - cell [ref=e6465]:
+                - button "Correct" [ref=e6466] [cursor=pointer]
+                - button "Remove" [ref=e6467] [cursor=pointer]
+            - row [ref=e6468]:
+              - cell "RC-1-77 part of the opening balance" [ref=e6469]:
+                - text: RC-1-77
+                - generic [ref=e6470]: part of the opening balance
+              - cell "Sun 30 Aug" [ref=e6471]
+              - cell "AUD 1,200.00" [ref=e6472]
+              - cell "Not on record" [ref=e6473]
+              - cell "AUD 1,200.00 exact, as of Fri 16 Oct" [ref=e6474]:
+                - text: AUD 1,200.00
+                - generic [ref=e6475]: exact, as of Fri 16 Oct
+              - cell "Entered by staff" [ref=e6476]
+              - cell [ref=e6477]:
+                - button "Correct" [ref=e6478] [cursor=pointer]
+                - button "Remove" [ref=e6479] [cursor=pointer]
+            - row [ref=e6480]:
+              - cell "RC-1-78 part of the opening balance" [ref=e6481]:
+                - text: RC-1-78
+                - generic [ref=e6482]: part of the opening balance
+              - cell "Sun 13 Sep" [ref=e6483]
+              - cell "AUD 300.00" [ref=e6484]
+              - cell "Not on record" [ref=e6485]
+              - cell "AUD 300.00 exact, as of Fri 16 Oct" [ref=e6486]:
+                - text: AUD 300.00
+                - generic [ref=e6487]: exact, as of Fri 16 Oct
+              - cell "Entered by staff" [ref=e6488]
+              - cell [ref=e6489]:
+                - button "Correct" [ref=e6490] [cursor=pointer]
+                - button "Remove" [ref=e6491] [cursor=pointer]
+            - row [ref=e6492]:
+              - cell "RC-1" [ref=e6493]
+              - cell "Wed 30 Sep" [ref=e6494]
+              - cell "AUD 1,000.00" [ref=e6495]
+              - cell "Wed 14 Oct" [ref=e6496]
+              - cell "AUD 400.00 exact, as of Fri 16 Oct" [ref=e6497]:
+                - text: AUD 400.00
+                - generic [ref=e6498]: exact, as of Fri 16 Oct
+              - cell "Entered by staff" [ref=e6499]
+              - cell [ref=e6500]:
+                - button "Correct" [ref=e6501] [cursor=pointer]
+            - row [ref=e6502]:
+              - rowheader "CL1018T Manual A fictional C-0004 Add an opening balance Invoices not confirmed complete (latest Mon 5 Oct) · payments not confirmed complete" [ref=e6503]:
+                - text: CL1018T Manual A fictional C-0004
+                - button "Add an opening balance" [ref=e6504] [cursor=pointer]
+                - generic [ref=e6505]: Invoices not confirmed complete (latest Mon 5 Oct) · payments not confirmed complete
+              - cell [ref=e6506]:
+                - button "Correct" [ref=e6507] [cursor=pointer]
+                - button "Remove" [ref=e6508] [cursor=pointer]
+            - row [ref=e6509]:
+              - cell "CL1018T-001" [ref=e6510]
+              - cell "Mon 5 Oct" [ref=e6511]
+              - cell "AUD 1,000.00" [ref=e6512]
+              - cell "Not on record" [ref=e6513]
+              - cell "Not recorded" [ref=e6514]
+              - cell "Entered by staff" [ref=e6515]
+              - cell [ref=e6516]:
+                - button "Correct" [ref=e6517] [cursor=pointer]
+                - button "Remove" [ref=e6518] [cursor=pointer]
+            - row [ref=e6519]:
+              - rowheader "CL1018T Manual B fictional C-0005 Add an opening balance Invoices not confirmed complete (latest Mon 5 Oct) · payments not confirmed complete" [ref=e6520]:
+                - text: CL1018T Manual B fictional C-0005
+                - button "Add an opening balance" [ref=e6521] [cursor=pointer]
+                - generic [ref=e6522]: Invoices not confirmed complete (latest Mon 5 Oct) · payments not confirmed complete
+              - cell [ref=e6523]:
+                - button "Correct" [ref=e6524] [cursor=pointer]
+                - button "Remove" [ref=e6525] [cursor=pointer]
+            - row [ref=e6526]:
+              - cell "CL1018T-001" [ref=e6527]
+              - cell "Mon 5 Oct" [ref=e6528]
+              - cell "AUD 200.00" [ref=e6529]
+              - cell "Sat 10 Oct" [ref=e6530]
+              - cell "Not recorded" [ref=e6531]
+              - cell "Entered by staff" [ref=e6532]
+              - cell [ref=e6533]:
+                - button "Correct" [ref=e6534] [cursor=pointer]
+                - button "Remove" [ref=e6535] [cursor=pointer]
+            - row [ref=e6536]:
+              - rowheader "CL1018T Imported A fictional C-0006 Add an opening balance Invoices not confirmed complete (latest Mon 5 Oct) · payments not confirmed complete" [ref=e6537]:
+                - text: CL1018T Imported A fictional C-0006
+                - button "Add an opening balance" [ref=e6538] [cursor=pointer]
+                - generic [ref=e6539]: Invoices not confirmed complete (latest Mon 5 Oct) · payments not confirmed complete
+              - cell [ref=e6540]:
+                - button "Correct" [ref=e6541] [cursor=pointer]
+            - row [ref=e6542]:
+              - cell "CL1018T-CSV-001" [ref=e6543]
+              - cell "Mon 5 Oct" [ref=e6544]
+              - cell "AUD 1,000.00" [ref=e6545]
+              - cell "Sat 10 Oct" [ref=e6546]
+              - cell "Not recorded" [ref=e6547]
+              - 'cell "Import: CL1018T Invoice test" [ref=e6548]'
+              - cell [ref=e6549]:
+                - button "Correct" [ref=e6550] [cursor=pointer]
+            - row [ref=e6551]:
+              - rowheader "CL1018T Imported B fictional C-0007 Add an opening balance Invoices not confirmed complete (latest Mon 5 Oct) · payments not confirmed complete" [ref=e6552]:
+                - text: CL1018T Imported B fictional C-0007
+                - button "Add an opening balance" [ref=e6553] [cursor=pointer]
+                - generic [ref=e6554]: Invoices not confirmed complete (latest Mon 5 Oct) · payments not confirmed complete
+              - cell [ref=e6555]:
+                - button "Correct" [ref=e6556] [cursor=pointer]
+            - row [ref=e6557]:
+              - cell "CL1018T-CSV-001" [ref=e6558]
+              - cell "Mon 5 Oct" [ref=e6559]
+              - cell "AUD 200.00" [ref=e6560]
+              - cell "Sat 10 Oct" [ref=e6561]
+              - cell "Not recorded" [ref=e6562]
+              - 'cell "Import: CL1018T Invoice test" [ref=e6563]'
+              - cell [ref=e6564]:
+                - button "Correct" [ref=e6565] [cursor=pointer]
+        - generic [ref=e6566]:
+          - generic [ref=e6567]:
+            - heading "Add a customer" [level=3] [ref=e6568]
+            - generic [ref=e6569]:
+              - generic [ref=e6570]: Customer name
+              - textbox "Customer name" [ref=e6571]
+              - alert
+            - alert
+            - button "Add customer" [ref=e6572] [cursor=pointer]
+          - generic [ref=e6573]:
+            - heading "Add an invoice" [level=3] [ref=e6574]
+            - generic [ref=e6575]:
+              - generic [ref=e6576]: Customer
+              - combobox "Customer" [ref=e6577]:
+                - option "Harbour Demo Supplies (C-DEMO-01)" [selected]
+                - option "Harbour Demo Logistics (C-DEMO-02)"
+                - option "Release check café (fictional) (C-0003)"
+                - option "CL1018T Manual A fictional (C-0004)"
+                - option "CL1018T Manual B fictional (C-0005)"
+                - option "CL1018T Imported A fictional (C-0006)"
+                - option "CL1018T Imported B fictional (C-0007)"
+              - alert
+            - generic [ref=e6578]:
+              - generic [ref=e6579]: Invoice number
+              - textbox "Invoice number" [ref=e6580]
+              - alert
+            - generic [ref=e6581]:
+              - generic [ref=e6582]: Invoice date
+              - textbox "Invoice date" [ref=e6583]
+              - alert
+            - generic [ref=e6584]:
+              - generic [ref=e6585]: Invoice amount
+              - textbox "Invoice amount" [ref=e6586]
+              - alert
+            - generic [ref=e6587]:
+              - generic [ref=e6588]: Due date (recommended)
+              - textbox "Due date (recommended)" [ref=e6589]
+              - alert
+            - generic [ref=e6590]:
+              - generic [ref=e6591]: Amount still owed (recommended)
+              - textbox "Amount still owed (recommended)" [ref=e6592]
+              - alert
+            - generic [ref=e6593]:
+              - generic [ref=e6594]: …still owed as of
+              - textbox "…still owed as of" [ref=e6595]: 2026-10-16
+              - paragraph [ref=e6596]: Payments after this date aren't recorded, so cases say "stated as of" this date.
+              - alert
+            - 'group "If it is dated on or before the customer''s opening balance: is it already part of it?" [ref=e6597]':
+              - generic [ref=e6599] [cursor=pointer]:
+                - radio "Yes" [ref=e6600]
+                - generic [ref=e6601]: "Yes"
+              - generic [ref=e6602] [cursor=pointer]:
+                - radio "No, it was missed" [ref=e6603]
+                - generic [ref=e6604]: No, it was missed
+              - generic [ref=e6605] [cursor=pointer]:
+                - radio "Not sure" [checked] [ref=e6606]
+                - generic [ref=e6607]: Not sure
+            - alert
+            - button "Add invoice" [ref=e6608] [cursor=pointer]
+      - region [ref=e6609]:
+        - heading "Payments and credits" [level=2] [ref=e6610]
+        - paragraph [ref=e6611]: Record money received and allocate it to that customer's invoices yourself. Nothing is allocated automatically, money not allocated stays visible, and no payment recorded is not proof that an invoice is unpaid.
+        - table [ref=e6613]:
+          - rowgroup [ref=e6614]:
+            - row [ref=e6615]:
+              - columnheader "Received" [ref=e6616]
+              - columnheader "Amount" [ref=e6617]
+              - columnheader "Allocated to" [ref=e6618]
+              - columnheader "Left" [ref=e6619]
+              - columnheader [ref=e6620]
+          - rowgroup [ref=e6621]:
+            - row [ref=e6622]:
+              - rowheader "Release check café (fictional) C-0003" [ref=e6623]
+            - row [ref=e6624]:
+              - cell "Fri 2 Oct credit Prepayment RC (fictional)" [ref=e6625]:
+                - text: Fri 2 Oct
+                - generic [ref=e6626]: credit
+                - generic [ref=e6627]: Prepayment RC (fictional)
+              - cell "AUD 100.00" [ref=e6628]
+              - cell [ref=e6629]:
+                - text: RC-1 AUD 100.00
+                - button "Remove" [ref=e6630] [cursor=pointer]
+              - cell "—" [ref=e6631]
+              - cell [ref=e6632]:
+                - text: Entered by staff
+                - button "Correct" [ref=e6633] [cursor=pointer]
+            - row [ref=e6634]:
+              - cell "Wed 7 Oct EFT RC (fictional)" [ref=e6635]:
+                - text: Wed 7 Oct
+                - generic [ref=e6636]: EFT RC (fictional)
+              - cell "AUD 500.00" [ref=e6637]
+              - cell [ref=e6638]:
+                - text: RC-1 AUD 500.00
+                - button "Remove" [ref=e6639] [cursor=pointer]
+              - cell "—" [ref=e6640]
+              - cell [ref=e6641]:
+                - text: Entered by staff
+                - button "Correct" [ref=e6642] [cursor=pointer]
+        - generic [ref=e6643]:
+          - heading "Record a payment or credit" [level=3] [ref=e6644]
+          - group "This is" [ref=e6645]:
+            - generic [ref=e6647] [cursor=pointer]:
+              - radio "Money received" [checked] [ref=e6648]
+              - generic [ref=e6649]: Money received
+            - generic [ref=e6650] [cursor=pointer]:
+              - radio "A credit held for the customer For example a credit note or a prepayment carried in the opening balance." [ref=e6651]
+              - generic [ref=e6652]:
+                - text: A credit held for the customer
+                - generic [ref=e6653]: For example a credit note or a prepayment carried in the opening balance.
+          - generic [ref=e6654]:
+            - generic [ref=e6655]: Customer
+            - combobox "Customer" [ref=e6656]:
+              - option "Harbour Demo Supplies (C-DEMO-01)" [selected]
+              - option "Harbour Demo Logistics (C-DEMO-02)"
+              - option "Release check café (fictional) (C-0003)"
+              - option "CL1018T Manual A fictional (C-0004)"
+              - option "CL1018T Manual B fictional (C-0005)"
+              - option "CL1018T Imported A fictional (C-0006)"
+              - option "CL1018T Imported B fictional (C-0007)"
+            - alert
+          - generic [ref=e6657]:
+            - generic [ref=e6658]: Date received
+            - textbox "Date received" [ref=e6659]: 2026-10-16
+            - alert
+          - generic [ref=e6660]:
+            - generic [ref=e6661]: Amount
+            - textbox "Amount" [ref=e6662]
+            - alert
+          - generic [ref=e6663]:
+            - generic [ref=e6664]: Reference (optional)
+            - textbox "Reference (optional)" [ref=e6665]
+            - alert
+          - 'group "If it is dated on or before the customer''s opening balance: is it already part of it?" [ref=e6666]':
+            - generic [ref=e6668] [cursor=pointer]:
+              - radio "Yes" [ref=e6669]
+              - generic [ref=e6670]: "Yes"
+            - generic [ref=e6671] [cursor=pointer]:
+              - radio "No, it was missed" [ref=e6672]
+              - generic [ref=e6673]: No, it was missed
+            - generic [ref=e6674] [cursor=pointer]:
+              - radio "Not sure" [checked] [ref=e6675]
+              - generic [ref=e6676]: Not sure
+          - alert
+          - button "Record it" [ref=e6677] [cursor=pointer]
+      - region [ref=e6678]:
+        - heading "Completeness" [level=2] [ref=e6679]
+        - paragraph [ref=e6680]: Records are complete only when the owner says so, for named customers, record types and a period. Entering records or importing a file never makes them complete, and the latest date on record is shown separately. An exact amount still owed needs payment records confirmed complete.
+        - table [ref=e6682]:
+          - rowgroup [ref=e6683]:
+            - row [ref=e6684]:
+              - columnheader "Customer" [ref=e6685]
+              - columnheader "Invoices complete to" [ref=e6686]
+              - columnheader "Latest invoice" [ref=e6687]
+              - columnheader "Payments complete to" [ref=e6688]
+              - columnheader "Latest payment" [ref=e6689]
+          - rowgroup [ref=e6690]:
+            - row [ref=e6691]:
+              - cell "Harbour Demo Supplies" [ref=e6692]
+              - cell "Not confirmed" [ref=e6693]
+              - cell "—" [ref=e6694]
+              - cell "Not confirmed" [ref=e6695]
+              - cell "—" [ref=e6696]
+            - row [ref=e6697]:
+              - cell "Harbour Demo Logistics" [ref=e6698]
+              - cell "Not confirmed" [ref=e6699]
+              - cell "—" [ref=e6700]
+              - cell "Not confirmed" [ref=e6701]
+              - cell "—" [ref=e6702]
+            - row [ref=e6703]:
+              - cell "Release check café (fictional)" [ref=e6704]
+              - cell "Not confirmed" [ref=e6705]
+              - cell "Wed 30 Sep" [ref=e6706]
+              - cell "Fri 16 Oct" [ref=e6707]
+              - cell "Wed 7 Oct" [ref=e6708]
+            - row [ref=e6709]:
+              - cell "CL1018T Manual A fictional" [ref=e6710]
+              - cell "Not confirmed" [ref=e6711]
+              - cell "Mon 5 Oct" [ref=e6712]
+              - cell "Not confirmed" [ref=e6713]
+              - cell "—" [ref=e6714]
+            - row [ref=e6715]:
+              - cell "CL1018T Manual B fictional" [ref=e6716]
+              - cell "Not confirmed" [ref=e6717]
+              - cell "Mon 5 Oct" [ref=e6718]
+              - cell "Not confirmed" [ref=e6719]
+              - cell "—" [ref=e6720]
+            - row [ref=e6721]:
+              - cell "CL1018T Imported A fictional" [ref=e6722]
+              - cell "Not confirmed" [ref=e6723]
+              - cell "Mon 5 Oct" [ref=e6724]
+              - cell "Not confirmed" [ref=e6725]
+              - cell "—" [ref=e6726]
+            - row [ref=e6727]:
+              - cell "CL1018T Imported B fictional" [ref=e6728]
+              - cell "Not confirmed" [ref=e6729]
+              - cell "Mon 5 Oct" [ref=e6730]
+              - cell "Not confirmed" [ref=e6731]
+              - cell "—" [ref=e6732]
+        - list [ref=e6733]:
+          - listitem [ref=e6734]:
+            - paragraph [ref=e6735]: "Release check café (fictional): payments complete from Tue 29 Sep to Fri 16 Oct"
+            - generic [ref=e6736]: Release check (fictional) · confirmed by the owner 18 Oct, 2:33 pm
+        - paragraph [ref=e6737]: The owner confirms completeness.
+      - region [ref=e6738]:
+        - heading "What you already know (optional)" [level=2] [ref=e6739]
+        - paragraph [ref=e6740]: Short notes the agent shows the owner in cases. Only notes the owner has confirmed are used. A rule is shown to the owner, not enforced by the system. Payment terms can be written here for now; they aren't used in calculations yet.
+        - list [ref=e6741]:
+          - listitem [ref=e6742]:
+            - paragraph [ref=e6743]: "Fictional relationship context: a regular customer. Any extension still needs owner approval."
+            - generic [ref=e6744]: Harbour Demo Supplies · context · confirmed by the owner
+          - listitem [ref=e6745]:
+            - paragraph [ref=e6746]: "Unconfirmed staff impression: may ask for longer terms soon."
+            - generic [ref=e6747]: Harbour Demo Supplies · context · draft by fictional
+            - button "Retire" [ref=e6748] [cursor=pointer]
+          - listitem [ref=e6749]:
+            - paragraph [ref=e6750]: "Fictional relationship context: newer customer since August 2026. Any extension still needs owner approval."
+            - generic [ref=e6751]: Harbour Demo Logistics · context · confirmed by the owner
+          - listitem [ref=e6752]:
+            - paragraph [ref=e6753]: CL1018T fictional test customer. Prefers a written payment date.
+            - generic [ref=e6754]: CL1018T Manual A fictional · context · confirmed by the owner
+        - generic [ref=e6755]:
+          - heading "Add what you know" [level=3] [ref=e6756]
+          - generic [ref=e6757]:
+            - generic [ref=e6758]: Note
+            - textbox "Note" [ref=e6759]
+            - alert
+          - generic [ref=e6760]:
+            - generic [ref=e6761]: About
+            - combobox "About" [ref=e6762]:
+              - option "Choose…" [selected]
+              - option "The whole business"
+              - option "Harbour Demo Supplies"
+              - option "Harbour Demo Logistics"
+              - option "Release check café (fictional)"
+              - option "CL1018T Manual A fictional"
+              - option "CL1018T Manual B fictional"
+              - option "CL1018T Imported A fictional"
+              - option "CL1018T Imported B fictional"
+            - alert
+          - group "Kind" [ref=e6763]:
+            - generic [ref=e6765] [cursor=pointer]:
+              - radio "Context to know" [checked] [ref=e6766]
+              - generic [ref=e6767]: Context to know
+            - generic [ref=e6768] [cursor=pointer]:
+              - radio "A rule staff should follow" [ref=e6769]
+              - generic [ref=e6770]: A rule staff should follow
+          - paragraph [ref=e6771]: Saved as a draft until the owner confirms it.
+          - alert
+          - button "Save note" [ref=e6772] [cursor=pointer]
+      - region [ref=e6773]:
+        - heading "Import a CSV file" [level=2] [ref=e6774]
+        - paragraph [ref=e6775]: An invoice list, or a list of payments received. Save spreadsheets as CSV first. Ledgers, opening balances and XLSX files aren't imported in this version.
+        - generic [ref=e6776]:
+          - group "This file lists" [ref=e6777]:
+            - generic [ref=e6779] [cursor=pointer]:
+              - 'radio "Invoices One row per invoice: customer, number, date, amount; optionally a due date and the amount still owed." [checked] [ref=e6780]'
+              - generic [ref=e6781]:
+                - text: Invoices
+                - generic [ref=e6782]: "One row per invoice: customer, number, date, amount; optionally a due date and the amount still owed."
+            - generic [ref=e6783] [cursor=pointer]:
+              - 'radio "Payments received One row per payment: customer, date, amount; optionally a reference and the invoice it pays (same customer only)." [ref=e6784]'
+              - generic [ref=e6785]:
+                - text: Payments received
+                - generic [ref=e6786]: "One row per payment: customer, date, amount; optionally a reference and the invoice it pays (same customer only)."
+          - generic [ref=e6787]:
+            - generic [ref=e6788]: Where is this file from?
+            - textbox "Where is this file from?" [ref=e6789]:
+              - /placeholder: "For example: Accounts spreadsheet"
+            - paragraph [ref=e6790]: Use the same name for later exports from the same place, so rows already imported are recognised.
+            - alert
+          - generic [ref=e6791]:
+            - generic [ref=e6792]: CSV file
+            - button "CSV file" [ref=e6793]
+          - generic [ref=e6794]:
+            - generic [ref=e6795]: …or paste the rows
+            - textbox "…or paste the rows" [ref=e6796]
+            - alert
+          - alert
+          - button "Preview" [ref=e6797] [cursor=pointer]
+      - region [ref=e6798]:
+        - heading "Import history" [level=2] [ref=e6799]
+        - table [ref=e6801]:
+          - rowgroup [ref=e6802]:
+            - row [ref=e6803]:
+              - columnheader "When" [ref=e6804]
+              - columnheader "File" [ref=e6805]
+              - columnheader "Rows" [ref=e6806]
+              - columnheader "Status" [ref=e6807]
+              - columnheader [ref=e6808]
+          - rowgroup [ref=e6809]:
+            - row [ref=e6810]:
+              - cell "18 Oct, 3:39 pm" [ref=e6811]
+              - cell "01-invoices.csv CL1018T Invoice test" [ref=e6812]:
+                - text: 01-invoices.csv
+                - generic [ref=e6813]: CL1018T Invoice test
+              - cell "New 2" [ref=e6814]
+              - cell "applied" [ref=e6815]
+              - cell [ref=e6816]:
+                - button "Revert" [ref=e6817] [cursor=pointer]
+    - contentinfo [ref=e6818]: Fictional demo data. Nothing is sent to customers, and only the owner decides an outcome.
+  - status [ref=e799]: Import applied

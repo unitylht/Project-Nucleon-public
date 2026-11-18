@@ -1,0 +1,249 @@
+{
+ "resolve": {
+  "actionId": null,
+  "authority": {
+   "digest": "00009684faf42f33",
+   "mode": "delegated",
+   "paused": false,
+   "source": "owner_delegation_policy",
+   "version": 1
+  },
+  "caseId": "case_caf15d17e8aa3822",
+  "communication": {
+   "note": "Nucleon sent nothing to the customer. Staff informs the customer.",
+   "sent": false
+  },
+  "comparables": [
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Harbor Bakery (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.5486,
+    "fictional": true,
+    "id": "fx-ex-01",
+    "kind": "extension",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.646,
+    "summary": "Fictional extension: 14 days on AUD 520.00"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Pinewood Grocer (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.7233,
+    "fictional": true,
+    "id": "fx-ex-03",
+    "kind": "extension",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.58,
+    "summary": "Fictional extension: 30 days on AUD 630.00"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Kestrel Deli (fictional)",
+    "dataset": "fictional_example",
+    "distance": 1.0029,
+    "fictional": true,
+    "id": "fx-ex-02",
+    "kind": "extension",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.499,
+    "summary": "Fictional extension: 21 days on AUD 410.00"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Marlow Florist (fictional)",
+    "dataset": "fictional_example",
+    "distance": 1.0051,
+    "fictional": true,
+    "id": "fx-ex-04",
+    "kind": "extension",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.499,
+    "summary": "Fictional extension: 10 days on AUD 380.00"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Tidewater Caterers (fictional)",
+    "dataset": "fictional_example",
+    "distance": 1.3321,
+    "fictional": true,
+    "id": "fx-ex-05",
+    "kind": "extension",
+    "outcome": "defaulted",
+    "ownerDecision": "decline",
+    "sameCustomer": false,
+    "similarity": 0.429,
+    "summary": "Fictional extension: 45 days on AUD 1,200.00"
+   }
+  ],
+  "createdAt": "2026-10-26T12:43:01.517695+00:00",
+  "customer": {
+   "id": "customer_demo_cityside",
+   "name": "Cityside Desserts (fictional)"
+  },
+  "dataset": "live",
+  "decision": null,
+  "evidence": {
+   "contradictions": [],
+   "depositNotes": [],
+   "depositShare": null,
+   "depositSources": [],
+   "exposure": 90000,
+   "insufficient": [],
+   "items": [
+    {
+     "detail": "The records for this customer are complete: no unreadable amount, missing due date or unplaced payment.",
+     "key": "records_complete",
+     "label": "Records complete",
+     "status": "verified"
+    }
+   ],
+   "missing": [],
+   "status": "sufficient",
+   "verifiedDeposit": null
+  },
+  "evidenceLink": null,
+  "handling": "owner_review",
+  "keyFacts": {
+   "amountMark": "stated",
+   "amountOwed": {
+    "currency": "AUD",
+    "minorUnits": "90000",
+    "scale": 2,
+    "text": "AUD 900.00"
+   },
+   "amountText": "AUD 900.00 (stated as of Sat 24 Oct)",
+   "asOfDate": "2026-10-24",
+   "asOfDateText": "Sat 24 Oct 2026",
+   "currentDueDate": "2026-10-28",
+   "currentDueDateText": "Wed 28 Oct 2026",
+   "daysOverdueAsOf": 0,
+   "daysOverdueNote": null,
+   "extensionDays": 14,
+   "invoiceReference": "DEMO-410",
+   "kind": "extension",
+   "originalDueDate": "2026-10-28",
+   "originalDueDateText": "Wed 28 Oct 2026",
+   "requestedDueDate": "2026-11-11",
+   "requestedDueDateText": "Wed 11 Nov 2026"
+  },
+  "kind": "extension",
+  "needs": [],
+  "outcome": null,
+  "policyChangedSinceAssessment": false,
+  "reasons": [
+   "Outside the policy: The amount is 4.5 times the median earlier invoice (over the 3 times the Owner allows)."
+  ],
+  "recommendation": {
+   "context": null,
+   "reasoning": "Fictional: a reliable customer, an ordinary request.",
+   "recommendation": "approve",
+   "text": "The assistant recommended approval"
+  },
+  "reliability": {
+   "comparablesDeclinedMajority": false,
+   "evaluation": {
+    "agreement": "5/6",
+    "dataset": "fictional_evaluation",
+    "outcomes": {
+     "defaulted": 1,
+     "late": 1,
+     "repaid": 4
+    },
+    "ownerApproved": 5,
+    "ownerDeclined": 1,
+    "reviewed": 7,
+    "wouldApprove": 6
+   },
+   "label": "SIMULATION on fictional evaluation cases: it shows how this policy would have compared with a fictional Owner's decisions, not how it performs on real credit decisions.",
+   "live": {
+    "agreement": null,
+    "dataset": "live",
+    "outcomes": {},
+    "ownerApproved": 0,
+    "ownerDeclined": 0,
+    "reviewed": 0,
+    "wouldApprove": 0
+   },
+   "required": true,
+   "rule": "at least 5 cases the policy would approve and Owner agreement of at least 0.8",
+   "sentence": "Track record established: the policy would approve 6 of 7 held-out fictional evaluation cases in this category, and the fictional Owner approved 5 of them. SIMULATION on fictional evaluation cases: it shows how this policy would have compared with a fictional Owner's decisions, not how it performs on real credit decisions.",
+   "simulation": true,
+   "status": "established"
+  },
+  "requestId": "req_d7b0056483de59c4",
+  "risk": {
+   "checks": [
+    {
+     "key": "decision_exposure",
+     "label": "Exposure of this decision",
+     "sentence": "Exposure of this decision: AUD 900.00 is within the limit of AUD 1,000.00.",
+     "status": "pass"
+    },
+    {
+     "key": "customer_exposure",
+     "label": "The customer's total exposure after this decision",
+     "sentence": "The customer's total exposure after this decision: AUD 900.00 is within the limit of AUD 1,500.00. This is the RECORDED exposure; the records are not confirmed complete.",
+     "status": "pass"
+    },
+    {
+     "key": "autonomous_30d",
+     "label": "Autonomous approvals in 30 days (with this one)",
+     "sentence": "Autonomous approvals in 30 days (with this one): AUD 1,980.00 is within the limit of AUD 5,000.00.",
+     "status": "pass"
+    },
+    {
+     "key": "extension_days",
+     "label": "Days past the current due date",
+     "sentence": "Days past the current due date: 14 days is within the limit of 30 days.",
+     "status": "pass"
+    },
+    {
+     "key": "nothing_else_overdue",
+     "label": "Nothing else overdue",
+     "sentence": "Nothing else is overdue.",
+     "status": "pass"
+    },
+    {
+     "key": "late_history",
+     "label": "Earlier late payments",
+     "sentence": "Late share of earlier payments 0 is within the limit of 0.25.",
+     "status": "pass"
+    },
+    {
+     "key": "unusual_size",
+     "label": "Size against earlier invoices",
+     "sentence": "The amount is 4.5 times the median earlier invoice (over the 3 times the Owner allows).",
+     "status": "fail"
+    }
+   ],
+   "failing": [
+    "The amount is 4.5 times the median earlier invoice (over the 3 times the Owner allows)."
+   ],
+   "status": "outside",
+   "unknown": []
+  },
+  "status": "awaiting_owner",
+  "statusText": "Not approved: It is outside what the Owner delegated (size against earlier invoices), so the Owner decides with the assistant's recommendation. Nothing has been approved or sent.",
+  "subject": {
+   "customerId": "customer_demo_cityside",
+   "name": "Cityside Desserts (fictional)"
+  },
+  "updatedAt": "2026-10-26T12:43:01.518716+00:00",
+  "version": 1,
+  "warnings": [
+   "The customer's total exposure (AUD 900.00) is the RECORDED exposure: the records are not confirmed complete, so more may be owed.",
+   "The amount is 4.5 times the median earlier invoice (over the 3 times the Owner allows)."
+  ],
+  "why": "it is outside what the Owner delegated (size against earlier invoices)"
+ }
+}

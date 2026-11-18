@@ -1,0 +1,72 @@
+From a130836d5299aa66653ff2d57c44f5811b108473 Mon Sep 17 00:00:00 2001
+From: unitylht <142583978+unitylht@users.noreply.github.com>
+Date: Sat, 31 Oct 2026 00:53:15 +1100
+Subject: [PATCH] feat(client): allow the Nucleon Cloudflare origin for
+ confirmation links
+
+Adds https://nucleon.dracooz.top (the Nucleon Records service published through
+a Cloudflare Tunnel, behind Cloudflare Access) to ALLOWED_ORIGINS. The loopback
+and tailnet origins and every other check are unchanged; the origin list still
+pins the scheme and port, so http and :port variants of the new host are
+refused. Tests: 81/81 (7 new cases).
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+---
+ client/src/utils/__tests__/nucleonLinks.spec.ts | 10 +++++++++-
+ client/src/utils/nucleonLinks.ts                |  2 ++
+ 2 files changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/client/src/utils/__tests__/nucleonLinks.spec.ts b/client/src/utils/__tests__/nucleonLinks.spec.ts
+index 5076d46..e9d7eee 100644
+--- a/client/src/utils/__tests__/nucleonLinks.spec.ts
++++ b/client/src/utils/__tests__/nucleonLinks.spec.ts
+@@ -5,6 +5,7 @@ const ID = 'act_0123456789abcdef';
+ const OK = `http://127.0.0.1:8631/#/actions/${ID}`;
+ const OK_TEST = `http://127.0.0.1:18631/#/actions/${ID}`;
+ const OK_TAILNET = `https://nucleon.tail492813.ts.net:8443/#/actions/${ID}`;
++const OK_CLOUDFLARE = `https://nucleon.dracooz.top/#/actions/${ID}`;
+ 
+ const setActivation = (isActive: boolean | undefined) => {
+   Object.defineProperty(window.navigator, 'userActivation', {
+@@ -19,10 +20,11 @@ describe('validateConfirmLink', () => {
+       'http://127.0.0.1:8631',
+       'http://127.0.0.1:18631',
+       'https://nucleon.tail492813.ts.net:8443',
++      'https://nucleon.dracooz.top',
+     ]);
+   });
+ 
+-  it.each([OK, OK_TEST, OK_TAILNET])('accepts %s', (url) => {
++  it.each([OK, OK_TEST, OK_TAILNET, OK_CLOUDFLARE])('accepts %s', (url) => {
+     expect(validateConfirmLink(url)).toBe(url);
+   });
+ 
+@@ -36,6 +38,12 @@ describe('validateConfirmLink', () => {
+     ['tailnet host without port', `https://nucleon.tail492813.ts.net/#/actions/${ID}`],
+     ['tailnet suffix host', `https://nucleon.tail492813.ts.net.evil.com:8443/#/actions/${ID}`],
+     ['other tailnet machine', `https://other.tail492813.ts.net:8443/#/actions/${ID}`],
++    ['http on cloudflare host', `http://nucleon.dracooz.top/#/actions/${ID}`],
++    ['cloudflare host with port', `https://nucleon.dracooz.top:8443/#/actions/${ID}`],
++    ['cloudflare suffix host', `https://nucleon.dracooz.top.evil.com/#/actions/${ID}`],
++    ['cloudflare lookalike host', `https://evilnucleon.dracooz.top/#/actions/${ID}`],
++    ['other dracooz host', `https://creditease.dracooz.top/#/actions/${ID}`],
++    ['cloudflare credentials', `https://user@nucleon.dracooz.top/#/actions/${ID}`],
+     ['suffix host', `http://127.0.0.1:8631.evil.com/#/actions/${ID}`],
+     ['localhost', `http://localhost:8631/#/actions/${ID}`],
+     ['other port', `http://127.0.0.1:8632/#/actions/${ID}`],
+diff --git a/client/src/utils/nucleonLinks.ts b/client/src/utils/nucleonLinks.ts
+index 5103b35..e1c185c 100644
+--- a/client/src/utils/nucleonLinks.ts
++++ b/client/src/utils/nucleonLinks.ts
+@@ -10,6 +10,8 @@ export const ALLOWED_ORIGINS: readonly string[] = [
+   'http://127.0.0.1:18631',
+   /* the same Nucleon runtime over Tailscale Serve (HTTPS, reachable only inside the tailnet and shares) */
+   'https://nucleon.tail492813.ts.net:8443',
++  /* the same Nucleon runtime through the Cloudflare Tunnel (public HTTPS, behind Cloudflare Access) */
++  'https://nucleon.dracooz.top',
+ ];
+ 
+ const ACTION_HASH = /^#\/actions\/act_[0-9a-f]{16}$/;
+-- 
+2.39.5 (Apple Git-154)
+

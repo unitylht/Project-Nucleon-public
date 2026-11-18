@@ -1,0 +1,3 @@
+Customer,Invoice number,Invoice date,Invoice amount,Due date
+HL1815A Imported A fictional,HL1815A-CSV-001,2026-10-05,1000.00,2026-10-10
+HL1815A Imported B fictional,HL1815A-CSV-001,2026-10-05,200.00,2026-10-10

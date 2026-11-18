@@ -1,0 +1,13 @@
+- main [ref=e2814]:
+  - generic [ref=e2815]:
+    - heading "Sign in as owner" [level=1] [ref=e2816]
+    - paragraph [ref=e2817]: Payment extension requests. Enter the staff, owner or demo console code for this demonstration.
+    - generic [ref=e2818]:
+      - generic [ref=e2819]: Access code
+      - textbox "Access code" [active] [ref=e2820]
+      - alert
+    - alert
+    - button "Sign in" [ref=e2821] [cursor=pointer]
+    - generic [ref=e2822]:
+      - generic [ref=e2823]: Or continue as
+      - button "Staff" [ref=e2824] [cursor=pointer]

@@ -1,0 +1,3198 @@
+{
+ "meta": {
+  "model": "qwen3.5-9b",
+  "baseUrl": "http://127.0.0.1:1234/v1",
+  "startedUtc": "20261031T002128Z",
+  "runs": 10,
+  "prompts": [
+   "northside",
+   "bayview",
+   "harbourline",
+   "lakeside",
+   "mixed"
+  ],
+  "temperature": 0.2,
+  "maxToolCalls": 12,
+  "maxTokens": 4096,
+  "tools": [
+   "findCustomers",
+   "customerOverview",
+   "invoices",
+   "assessDecision",
+   "resolveDecision",
+   "decisionStatus",
+   "whatIsNeeded",
+   "customerStatus"
+  ],
+  "instructionsSha256": "3a28b8b2bc3797fa",
+  "instructionsChars": 2520,
+  "commit": "4e11d9e",
+  "costUsd": null,
+  "data": "fictional",
+  "stack": "scratch Records and Lab on loopback, fresh data per prompt"
+ },
+ "summary": {
+  "perPrompt": {
+   "northside": {
+    "runs": 10,
+    "passed": 10,
+    "passedWithinCalls": 10,
+    "medianCalls": 3,
+    "medianSeconds": 21.0,
+    "providerErrors": 0,
+    "contradictions": 0
+   },
+   "bayview": {
+    "runs": 10,
+    "passed": 10,
+    "passedWithinCalls": 10,
+    "medianCalls": 4,
+    "medianSeconds": 22.9,
+    "providerErrors": 0,
+    "contradictions": 0
+   },
+   "harbourline": {
+    "runs": 10,
+    "passed": 10,
+    "passedWithinCalls": 10,
+    "medianCalls": 4,
+    "medianSeconds": 25.6,
+    "providerErrors": 0,
+    "contradictions": 0
+   },
+   "lakeside": {
+    "runs": 10,
+    "passed": 10,
+    "passedWithinCalls": 10,
+    "medianCalls": 4,
+    "medianSeconds": 23.4,
+    "providerErrors": 0,
+    "contradictions": 0
+   },
+   "mixed": {
+    "runs": 10,
+    "passed": 9,
+    "passedWithinCalls": 9,
+    "medianCalls": 3,
+    "medianSeconds": 24.2,
+    "providerErrors": 0,
+    "contradictions": 0
+   }
+  },
+  "runsAdequate": 9,
+  "runs": 10
+ },
+ "results": [
+  {
+   "run": 0,
+   "prompt": "northside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 3,
+   "seconds": 23.3,
+   "truncated": false,
+   "promptTokens": 14628,
+   "completionTokens": 992,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_b8a9ad85f8eafb4c",
+     "kind": "trial_credit",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Northside Cafe (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Northside Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 492
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14,
+      "recommendation": "approve",
+      "reasoning": "New customer trial credit for AUD 800 on 14-day terms. Staff confirmed 25% deposit (AUD 200) was received and recorded, reducing exposure to AUD 600. Terms of 14 days are within policy limits. Risk is low due to deposit and new customer status."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 34.0,
+   "labToolLines": 3,
+   "finalText": "\n\nThe trial credit request for Northside Cafe has been **approved** within the Owner's delegation policy. The approved trial credit is for **AUD 600.00 exposure** (after deducting the AUD 200.00 deposit) on **14-day terms**, with a due date of **Sat 7 Nov 2026**.\n\n**Next step:** Inform the customer yourself; Nucleon sent nothing to the customer.\n\n**Staff can provide (for reference):** The deposit (AUD 200.00) was already confirmed by Staff as recorded in Nucleon."
+  },
+  {
+   "run": 0,
+   "prompt": "bayview",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 26.6,
+   "truncated": false,
+   "promptTokens": 26536,
+   "completionTokens": 1190,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_b2fdca32a1443820",
+     "kind": "extension",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Bayview Gelato Co (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Bayview Gelato Co"
+     },
+     "ok": true,
+     "resultChars": 218
+    },
+    {
+     "tool": "invoices",
+     "args": {
+      "customerId": "customer_demo_bayview",
+      "which": "all"
+     },
+     "ok": true,
+     "resultChars": 7618
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceReference": "DEMO-301",
+      "requestedDueDate": "2026-11-10"
+     },
+     "ok": true,
+     "resultChars": 487
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceReference": "DEMO-301",
+      "requestedDueDate": "2026-11-10",
+      "recommendation": "approve",
+      "reasoning": "Customer has excellent payment history with all 6 previous invoices settled on time. This is a 23-day extension for a 6-day overdue invoice of AUD 480.00, which is well within acceptable limits given their strong track record."
+     },
+     "ok": true,
+     "resultChars": 573
+    }
+   ],
+   "labToolMs": 31.6,
+   "labToolLines": 4,
+   "finalText": "\n\nThe request to extend invoice DEMO-301 to 10 November 2026 has been **approved** within the Owner's delegation policy. The new due date is 23 days after the current due date (18 October 2026). Please inform the customer that their payment terms for this invoice have been extended accordingly."
+  },
+  {
+   "run": 0,
+   "prompt": "harbourline",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 33.9,
+   "truncated": false,
+   "promptTokens": 18885,
+   "completionTokens": 1912,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_54e57c20e9b8c579",
+     "kind": "trial_credit",
+     "status": "awaiting_owner",
+     "handling": "owner_review",
+     "customer": "Harbourline Catering (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Harbourline Catering"
+     },
+     "ok": true,
+     "resultChars": 232
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 600
+    },
+    {
+     "tool": "whatIsNeeded",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 526
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14,
+      "recommendation": "decline",
+      "reasoning": "Trial credit for new customer Harbourline Catering (AUD 5,000, 14-day terms) is declined due to insufficient deposit (only AUD 1,000.00 verified, but AUD 1,250.00 required per policy) and no business identity on file. This is also outside the Owner's delegation policy (exposure exceeds delegated limit)."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 23.3,
+   "labToolLines": 4,
+   "finalText": "\n\nThe trial credit request for Harbourline Catering (AUD 5,000, 14-day terms) has been submitted and is now awaiting the Owner's decision. The status is \"awaiting_owner\" because the exposure (AUD 4,000.00) exceeds the Owner's delegated limit. The Owner will review and decide whether to approve or decline. Do not inform the customer yet—wait for the Owner's final decision."
+  },
+  {
+   "run": 0,
+   "prompt": "lakeside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 23.9,
+   "truncated": false,
+   "promptTokens": 18772,
+   "completionTokens": 1260,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_af20d82b6b737095",
+     "kind": "trial_credit",
+     "status": "gathering_evidence",
+     "handling": "request_evidence",
+     "customer": "Lakeside Kiosk (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Lakeside Kiosk"
+     },
+     "ok": true,
+     "resultChars": 214
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 569
+    },
+    {
+     "tool": "whatIsNeeded",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 508
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14,
+      "recommendation": "approve_if_verified",
+      "reasoning": "This is a trial credit for a new customer (Lakeside Kiosk) with AUD 600.00 on 14-day terms. The assessment shows the request is missing required evidence: a deposit of at least AUD 150.00 (25% of order) and business identity. Since missing information is not a reason to escalate, I recommend approve_if_verified - the backend will request this evidence from Staff before deciding."
+     },
+     "ok": true,
+     "resultChars": 589
+    }
+   ],
+   "labToolMs": 23.5,
+   "labToolLines": 4,
+   "finalText": "\n\nThe trial credit request for Lakeside Kiosk (AUD 600.00 on 14-day terms) is now in **gathering_evidence** status. The backend is asking Staff to provide the missing evidence on the Nucleon page:\n\n- **Deposit**: At least AUD 150.00 (25% of the order)\n- **Business identity**: Not yet on file\n\nPlease open the action page and enter these details. Nothing will be approved until this evidence is verified."
+  },
+  {
+   "run": 0,
+   "prompt": "mixed",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 3,
+   "seconds": 22.8,
+   "truncated": false,
+   "promptTokens": 15940,
+   "completionTokens": 1213,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "NorthSide Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    },
+    {
+     "tool": "customerOverview",
+     "args": {
+      "customerId": "customer_demo_northside"
+     },
+     "ok": true,
+     "resultChars": 3116
+    },
+    {
+     "tool": "decisionStatus",
+     "args": {
+      "customerId": "customer_demo_northside"
+     },
+     "ok": false,
+     "resultChars": 98
+    }
+   ],
+   "labToolMs": 13.6,
+   "labToolLines": 3,
+   "finalText": "\n\nThe request is ambiguous. Northside Cafe (customer_demo_northside) has no invoices on record and no payment terms. An extension requires an existing invoice, which this customer doesn't have. A trial credit requires an order amount and terms days.\n\nCould you clarify:\n1. Is this a trial credit for a new order (orderAmount: 1500.00 AUD, termsDays: 30)?\n2. Or is this an extension for an existing invoice (which doesn't exist for this customer)?\n\nPlease confirm the correct kind and provide the missing details."
+  },
+  {
+   "run": 1,
+   "prompt": "northside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 3,
+   "seconds": 18.4,
+   "truncated": false,
+   "promptTokens": 14636,
+   "completionTokens": 1059,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_8466ad9ac9c068b2",
+     "kind": "trial_credit",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Northside Cafe (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Northside Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 492
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14,
+      "recommendation": "approve",
+      "reasoning": "New customer trial credit for AUD 800 on 14-day terms. 25% deposit (AUD 200) already received and recorded in Nucleon, reducing exposure to AUD 600. 14-day terms are reasonable for a new customer with a deposit paid. Assessment indicates autonomous approval under policy version 1."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 34.7,
+   "labToolLines": 3,
+   "finalText": "\n\nThe trial credit request for Northside Cafe (AUD 800 on 14-day terms) has been **approved** within the Owner's delegation policy (policy version 1). The 25% deposit (AUD 200) was already received and recorded, reducing the exposure to AUD 600. The credit takes effect now inside Nucleon with a due date of Sat 7 Nov 2026.\n\n**Next step:** Please inform the customer yourself, as Nucleon sent nothing to them.\n\n**Staff can provide (for reference):** The deposit was already confirmed in the records, so no additional evidence is needed from Staff for this resolution."
+  },
+  {
+   "run": 1,
+   "prompt": "bayview",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 21.6,
+   "truncated": false,
+   "promptTokens": 26567,
+   "completionTokens": 1185,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_bd2b3c3fe9e84544",
+     "kind": "extension",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Bayview Gelato Co (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Bayview Gelato Co"
+     },
+     "ok": true,
+     "resultChars": 218
+    },
+    {
+     "tool": "invoices",
+     "args": {
+      "customerId": "customer_demo_bayview",
+      "which": "all"
+     },
+     "ok": true,
+     "resultChars": 7618
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceId": "invoice_demo_019",
+      "requestedDueDate": "2026-11-10"
+     },
+     "ok": true,
+     "resultChars": 487
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceId": "invoice_demo_019",
+      "requestedDueDate": "2026-11-10",
+      "recommendation": "approve",
+      "reasoning": "Customer has excellent payment history with all prior invoices settled on time. The requested extension is 23 days (from 18 Oct 2026 to 10 Nov 2026), which is within the 30-day limit. Amount owed is AUD 480.00, which is low risk. This meets the criteria for autonomous approval under policy version 1."
+     },
+     "ok": true,
+     "resultChars": 573
+    }
+   ],
+   "labToolMs": 42.2,
+   "labToolLines": 4,
+   "finalText": "\n\nThe request has been approved autonomously. The due date for invoice DEMO-301 has been moved from 18 October 2026 to 10 November 2026 (a 23-day extension). You should inform the customer of this change directly, as Nucleon did not send any notification."
+  },
+  {
+   "run": 1,
+   "prompt": "harbourline",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 25.6,
+   "truncated": false,
+   "promptTokens": 18864,
+   "completionTokens": 1487,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_72dcac62c8f26633",
+     "kind": "trial_credit",
+     "status": "awaiting_owner",
+     "handling": "owner_review",
+     "customer": "Harbourline Catering (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Harbourline Catering"
+     },
+     "ok": true,
+     "resultChars": 232
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 600
+    },
+    {
+     "tool": "whatIsNeeded",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 526
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14,
+      "recommendation": "approve_if_verified",
+      "reasoning": "The trial credit request for AUD 5,000 on 14-day terms is within policy limits once the missing business identity is verified. The deposit of AUD 1,000 is verified and meets the 25% requirement. Recommendation is to approve once Staff confirms the business identity."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 45.2,
+   "labToolLines": 4,
+   "finalText": "\n\nThe trial credit request for Harbourline Catering (AUD 5,000 on 14-day terms) has been submitted and is now awaiting Owner review. The status is \"awaiting_owner\" with handling \"owner_review\".\n\n**Staff can provide:**\n- **Deposit:** AUD 1,000 is verified; at least AUD 1,250 is needed (25% of the order).\n- **Business identity:** No business identity is on file.\n\nPlease use the button on the decision card to provide the missing business identity. The Owner will then decide based on the recommendation to approve once verified. Do not inform the customer yet."
+  },
+  {
+   "run": 1,
+   "prompt": "lakeside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 23.4,
+   "truncated": false,
+   "promptTokens": 18742,
+   "completionTokens": 1360,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_a06cd6eadf1e48d9",
+     "kind": "trial_credit",
+     "status": "gathering_evidence",
+     "handling": "request_evidence",
+     "customer": "Lakeside Kiosk (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Lakeside Kiosk"
+     },
+     "ok": true,
+     "resultChars": 214
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 569
+    },
+    {
+     "tool": "whatIsNeeded",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 508
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14,
+      "recommendation": "approve_if_verified",
+      "reasoning": "Trial credit for new customer Lakeside Kiosk with AUD 600.00 order on 14-day terms. Missing deposit (need at least AUD 150.00, which is 25% of order) and business identity. Recommend approve_if_verified pending Staff provides these items."
+     },
+     "ok": true,
+     "resultChars": 589
+    }
+   ],
+   "labToolMs": 43.6,
+   "labToolLines": 4,
+   "finalText": "\n\nThe request for Lakeside Kiosk (trial credit, AUD 600.00, 14-day terms) is now in **gathering_evidence** status. The backend is asking Staff to provide the missing information on the Nucleon page: **Deposit** (at least AUD 150.00, which is 25% of the order) and **Business identity**. Nothing will be approved until these items are provided and verified."
+  },
+  {
+   "run": 1,
+   "prompt": "mixed",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 1,
+   "seconds": 9.6,
+   "truncated": false,
+   "promptTokens": 6793,
+   "completionTokens": 593,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "NorthSide Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    }
+   ],
+   "labToolMs": 8.4,
+   "labToolLines": 1,
+   "finalText": "\n\nI need to clarify your request. You mentioned \"1500 AUD within 30 days extension\" for NorthSide Cafe, but this appears to mix two different types of credit requests:\n\n1. **Trial credit**: For a new customer, this would be an order amount (1500 AUD) with payment terms (30 days)\n2. **Extension**: For an existing customer with an overdue invoice, this would extend the due date of a specific invoice by 30 days\n\nCould you please clarify:\n- Is this a **trial credit** for a new customer (order amount: 1500 AUD, terms: 30 days)?\n- Or is this an **extension** of an existing invoice (which invoice, and by how many days)?\n\nAlso, I found NorthSide Cafe (customer ID: customer_demo_northside). Is this the correct customer you're referring to?"
+  },
+  {
+   "run": 2,
+   "prompt": "northside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 3,
+   "seconds": 21.0,
+   "truncated": false,
+   "promptTokens": 14787,
+   "completionTokens": 1179,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_3ebfddee5033155b",
+     "kind": "trial_credit",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Northside Cafe (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Northside Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14,
+      "message": "Northside Cafe is a new customer and wants AUD 800 of stock on 14-day terms; they paid a 25% deposit, which is recorded in Nucleon."
+     },
+     "ok": true,
+     "resultChars": 492
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14,
+      "recommendation": "approve",
+      "reasoning": "New customer trial credit for AUD 800 on 14-day terms with 25% deposit (AUD 200) already recorded. Exposure is AUD 600, which is within policy limits. The deposit reduces risk and the short terms (14 days) are appropriate for a new customer. Assessment indicates autonomous approval under policy version 1.",
+      "message": "Northside Cafe is a new customer and wants AUD 800 of stock on 14-day terms; they paid a 25% deposit, which is recorded in Nucleon."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 33.9,
+   "labToolLines": 3,
+   "finalText": "\n\nThe trial credit request for Northside Cafe has been **approved** within the Owner's delegation policy (policy version 1). The approved trial credit is for AUD 600.00 exposure on 14-day terms (with the AUD 200.00 deposit already recorded).\n\n**Next step:** You need to inform the customer yourself, as Nucleon sent nothing to them. The credit takes effect now inside Nucleon."
+  },
+  {
+   "run": 2,
+   "prompt": "bayview",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 22.2,
+   "truncated": false,
+   "promptTokens": 26565,
+   "completionTokens": 1245,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_7a2543cba0fb24c8",
+     "kind": "extension",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Bayview Gelato Co (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Bayview Gelato Co"
+     },
+     "ok": true,
+     "resultChars": 218
+    },
+    {
+     "tool": "invoices",
+     "args": {
+      "customerId": "customer_demo_bayview",
+      "which": "all"
+     },
+     "ok": true,
+     "resultChars": 7618
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceId": "invoice_demo_019",
+      "requestedDueDate": "2026-11-10"
+     },
+     "ok": true,
+     "resultChars": 487
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceId": "invoice_demo_019",
+      "requestedDueDate": "2026-11-10",
+      "recommendation": "approve",
+      "reasoning": "Customer has excellent payment history with 6 settled invoices and no overdue amounts. The extension of 23 days (from 18 Oct 2026 to 10 Nov 2026) is within the 90-day policy limit. The owed amount is AUD 480.00 which is manageable. This is a low-risk extension for a reliable customer."
+     },
+     "ok": true,
+     "resultChars": 573
+    }
+   ],
+   "labToolMs": 47.6,
+   "labToolLines": 4,
+   "finalText": "\n\nThe credit request for Bayview Gelato Co has been **approved**. Invoice DEMO-301 has been moved from its original due date of 18 October 2026 to **10 November 2026** (a 23-day extension). This was approved autonomously under the Owner's delegation policy (version 1) as the customer has a strong payment history with all prior invoices settled. Please inform the customer that their request has been approved and the new due date is 10 November 2026."
+  },
+  {
+   "run": 2,
+   "prompt": "harbourline",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 23.1,
+   "truncated": false,
+   "promptTokens": 21413,
+   "completionTokens": 1193,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_8736afb9eda426c5",
+     "kind": "trial_credit",
+     "status": "awaiting_owner",
+     "handling": "owner_review",
+     "customer": "Harbourline Catering (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Harbourline Catering"
+     },
+     "ok": true,
+     "resultChars": 232
+    },
+    {
+     "tool": "customerOverview",
+     "args": {
+      "customerId": "customer_demo_harbourline"
+     },
+     "ok": true,
+     "resultChars": 3154
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 600
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14,
+      "recommendation": "approve",
+      "reasoning": "New customer with AUD 1,000 deposit already received, reducing exposure to AUD 4,000. 14-day terms are standard for trial credits. Low risk given the deposit and short terms."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 41.5,
+   "labToolLines": 4,
+   "finalText": "\n\nThe trial credit request for Harbourline Catering (AUD 5,000 on 14-day terms) has been submitted and is currently **awaiting owner review**. The system has assessed the request as viable (with a AUD 1,000 deposit already received, reducing exposure to AUD 4,000), but because the exposure exceeds the Owner's delegation limit, the final decision rests with the Owner. Please check with the Owner to proceed."
+  },
+  {
+   "run": 2,
+   "prompt": "lakeside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 21.9,
+   "truncated": false,
+   "promptTokens": 18774,
+   "completionTokens": 1255,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_910367ab29917409",
+     "kind": "trial_credit",
+     "status": "gathering_evidence",
+     "handling": "request_evidence",
+     "customer": "Lakeside Kiosk (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Lakeside Kiosk"
+     },
+     "ok": true,
+     "resultChars": 214
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 569
+    },
+    {
+     "tool": "whatIsNeeded",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 508
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14,
+      "recommendation": "approve_if_verified",
+      "reasoning": "This is a trial credit request for a new customer (Lakeside Kiosk) for AUD 600.00 on 14-day terms. The request requires verification of two key items before it can be decided: a deposit of at least AUD 150.00 (25% of the order amount) and the customer's business identity. Once Staff provides these, the request can be assessed and potentially approved under the owner's delegation policy."
+     },
+     "ok": true,
+     "resultChars": 589
+    }
+   ],
+   "labToolMs": 45.4,
+   "labToolLines": 4,
+   "finalText": "\n\nThe request for Lakeside Kiosk (trial credit for AUD 600.00 on 14-day terms) is now in the \"gathering_evidence\" status. The backend is requesting the following from Staff on the Nucleon page:\n\n*   **Deposit:** At least AUD 150.00 (25% of the order amount).\n*   **Business identity:** The customer's business identity is not on file.\n\nPlease provide these details on the Nucleon page to proceed. Nothing will be approved until this information is verified."
+  },
+  {
+   "run": 2,
+   "prompt": "mixed",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 3,
+   "seconds": 25.2,
+   "truncated": false,
+   "promptTokens": 15961,
+   "completionTokens": 1537,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "NorthSide Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    },
+    {
+     "tool": "customerOverview",
+     "args": {
+      "customerId": "customer_demo_northside"
+     },
+     "ok": true,
+     "resultChars": 3116
+    },
+    {
+     "tool": "customerStatus",
+     "args": {
+      "customerId": "customer_demo_northside"
+     },
+     "ok": true,
+     "resultChars": 179
+    }
+   ],
+   "labToolMs": 24.4,
+   "labToolLines": 3,
+   "finalText": "\n\nI need to clarify your request. You mentioned \"1500 AUD within 30 days extension\" for NorthSide Cafe, but this customer has no open invoices. Do you mean:\n1. A trial credit of 1500 AUD with 30 days payment terms (for a new order)?\n2. An extension of an existing invoice by 30 days? (Please note there are no invoices on file for this customer.)\n\nPlease confirm which type of credit you're requesting."
+  },
+  {
+   "run": 3,
+   "prompt": "northside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 24.8,
+   "truncated": false,
+   "promptTokens": 21364,
+   "completionTokens": 1306,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_93a69a886944d863",
+     "kind": "trial_credit",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Northside Cafe (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Northside Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    },
+    {
+     "tool": "customerOverview",
+     "args": {
+      "customerId": "customer_demo_northside"
+     },
+     "ok": true,
+     "resultChars": 3116
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 492
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14,
+      "recommendation": "approve",
+      "reasoning": "New customer Northside Cafe requesting AUD 800 trial credit on 14-day terms. A 25% deposit (AUD 200.00) has already been received and recorded, reducing exposure to AUD 600.00. The 14-day terms are reasonable for a new customer with a deposit paid. Assessment indicates autonomous approval under policy version 1."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 43.9,
+   "labToolLines": 4,
+   "finalText": "\n\nThe trial credit request for Northside Cafe has been **approved** within the Owner's delegation policy (policy version 1).\n\n**Outcome:**\n- **Status:** Decided (Approved)\n- **Handling:** Autonomous approval\n- **Details:** Trial credit of AUD 800.00 on 14-day terms, with AUD 200.00 deposit already received. Net exposure is AUD 600.00.\n- **Due date:** Sat 7 Nov 2026\n\n**Next step:** Inform the customer yourself; Nucleon sent nothing to the customer.\n\n**Staff-provided evidence:**\n- Deposit: AUD 200.00 (received 2026-10-23, reference DEP-NS-01)\n- Business identity: Northside Cafe (fictional), customer code C-0002"
+  },
+  {
+   "run": 3,
+   "prompt": "bayview",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 22.1,
+   "truncated": false,
+   "promptTokens": 26570,
+   "completionTokens": 1231,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_df46505490be7d75",
+     "kind": "extension",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Bayview Gelato Co (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Bayview Gelato Co"
+     },
+     "ok": true,
+     "resultChars": 218
+    },
+    {
+     "tool": "invoices",
+     "args": {
+      "customerId": "customer_demo_bayview",
+      "which": "all"
+     },
+     "ok": true,
+     "resultChars": 7618
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceReference": "DEMO-301",
+      "requestedDueDate": "2026-11-10"
+     },
+     "ok": true,
+     "resultChars": 487
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceReference": "DEMO-301",
+      "requestedDueDate": "2026-11-10",
+      "recommendation": "approve",
+      "reasoning": "Customer has excellent payment history with all 6 previous invoices settled on time. The extension is for 23 days (from 18 Oct to 10 Nov 2026), which is within the 30-day maximum allowed for extensions. The amount owed is AUD 480.00, which is reasonable given the customer's strong track record. This extension is appropriate and should be approved."
+     },
+     "ok": true,
+     "resultChars": 573
+    }
+   ],
+   "labToolMs": 48.5,
+   "labToolLines": 4,
+   "finalText": "\n\nThe request to extend invoice DEMO-301 to 10 November 2026 has been approved. The extension moves the due date from 18 October 2026 to 10 November 2026 (23 days), which is within the 30-day maximum allowed for extensions. The customer has an excellent payment history with all previous invoices settled on time, making this extension appropriate. Please inform the customer that their request has been approved."
+  },
+  {
+   "run": 3,
+   "prompt": "harbourline",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 25.8,
+   "truncated": false,
+   "promptTokens": 18893,
+   "completionTokens": 1525,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_4e62b1f212476ccb",
+     "kind": "trial_credit",
+     "status": "awaiting_owner",
+     "handling": "owner_review",
+     "customer": "Harbourline Catering (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Harbourline Catering"
+     },
+     "ok": true,
+     "resultChars": 232
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 600
+    },
+    {
+     "tool": "whatIsNeeded",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 526
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14,
+      "recommendation": "approve_if_verified",
+      "reasoning": "The trial credit request for AUD 5,000 on 14-day terms is within acceptable limits given the customer's profile. The deposit of AUD 1,000.00 is verified, which covers 20% of the order amount. However, the business identity is not on file and needs to be provided by Staff before approval can proceed. Once verified, this would be a reasonable trial credit for a new customer."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 43.1,
+   "labToolLines": 4,
+   "finalText": "\n\nThe trial credit request for Harbourline Catering (AUD 5,000 on 14-day terms) has been submitted and is now awaiting Owner review. The status is \"awaiting_owner\" because the exposure (AUD 4,000) exceeds what the Owner delegated. The Owner will decide based on your recommendation (approve_if_verified) once they review the case.\n\n**Staff action needed:** Please provide the missing business identity for Harbourline Catering (no business identity is on file) using the button on the decision card. The deposit (AUD 1,000.00) is already verified."
+  },
+  {
+   "run": 3,
+   "prompt": "lakeside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 19.1,
+   "truncated": false,
+   "promptTokens": 18742,
+   "completionTokens": 1078,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_8297746048f7941c",
+     "kind": "trial_credit",
+     "status": "gathering_evidence",
+     "handling": "request_evidence",
+     "customer": "Lakeside Kiosk (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Lakeside Kiosk"
+     },
+     "ok": true,
+     "resultChars": 214
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 569
+    },
+    {
+     "tool": "whatIsNeeded",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 508
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14,
+      "recommendation": "approve_if_verified",
+      "reasoning": "Trial credit for new customer Lakeside Kiosk (AUD 600.00, 14-day terms). Missing deposit (need at least AUD 150.00 = 25% of order) and business identity on file. Recommend approve_if_verified pending Staff provides these items."
+     },
+     "ok": true,
+     "resultChars": 589
+    }
+   ],
+   "labToolMs": 43.0,
+   "labToolLines": 4,
+   "finalText": "\n\nThe decision for Lakeside Kiosk’s trial credit (AUD 600.00, 14-day terms) is now in **gathering_evidence** status. Staff must provide the missing items on the Nucleon page: **Deposit** (at least AUD 150.00, which is 25% of the order) and **Business identity**. Nothing will be approved until these are submitted."
+  },
+  {
+   "run": 3,
+   "prompt": "mixed",
+   "passed": false,
+   "reasons": [
+    "1 case(s) were created, none expected"
+   ],
+   "toolCalls": 5,
+   "seconds": 27.5,
+   "truncated": false,
+   "promptTokens": 22718,
+   "completionTokens": 1506,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_c36dd9541d554c5b",
+     "kind": "trial_credit",
+     "status": "awaiting_owner",
+     "handling": "owner_review",
+     "customer": "Northside Cafe (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "NorthSide Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    },
+    {
+     "tool": "customerStatus",
+     "args": {
+      "customerId": "customer_demo_northside"
+     },
+     "ok": true,
+     "resultChars": 179
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "1500.00",
+      "termsDays": 30
+     },
+     "ok": true,
+     "resultChars": 593
+    },
+    {
+     "tool": "whatIsNeeded",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "1500.00",
+      "termsDays": 30
+     },
+     "ok": true,
+     "resultChars": 547
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "1500.00",
+      "termsDays": 30,
+      "recommendation": "approve_if_verified",
+      "reasoning": "The trial credit request for 1500 AUD over 30 days is outside the Owner's delegation policy (exposure limit). However, the assessment shows a deposit of 200 AUD is already verified, and a trade reference is needed to cover the remaining exposure of 1300 AUD. Recommend approve_if_verified pending Staff provides the trade reference."
+     },
+     "ok": true,
+     "resultChars": 599
+    }
+   ],
+   "labToolMs": 54.1,
+   "labToolLines": 5,
+   "finalText": "\n\nThe credit request for NorthSide Cafe (1500 AUD, 30 days) has been submitted and is currently **awaiting owner review**. The system indicates it is outside the Owner's delegation policy (exposure limit of 1300 AUD exceeds the threshold), so the Owner must make the final decision.\n\n**Staff next step:** The Owner will review and decide whether to approve or decline. Nothing has been approved or sent to the customer yet."
+  },
+  {
+   "run": 4,
+   "prompt": "northside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 23.7,
+   "truncated": false,
+   "promptTokens": 21405,
+   "completionTokens": 1340,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_44f87eb01b89c7f7",
+     "kind": "trial_credit",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Northside Cafe (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Northside Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    },
+    {
+     "tool": "customerOverview",
+     "args": {
+      "customerId": "customer_demo_northside"
+     },
+     "ok": true,
+     "resultChars": 3116
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14,
+      "message": "They paid a 25% deposit, which is recorded in Nucleon."
+     },
+     "ok": true,
+     "resultChars": 492
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14,
+      "recommendation": "approve",
+      "reasoning": "New customer with no prior history. A 25% deposit (AUD 200.00) has been received and recorded, reducing exposure to AUD 600.00. The 14-day terms are reasonable for a new customer with a deposit. The request falls within the Owner's delegation policy for autonomous approval."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 44.8,
+   "labToolLines": 4,
+   "finalText": "\n\nThe trial credit request for Northside Cafe has been **approved** within the Owner's delegation policy. The approved terms are AUD 800.00 on 14-day payment terms, with a AUD 200.00 deposit already received and recorded, leaving an exposure of AUD 600.00. The decision takes effect now inside Nucleon. Please inform the customer yourself that their request has been approved."
+  },
+  {
+   "run": 4,
+   "prompt": "bayview",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 23.3,
+   "truncated": false,
+   "promptTokens": 26580,
+   "completionTokens": 1315,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_57068ac2690c671a",
+     "kind": "extension",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Bayview Gelato Co (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Bayview Gelato Co"
+     },
+     "ok": true,
+     "resultChars": 218
+    },
+    {
+     "tool": "invoices",
+     "args": {
+      "customerId": "customer_demo_bayview",
+      "which": "all"
+     },
+     "ok": true,
+     "resultChars": 7618
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceReference": "DEMO-301",
+      "requestedDueDate": "2026-11-10"
+     },
+     "ok": true,
+     "resultChars": 487
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceReference": "DEMO-301",
+      "requestedDueDate": "2026-11-10",
+      "recommendation": "approve",
+      "reasoning": "The customer has a strong payment history with 6 previously settled invoices, all paid on time. This is an extension of an open invoice (DEMO-301) for AUD 480.00, moving the due date from 18 Oct 2026 to 10 Nov 2026 (23 days). The customer's consistent on-time payment record indicates low risk, and the extension falls within acceptable terms."
+     },
+     "ok": true,
+     "resultChars": 573
+    }
+   ],
+   "labToolMs": 45.5,
+   "labToolLines": 4,
+   "finalText": "\n\nThe request to extend invoice DEMO-301 for Bayview Gelato Co to 10 November 2026 has been **approved**. The due date is being moved from 18 October 2026 to 10 November 2026 (23 days). The customer has a strong payment history with 6 previously settled invoices, indicating low risk. As instructed, I will inform the customer of this approval."
+  },
+  {
+   "run": 4,
+   "prompt": "harbourline",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 30.8,
+   "truncated": false,
+   "promptTokens": 18888,
+   "completionTokens": 1832,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_b88ebc6f17f743e1",
+     "kind": "trial_credit",
+     "status": "awaiting_owner",
+     "handling": "owner_review",
+     "customer": "Harbourline Catering (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Harbourline Catering"
+     },
+     "ok": true,
+     "resultChars": 232
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 600
+    },
+    {
+     "tool": "whatIsNeeded",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 526
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14,
+      "recommendation": "approve_if_verified",
+      "reasoning": "Trial credit for new customer Harbourline Catering (AUD 5,000.00, 14-day terms). Deposit of AUD 1,000.00 is verified (covers 20% of order). Business identity is missing and must be confirmed by Staff before approval. Exposure of AUD 4,000.00 is within policy limits for new customers with verified deposit."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 45.0,
+   "labToolLines": 4,
+   "finalText": "\n\nThe credit request for Harbourline Catering (AUD 5,000.00, 14-day terms) has been submitted and is now awaiting Owner review. The status is \"awaiting_owner\" because the exposure (AUD 4,000.00) exceeds what the Owner delegated. The Owner will decide based on the recommendation to approve_if_verified once the missing business identity is confirmed by Staff. No action has been taken yet."
+  },
+  {
+   "run": 4,
+   "prompt": "lakeside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 21.2,
+   "truncated": false,
+   "promptTokens": 18768,
+   "completionTokens": 1218,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_1ef977a62440b5c6",
+     "kind": "trial_credit",
+     "status": "gathering_evidence",
+     "handling": "request_evidence",
+     "customer": "Lakeside Kiosk (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Lakeside Kiosk"
+     },
+     "ok": true,
+     "resultChars": 214
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 569
+    },
+    {
+     "tool": "whatIsNeeded",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 508
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14,
+      "recommendation": "approve_if_verified",
+      "reasoning": "This is a trial credit for a new customer (Lakeside Kiosk) with AUD 600.00 on 14-day terms. The assessment shows the request needs verification of deposit (at least AUD 150.00, which is 25% of the order) and business identity before it can be approved. Once Staff provides these, the request can be approved under the owner's delegation policy."
+     },
+     "ok": true,
+     "resultChars": 589
+    }
+   ],
+   "labToolMs": 38.9,
+   "labToolLines": 4,
+   "finalText": "\n\nThe trial credit request for Lakeside Kiosk (AUD 600.00 on 14-day terms) has been submitted and is now in \"gathering_evidence\" status. The backend will request the following from Staff:\n\n- **Deposit**: At least AUD 150.00 (25% of the order)\n- **Business identity**: Not yet on file\n\nPlease open the Nucleon action page (action ID: act_5bda4dc11c320d34) and provide the deposit and business identity. Nothing will be approved until this information is verified."
+  },
+  {
+   "run": 4,
+   "prompt": "mixed",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 3,
+   "seconds": 19.1,
+   "truncated": false,
+   "promptTokens": 15961,
+   "completionTokens": 1165,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "NorthSide Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    },
+    {
+     "tool": "customerOverview",
+     "args": {
+      "customerId": "customer_demo_northside"
+     },
+     "ok": true,
+     "resultChars": 3116
+    },
+    {
+     "tool": "customerStatus",
+     "args": {
+      "customerId": "customer_demo_northside"
+     },
+     "ok": true,
+     "resultChars": 179
+    }
+   ],
+   "labToolMs": 26.8,
+   "labToolLines": 3,
+   "finalText": "\n\nThe request is ambiguous: \"credit of 1500 AUD within 30 days extension\" mixes a trial credit (for a new customer) and an extension (for an existing invoice). Northside Cafe has no open invoices (invoiceCount: 0), so an extension is not possible. Could you clarify whether this is a trial credit (orderAmount: 1500.00, termsDays: 30) or an extension of a specific invoice?"
+  },
+  {
+   "run": 5,
+   "prompt": "northside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 3,
+   "seconds": 20.3,
+   "truncated": false,
+   "promptTokens": 14626,
+   "completionTokens": 1163,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_0c43d8a26e2d43f8",
+     "kind": "trial_credit",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Northside Cafe (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Northside Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 492
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14,
+      "recommendation": "approve",
+      "reasoning": "Trial credit approved for new customer Northside Cafe. 25% deposit (AUD 200) already received and recorded, reducing exposure to AUD 600. 14-day terms are within policy limits. Assessment shows autonomous_approve under Owner's delegation policy (version 1)."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 34.5,
+   "labToolLines": 3,
+   "finalText": "\n\nThe trial credit request for Northside Cafe has been **approved** within the Owner's delegation policy (version 1). The approved trial credit is for AUD 600.00 exposure on 14-day terms (due Sat 7 Nov 2026), with the 25% deposit (AUD 200.00) already received and recorded.\n\n**Next step:** Tell the customer yourself; Nucleon sent nothing.\n\n**Staff can provide (for reference):** The deposit was already confirmed in the records, so no additional evidence is needed from Staff. The business identity is assumed to be confirmed as part of the customer record."
+  },
+  {
+   "run": 5,
+   "prompt": "bayview",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 23.0,
+   "truncated": false,
+   "promptTokens": 26558,
+   "completionTokens": 1301,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_01a29f188831ad06",
+     "kind": "extension",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Bayview Gelato Co (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Bayview Gelato Co"
+     },
+     "ok": true,
+     "resultChars": 218
+    },
+    {
+     "tool": "invoices",
+     "args": {
+      "customerId": "customer_demo_bayview",
+      "which": "all"
+     },
+     "ok": true,
+     "resultChars": 7618
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceReference": "DEMO-301",
+      "requestedDueDate": "2026-11-10"
+     },
+     "ok": true,
+     "resultChars": 487
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceReference": "DEMO-301",
+      "requestedDueDate": "2026-11-10",
+      "recommendation": "approve",
+      "reasoning": "Customer has excellent payment history with all prior invoices settled on time. The extension of 23 days (from 18 Oct 2026 to 10 Nov 2026) is reasonable and within policy limits. Amount owed is AUD 480.00. This is a low-risk extension for a reliable customer."
+     },
+     "ok": true,
+     "resultChars": 573
+    }
+   ],
+   "labToolMs": 42.9,
+   "labToolLines": 4,
+   "finalText": "\n\nThe request to extend invoice DEMO-301 for Bayview Gelato Co has been **approved**. The due date has been moved from 18 October 2026 to 10 November 2026 (a 23-day extension). The customer has a strong payment history with all prior invoices settled on time, making this a low-risk extension. You should inform the customer of this approval."
+  },
+  {
+   "run": 5,
+   "prompt": "harbourline",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 22.4,
+   "truncated": false,
+   "promptTokens": 18859,
+   "completionTokens": 1303,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_2521ec99298522c2",
+     "kind": "trial_credit",
+     "status": "awaiting_owner",
+     "handling": "owner_review",
+     "customer": "Harbourline Catering (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Harbourline Catering"
+     },
+     "ok": true,
+     "resultChars": 232
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 600
+    },
+    {
+     "tool": "whatIsNeeded",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 526
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14,
+      "recommendation": "approve_if_verified",
+      "reasoning": "The trial credit request for AUD 5,000 on 14-day terms is outside the Owner's delegated exposure limit. Staff must provide the missing deposit (at least AUD 1,250.00 verified) and business identity before approval can proceed."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 44.1,
+   "labToolLines": 4,
+   "finalText": "\n\nThe request for Harbourline Catering (trial credit for AUD 5,000 on 14-day terms) has been submitted and is now awaiting Owner review. The status is \"awaiting_owner\" because the exposure (AUD 4,000.00) exceeds what the Owner delegated. The Owner will decide based on your recommendation (approve_if_verified) once they review the case. Do not inform the customer yet."
+  },
+  {
+   "run": 5,
+   "prompt": "lakeside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 27.0,
+   "truncated": false,
+   "promptTokens": 18774,
+   "completionTokens": 1593,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_b70afc149182e9e7",
+     "kind": "trial_credit",
+     "status": "gathering_evidence",
+     "handling": "request_evidence",
+     "customer": "Lakeside Kiosk (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Lakeside Kiosk"
+     },
+     "ok": true,
+     "resultChars": 214
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 569
+    },
+    {
+     "tool": "whatIsNeeded",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 508
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14,
+      "recommendation": "approve_if_verified",
+      "reasoning": "This is a trial credit for a new customer (Lakeside Kiosk) with AUD 600.00 on 14-day terms. The request is reasonable for a new customer, but Staff needs to provide a deposit of at least AUD 150.00 (25% of the order) and the customer's business identity before it can be approved. Once these are verified, the trial credit can be approved under the current policy."
+     },
+     "ok": true,
+     "resultChars": 589
+    }
+   ],
+   "labToolMs": 44.2,
+   "labToolLines": 4,
+   "finalText": "\n\nThe trial credit request for Lakeside Kiosk (AUD 600.00, 14-day terms) has been submitted and is now in \"gathering_evidence\" status. Before it can be decided, Staff must provide the following on the Nucleon page:\n\n- **Deposit**: At least AUD 150.00 (25% of the order amount).\n- **Business identity**: The customer's business identity is not on file.\n\nPlease open the action page and enter these details. Nothing will be approved until this information is verified."
+  },
+  {
+   "run": 5,
+   "prompt": "mixed",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 3,
+   "seconds": 24.6,
+   "truncated": false,
+   "promptTokens": 15961,
+   "completionTokens": 1530,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "NorthSide Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    },
+    {
+     "tool": "customerOverview",
+     "args": {
+      "customerId": "customer_demo_northside"
+     },
+     "ok": true,
+     "resultChars": 3116
+    },
+    {
+     "tool": "customerStatus",
+     "args": {
+      "customerId": "customer_demo_northside"
+     },
+     "ok": true,
+     "resultChars": 179
+    }
+   ],
+   "labToolMs": 27.2,
+   "labToolLines": 3,
+   "finalText": "\n\nThe customer \"Northside Cafe (fictional)\" has no open invoices (0 open invoices, 0 overdue). An extension request requires an existing invoice to extend. Could you clarify if you meant a trial credit for a new order (1500 AUD) or if there's a specific invoice you intended to extend?"
+  },
+  {
+   "run": 6,
+   "prompt": "northside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 3,
+   "seconds": 19.3,
+   "truncated": false,
+   "promptTokens": 14630,
+   "completionTokens": 1121,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_42f3a11a29700af2",
+     "kind": "trial_credit",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Northside Cafe (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Northside Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 492
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14,
+      "recommendation": "approve",
+      "reasoning": "New customer trial credit for AUD 800 on 14-day terms. 25% deposit (AUD 200) already received and recorded in Nucleon, reducing exposure to AUD 600. Low risk given the deposit and short payment terms. Within Owner's delegation policy for autonomous approval."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 34.2,
+   "labToolLines": 3,
+   "finalText": "\n\nThe trial credit request for Northside Cafe has been **approved** within the Owner's delegation policy (policy version 1). The approved trial credit is for AUD 600.00 exposure on 14-day terms (original order AUD 800.00 less the 25% deposit of AUD 200.00 already received and recorded in Nucleon). The decision takes effect now inside Nucleon.\n\n**Next step:** Please inform the customer yourself, as Nucleon sent nothing to them.\n\n**Staff can provide:** The deposit (already confirmed as received and recorded in Nucleon)."
+  },
+  {
+   "run": 6,
+   "prompt": "bayview",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 22.4,
+   "truncated": false,
+   "promptTokens": 26544,
+   "completionTokens": 1258,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_603ca486705ca9ab",
+     "kind": "extension",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Bayview Gelato Co (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Bayview Gelato Co"
+     },
+     "ok": true,
+     "resultChars": 218
+    },
+    {
+     "tool": "invoices",
+     "args": {
+      "customerId": "customer_demo_bayview",
+      "which": "all"
+     },
+     "ok": true,
+     "resultChars": 7618
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceReference": "DEMO-301",
+      "requestedDueDate": "2026-11-10"
+     },
+     "ok": true,
+     "resultChars": 487
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceReference": "DEMO-301",
+      "requestedDueDate": "2026-11-10",
+      "recommendation": "approve",
+      "reasoning": "Customer has excellent payment history with all 6 previous invoices settled on time. The extension is for 23 days (within 90-day limit) on a single open invoice of AUD 480.00. Customer is reliable and this is a minor extension for a small amount."
+     },
+     "ok": true,
+     "resultChars": 573
+    }
+   ],
+   "labToolMs": 46.8,
+   "labToolLines": 4,
+   "finalText": "\n\nThe request to extend invoice DEMO-301 to 10 November 2026 has been approved. The due date has been moved from 18 October 2026 to 10 November 2026 (23 days extension) for the AUD 480.00 amount. This was approved autonomously under the Owner's delegation policy. Please inform the customer that their payment terms for this invoice have been extended accordingly."
+  },
+  {
+   "run": 6,
+   "prompt": "harbourline",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 3,
+   "seconds": 19.9,
+   "truncated": false,
+   "promptTokens": 14667,
+   "completionTokens": 1149,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_fd2f4ea525d39032",
+     "kind": "trial_credit",
+     "status": "awaiting_owner",
+     "handling": "owner_review",
+     "customer": "Harbourline Catering (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Harbourline Catering"
+     },
+     "ok": true,
+     "resultChars": 232
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 600
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14,
+      "recommendation": "escalate",
+      "reasoning": "This is a trial credit for a new customer (Harbourline Catering) with AUD 5,000.00 order amount on 14-day terms. The exposure is AUD 4,000.00 after the AUD 1,000.00 deposit. This exceeds the Owner's delegation threshold for trial credits, so it requires Owner review. The customer has no payment history as they are new."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 33.7,
+   "labToolLines": 3,
+   "finalText": "\n\nThe trial credit request for Harbourline Catering (AUD 5,000.00 on 14-day terms) has been submitted and is now awaiting Owner review. The exposure is AUD 4,000.00 (after the AUD 1,000.00 deposit), which exceeds the Owner's delegation threshold, so the Owner must decide. Do not inform the customer yet—the Owner will take the final decision."
+  },
+  {
+   "run": 6,
+   "prompt": "lakeside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 19.9,
+   "truncated": false,
+   "promptTokens": 18742,
+   "completionTokens": 1130,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_62123c19c5fce547",
+     "kind": "trial_credit",
+     "status": "gathering_evidence",
+     "handling": "request_evidence",
+     "customer": "Lakeside Kiosk (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Lakeside Kiosk"
+     },
+     "ok": true,
+     "resultChars": 214
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 569
+    },
+    {
+     "tool": "whatIsNeeded",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 508
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14,
+      "recommendation": "approve_if_verified",
+      "reasoning": "Trial credit for new customer Lakeside Kiosk. Order amount AUD 600.00 on 14-day terms. Missing deposit (need at least AUD 150.00, which is 25% of order) and business identity. Recommend approve_if_verified pending Staff provides these details."
+     },
+     "ok": true,
+     "resultChars": 589
+    }
+   ],
+   "labToolMs": 43.2,
+   "labToolLines": 4,
+   "finalText": "\n\nThe request for Lakeside Kiosk (trial credit, AUD 600.00, 14-day terms) is now in **gathering_evidence** status. The backend is asking Staff to provide the missing details on the Nucleon page: **Deposit** (at least AUD 150.00, which is 25% of the order) and **Business identity**. Nothing will be approved until Staff submits this information."
+  },
+  {
+   "run": 6,
+   "prompt": "mixed",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 2,
+   "seconds": 26.8,
+   "truncated": false,
+   "promptTokens": 11329,
+   "completionTokens": 1692,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "NorthSide Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    },
+    {
+     "tool": "customerOverview",
+     "args": {
+      "customerId": "customer_demo_northside"
+     },
+     "ok": true,
+     "resultChars": 3116
+    }
+   ],
+   "labToolMs": 19.3,
+   "labToolLines": 2,
+   "finalText": "\n\nI need to clarify your request. NorthSide Cafe has no open invoices (0 open invoices, 0 overdue), so there's no invoice to extend. Could you please confirm whether you're requesting:\n\n1. A **trial credit** of 1500 AUD with 30-day payment terms (for a new customer arrangement), or\n2. An **extension** of 30 days on a specific invoice (which would require an existing open invoice)?\n\nPlease clarify which type of credit request this is and provide the relevant invoice reference if it's an extension."
+  },
+  {
+   "run": 7,
+   "prompt": "northside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 3,
+   "seconds": 22.7,
+   "truncated": false,
+   "promptTokens": 14624,
+   "completionTokens": 1340,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_4131c5f6d7752da2",
+     "kind": "trial_credit",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Northside Cafe (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Northside Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 492
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14,
+      "recommendation": "approve",
+      "reasoning": "New customer trial credit for AUD 800 on 14-day terms. Staff confirmed 25% deposit (AUD 200) was received and recorded in Nucleon, reducing exposure to AUD 600. This meets the owner's delegation policy for autonomous approval."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 34.6,
+   "labToolLines": 3,
+   "finalText": "\n\nThe trial credit request for Northside Cafe has been **approved** within the Owner's delegation policy (policy version 1). The approved exposure is AUD 600.00 on 14-day terms, with a due date of Sat 7 Nov 2026.\n\n**Staff must inform the customer** that their trial credit has been approved. Nucleon sent nothing to the customer.\n\n**Staff can provide:**\n- Deposit confirmation (already recorded in Nucleon as AUD 200.00)\n- Business identity (already confirmed as \"Northside Cafe (fictional)\")\n\nNo further action is needed from Staff or Nucleon."
+  },
+  {
+   "run": 7,
+   "prompt": "bayview",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 22.9,
+   "truncated": false,
+   "promptTokens": 26559,
+   "completionTokens": 1289,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_1a396199c5f5aefb",
+     "kind": "extension",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Bayview Gelato Co (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Bayview Gelato Co"
+     },
+     "ok": true,
+     "resultChars": 218
+    },
+    {
+     "tool": "invoices",
+     "args": {
+      "customerId": "customer_demo_bayview",
+      "which": "all"
+     },
+     "ok": true,
+     "resultChars": 7618
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceReference": "DEMO-301",
+      "requestedDueDate": "2026-11-10"
+     },
+     "ok": true,
+     "resultChars": 487
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceReference": "DEMO-301",
+      "requestedDueDate": "2026-11-10",
+      "recommendation": "approve",
+      "reasoning": "Customer has excellent payment history with all 6 previous invoices settled on time. The extension of 23 days (from 18 Oct 2026 to 10 Nov 2026) is reasonable for a small amount owed (AUD 480.00). This falls within the Owner's delegation policy for autonomous approval."
+     },
+     "ok": true,
+     "resultChars": 573
+    }
+   ],
+   "labToolMs": 46.3,
+   "labToolLines": 4,
+   "finalText": "\n\nThe credit request for invoice DEMO-301 has been approved. The due date has been extended from Sun 18 Oct 2026 to Tue 10 Nov 2026 (23 days). This decision was approved autonomously under the Owner's delegation policy. Please inform the customer that their payment terms for this invoice have been extended accordingly."
+  },
+  {
+   "run": 7,
+   "prompt": "harbourline",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 3,
+   "seconds": 20.2,
+   "truncated": false,
+   "promptTokens": 14655,
+   "completionTokens": 1174,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_e653af04643ca1c7",
+     "kind": "trial_credit",
+     "status": "awaiting_owner",
+     "handling": "owner_review",
+     "customer": "Harbourline Catering (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Harbourline Catering"
+     },
+     "ok": true,
+     "resultChars": 232
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 600
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14,
+      "recommendation": "escalate",
+      "reasoning": "This is a trial credit request for a new customer (Harbourline Catering) with AUD 5,000 order amount and 14-day terms. A deposit of AUD 1,000 has been provided, reducing exposure to AUD 4,000. However, this exceeds the Owner's delegation limit for trial credit decisions, so it requires Owner review."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 34.0,
+   "labToolLines": 3,
+   "finalText": "\n\nThe credit request for Harbourline Catering (AUD 5,000 on 14-day terms) has been submitted and is currently **awaiting owner review**. The system has determined it requires Owner decision because the exposure (AUD 4,000 after the AUD 1,000 deposit) exceeds the Owner's delegation limit. The request is stored (case ID: case_e653af04643ca1c7) and the Owner will decide whether to approve or decline. Do not inform the customer yet—wait for the Owner's decision."
+  },
+  {
+   "run": 7,
+   "prompt": "lakeside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 19.4,
+   "truncated": false,
+   "promptTokens": 18740,
+   "completionTokens": 1097,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_44cd39c0d20fda70",
+     "kind": "trial_credit",
+     "status": "gathering_evidence",
+     "handling": "request_evidence",
+     "customer": "Lakeside Kiosk (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Lakeside Kiosk"
+     },
+     "ok": true,
+     "resultChars": 214
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 569
+    },
+    {
+     "tool": "whatIsNeeded",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 508
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14,
+      "recommendation": "approve_if_verified",
+      "reasoning": "Trial credit for new customer Lakeside Kiosk. AUD 600.00 order on 14-day terms. Missing deposit (need at least AUD 150.00, 25% of order) and business identity. Recommend approve_if_verified pending Staff provides these items."
+     },
+     "ok": true,
+     "resultChars": 589
+    }
+   ],
+   "labToolMs": 45.0,
+   "labToolLines": 4,
+   "finalText": "\n\nThe request for Lakeside Kiosk (trial credit for AUD 600.00 on 14-day terms) is now in **gathering_evidence** status. The backend is asking Staff to provide the missing items: **Deposit** (at least AUD 150.00, which is 25% of the order) and **Business identity**. Please use the button on the Nucleon page to provide these details. Nothing will be approved until this evidence is verified."
+  },
+  {
+   "run": 7,
+   "prompt": "mixed",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 2,
+   "seconds": 24.2,
+   "truncated": false,
+   "promptTokens": 11329,
+   "completionTokens": 1522,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "NorthSide Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    },
+    {
+     "tool": "customerOverview",
+     "args": {
+      "customerId": "customer_demo_northside"
+     },
+     "ok": true,
+     "resultChars": 3116
+    }
+   ],
+   "labToolMs": 17.7,
+   "labToolLines": 2,
+   "finalText": "\n\nI need to clarify your request. You mentioned \"1500 AUD within 30 days extension\" for NorthSide Cafe, but this is ambiguous:\n\n- A **trial credit** is for new customers with an order amount and payment terms (e.g., 1500 AUD with 30 days terms)\n- An **extension** is for extending the due date of an existing invoice by a certain number of days\n\nNorthSide Cafe currently has no open or overdue invoices (0 invoice count). Could you please clarify:\n1. Is this a **trial credit** for a new customer (order amount: 1500 AUD, terms: 30 days)?\n2. Or is this an **extension** of an existing invoice (which would require specifying which invoice)?\n\nPlease confirm which type of credit you're requesting."
+  },
+  {
+   "run": 8,
+   "prompt": "northside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 3,
+   "seconds": 20.8,
+   "truncated": false,
+   "promptTokens": 14633,
+   "completionTokens": 1214,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_9911d0dc040cb498",
+     "kind": "trial_credit",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Northside Cafe (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Northside Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 492
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14,
+      "recommendation": "approve",
+      "reasoning": "New customer requesting AUD 800 trial credit on 14-day terms. A 25% deposit (AUD 200.00) is already recorded in Nucleon, reducing exposure to AUD 600.00. This falls within the Owner's delegation policy (version 1) for autonomous approval."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 32.7,
+   "labToolLines": 3,
+   "finalText": "\n\nThe trial credit request for Northside Cafe has been **approved** within the Owner's delegation policy (version 1). The approved trial credit is for AUD 800.00 on 14-day terms, with a 25% deposit (AUD 200.00) already recorded, resulting in AUD 600.00 exposure. The due date is Sat 7 Nov 2026.\n\nSince the deposit was already provided in your message, no additional evidence was needed from Staff. Please inform the customer that their trial credit request has been approved and that the credit line is now active in Nucleon."
+  },
+  {
+   "run": 8,
+   "prompt": "bayview",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 19.9,
+   "truncated": false,
+   "promptTokens": 26568,
+   "completionTokens": 1068,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_2eac71e4ebfe7ec9",
+     "kind": "extension",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Bayview Gelato Co (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Bayview Gelato Co"
+     },
+     "ok": true,
+     "resultChars": 218
+    },
+    {
+     "tool": "invoices",
+     "args": {
+      "customerId": "customer_demo_bayview",
+      "which": "all"
+     },
+     "ok": true,
+     "resultChars": 7618
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceId": "invoice_demo_019",
+      "requestedDueDate": "2026-11-10"
+     },
+     "ok": true,
+     "resultChars": 487
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceId": "invoice_demo_019",
+      "requestedDueDate": "2026-11-10",
+      "recommendation": "approve",
+      "reasoning": "The customer has a strong payment history with all previous invoices settled on time. This is a 23-day extension for invoice DEMO-301 (AUD 480.00) from 18 Oct 2026 to 10 Nov 2026, which falls within the Owner's delegation policy limits for extensions. The customer's consistent on-time payment record supports approval."
+     },
+     "ok": true,
+     "resultChars": 573
+    }
+   ],
+   "labToolMs": 47.3,
+   "labToolLines": 4,
+   "finalText": "\n\nThe credit request for Bayview Gelato Co to extend invoice DEMO-301 to 10 November 2026 has been **approved** within the Owner's delegation policy. The new due date is 23 days after the current due date (18 Oct 2026). As instructed, please inform the customer yourself that their invoice has been extended; Nucleon did not send any notification to the customer."
+  },
+  {
+   "run": 8,
+   "prompt": "harbourline",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 3,
+   "seconds": 30.3,
+   "truncated": false,
+   "promptTokens": 14658,
+   "completionTokens": 1844,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_de6586a6f91f66a6",
+     "kind": "trial_credit",
+     "status": "awaiting_owner",
+     "handling": "owner_review",
+     "customer": "Harbourline Catering (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Harbourline Catering"
+     },
+     "ok": true,
+     "resultChars": 232
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 600
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14,
+      "recommendation": "approve",
+      "reasoning": "Trial credit for new customer Harbourline Catering. Order amount AUD 5,000 with 14-day terms. Deposit of AUD 1,000 already provided, reducing net exposure to AUD 4,000. Terms are reasonable for a new customer. Merits support approval, but exposure exceeds Owner's delegation limit, so request will be sent to Owner for final decision."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 33.5,
+   "labToolLines": 3,
+   "finalText": "\n\nThe credit request for Harbourline Catering (AUD 5,000 on 14-day terms) has been submitted and is now awaiting the Owner's decision. The status is \"awaiting_owner\" because the net exposure (AUD 4,000 after the AUD 1,000 deposit) exceeds the Owner's delegation limit. The Owner will review and decide; no action is needed from you at this stage."
+  },
+  {
+   "run": 8,
+   "prompt": "lakeside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 26.2,
+   "truncated": false,
+   "promptTokens": 18779,
+   "completionTokens": 1542,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_0b77e8dfc456ee79",
+     "kind": "trial_credit",
+     "status": "gathering_evidence",
+     "handling": "request_evidence",
+     "customer": "Lakeside Kiosk (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Lakeside Kiosk"
+     },
+     "ok": true,
+     "resultChars": 214
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 569
+    },
+    {
+     "tool": "whatIsNeeded",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 508
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14,
+      "recommendation": "approve_if_verified",
+      "reasoning": "This is a trial credit for a new customer (Lakeside Kiosk) with AUD 600.00 on 14-day terms. The assessment recommends approve_if_verified because the only concern is missing information (deposit and business identity). The backend will request this information from Staff before any approval can be granted. Staff needs to provide: a deposit of at least AUD 150.00 (25% of the order) and the customer's business identity."
+     },
+     "ok": true,
+     "resultChars": 589
+    }
+   ],
+   "labToolMs": 43.1,
+   "labToolLines": 4,
+   "finalText": "\n\nThe trial credit request for Lakeside Kiosk (AUD 600.00 on 14-day terms) has been submitted and is now in \"gathering_evidence\" status. The backend is requesting the following from Staff before any decision can be made:\n\n- **Deposit**: At least AUD 150.00 (25% of the order amount)\n- **Business identity**: The customer's business identity is not on file\n\nPlease use the button on the Nucleon page to provide these items. Nothing will be approved until this information is verified."
+  },
+  {
+   "run": 8,
+   "prompt": "mixed",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 21.1,
+   "truncated": false,
+   "promptTokens": 21059,
+   "completionTokens": 1228,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "NorthSide Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    },
+    {
+     "tool": "customerOverview",
+     "args": {
+      "customerId": "customer_demo_northside"
+     },
+     "ok": true,
+     "resultChars": 3116
+    },
+    {
+     "tool": "customerStatus",
+     "args": {
+      "customerId": "customer_demo_northside"
+     },
+     "ok": true,
+     "resultChars": 179
+    },
+    {
+     "tool": "invoices",
+     "args": {
+      "customerId": "customer_demo_northside",
+      "which": "all"
+     },
+     "ok": true,
+     "resultChars": 1349
+    }
+   ],
+   "labToolMs": 36.6,
+   "labToolLines": 4,
+   "finalText": "\n\nI cannot process this request as an extension because NorthSide Cafe has no recorded invoices in the system. An extension requires an existing invoice to extend. Could you clarify if you meant a trial credit for this new customer instead?"
+  },
+  {
+   "run": 9,
+   "prompt": "northside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 3,
+   "seconds": 17.6,
+   "truncated": false,
+   "promptTokens": 14626,
+   "completionTokens": 1028,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_1d318928483e8767",
+     "kind": "trial_credit",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Northside Cafe (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Northside Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 492
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_northside",
+      "orderAmount": "800.00",
+      "termsDays": 14,
+      "recommendation": "approve",
+      "reasoning": "New customer trial credit for AUD 800 on 14-day terms. Staff confirmed 25% deposit (AUD 200) was received and recorded in Nucleon, reducing exposure to AUD 600. This falls within the Owner's delegation policy for autonomous approval."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 34.8,
+   "labToolLines": 3,
+   "finalText": "\n\nThe trial credit request for Northside Cafe has been **approved** within the Owner's delegation policy (policy version 1). The approved exposure is AUD 600.00 on 14-day terms (due Sat 7 Nov 2026), as the 25% deposit (AUD 200.00) was already recorded in Nucleon.\n\n**Next step:** Inform the customer yourself—Nucleon sent nothing to them.\n\n**Staff can provide (not needed here):** None; the deposit and business identity were already confirmed in the records."
+  },
+  {
+   "run": 9,
+   "prompt": "bayview",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 22.9,
+   "truncated": false,
+   "promptTokens": 26550,
+   "completionTokens": 1294,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_1f8c3da590db72d1",
+     "kind": "extension",
+     "status": "decided",
+     "handling": "autonomous_approve",
+     "customer": "Bayview Gelato Co (fictional)",
+     "decidedBy": "agent"
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Bayview Gelato Co"
+     },
+     "ok": true,
+     "resultChars": 218
+    },
+    {
+     "tool": "invoices",
+     "args": {
+      "customerId": "customer_demo_bayview",
+      "which": "all"
+     },
+     "ok": true,
+     "resultChars": 7618
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceReference": "DEMO-301",
+      "requestedDueDate": "2026-11-10"
+     },
+     "ok": true,
+     "resultChars": 487
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "extension",
+      "customerId": "customer_demo_bayview",
+      "invoiceReference": "DEMO-301",
+      "requestedDueDate": "2026-11-10",
+      "recommendation": "approve",
+      "reasoning": "Customer has excellent payment history with all 6 previous invoices settled on time. This is a 23-day extension for an AUD 480.00 open invoice that is 6 days overdue. The extension is within policy limits (1-90 days) and the customer's strong track record supports approval."
+     },
+     "ok": true,
+     "resultChars": 573
+    }
+   ],
+   "labToolMs": 44.1,
+   "labToolLines": 4,
+   "finalText": "\n\nThe credit request for Bayview Gelato Co has been approved. Invoice DEMO-301 (originally due 18 Oct 2026) has been extended to 10 Nov 2026. Please inform the customer that their payment terms for this invoice have been extended by 23 days, and that the new due date is 10 November 2026."
+  },
+  {
+   "run": 9,
+   "prompt": "harbourline",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 3,
+   "seconds": 17.6,
+   "truncated": false,
+   "promptTokens": 14636,
+   "completionTokens": 1006,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_746ed0e0dfdbc12d",
+     "kind": "trial_credit",
+     "status": "awaiting_owner",
+     "handling": "owner_review",
+     "customer": "Harbourline Catering (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Harbourline Catering"
+     },
+     "ok": true,
+     "resultChars": 232
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 600
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_harbourline",
+      "orderAmount": "5000.00",
+      "termsDays": 14,
+      "recommendation": "escalate",
+      "reasoning": "Trial credit for new customer Harbourline Catering with AUD 5,000 order amount and 14-day terms. The exposure of AUD 4,000 (after AUD 1,000 deposit) exceeds the Owner's delegation policy limits, so this requires Owner review."
+     },
+     "ok": true,
+     "resultChars": 588
+    }
+   ],
+   "labToolMs": 34.3,
+   "labToolLines": 3,
+   "finalText": "\n\nThe decision for Harbourline Catering's trial credit (AUD 5,000 on 14-day terms) has been submitted and is now awaiting the Owner's decision. The status is \"awaiting_owner\" with handling \"owner_review\". The exposure of AUD 4,000 (after the AUD 1,000 deposit) exceeds the Owner's delegation policy limits, so the Owner must review and decide. Do not say it is approved or inform the customer yet—wait for the Owner's decision."
+  },
+  {
+   "run": 9,
+   "prompt": "lakeside",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 4,
+   "seconds": 27.3,
+   "truncated": false,
+   "promptTokens": 18773,
+   "completionTokens": 1611,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [
+    {
+     "caseId": "case_0c71218fe4e6f6ed",
+     "kind": "trial_credit",
+     "status": "gathering_evidence",
+     "handling": "request_evidence",
+     "customer": "Lakeside Kiosk (fictional)",
+     "decidedBy": null
+    }
+   ],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "Lakeside Kiosk"
+     },
+     "ok": true,
+     "resultChars": 214
+    },
+    {
+     "tool": "assessDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 569
+    },
+    {
+     "tool": "whatIsNeeded",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14
+     },
+     "ok": true,
+     "resultChars": 508
+    },
+    {
+     "tool": "resolveDecision",
+     "args": {
+      "kind": "trial_credit",
+      "customerId": "customer_demo_lakeside",
+      "orderAmount": "600.00",
+      "termsDays": 14,
+      "recommendation": "approve_if_verified",
+      "reasoning": "This is a trial credit for a new customer with AUD 600.00 on 14-day terms. The assessment shows missing information (deposit and business identity) that must be verified before approval. Per policy, missing information is not a reason to escalate; the backend will request it from Staff and approve nothing until verified. Once Staff provides the required deposit (at least AUD 150.00) and business identity, the request can be approved."
+     },
+     "ok": true,
+     "resultChars": 589
+    }
+   ],
+   "labToolMs": 45.0,
+   "labToolLines": 4,
+   "finalText": "\n\nThe decision for Lakeside Kiosk's trial credit (AUD 600.00 on 14-day terms) is now in \"gathering_evidence\" status. Staff must provide the following on the Nucleon page:\n\n- **Deposit**: At least AUD 150.00 (25% of the order amount).\n- **Business identity**: The customer's business identity is not on file.\n\nOnce Staff submits this information, the backend will proceed to evaluate and potentially approve the request. No action is taken until the evidence is provided."
+  },
+  {
+   "run": 9,
+   "prompt": "mixed",
+   "passed": true,
+   "reasons": [],
+   "toolCalls": 1,
+   "seconds": 8.5,
+   "truncated": false,
+   "promptTokens": 6793,
+   "completionTokens": 524,
+   "providerErrors": 0,
+   "contradiction": null,
+   "backend": [],
+   "tools": [
+    {
+     "tool": "findCustomers",
+     "args": {
+      "query": "NorthSide Cafe"
+     },
+     "ok": true,
+     "resultChars": 216
+    }
+   ],
+   "labToolMs": 7.8,
+   "labToolLines": 1,
+   "finalText": "\n\nI need clarification on this request. The message mentions both a \"credit of 1500 AUD\" and a \"30 days extension,\" which are two different types of credit decisions:\n\n- A **trial credit** is for a new customer (specifying order amount and payment terms in days)\n- An **extension** is for an existing invoice (specifying the invoice number and new due date)\n\nCould you please clarify:\n1. Is this a **trial credit** for a new customer (order amount: 1500 AUD, terms: 30 days)?\n2. Or is this an **extension** of an existing invoice (which invoice, and by 30 days)?\n\nAlso, I found NorthSide Cafe (customer ID: customer_demo_northside). Is this the correct customer, or are you referring to a different customer?"
+  }
+ ]
+}

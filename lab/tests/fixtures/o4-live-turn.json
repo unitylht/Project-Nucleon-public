@@ -1,0 +1,192 @@
+[
+ {
+  "seq": 75,
+  "thread": "general",
+  "role": "owner",
+  "text": "Decline the QA request. Reason: this is only a test of what happens when the case is not clear.",
+  "card": null,
+  "meta": null
+ },
+ {
+  "seq": 76,
+  "thread": "general",
+  "role": "agent",
+  "text": "The decision to decline for invoice QC-1 has been prepared. Press Confirm below.",
+  "card": {
+   "tools": [
+    {
+     "id": "0vrZnvqrNWBw5eH52h34rcOpH2YXVopA",
+     "name": "listRequests",
+     "args": {
+      "status": "open"
+     },
+     "ok": true,
+     "result": {
+      "requests": [
+       {
+        "id": "req_d824b872e953834c",
+        "status": "awaiting_owner",
+        "version": 2,
+        "createdAt": "2026-10-23T15:37:06.986074+00:00",
+        "invoiceReference": "QC-1",
+        "customerName": "QA Small Iso",
+        "customerId": "customer_d99ba3b844a3865a",
+        "invoiceId": "invoice_defe76a8f47f424e",
+        "requestedDueDate": "2026-12-02",
+        "requestedDueDateText": "Wed 2 Dec 2026",
+        "outcome": null,
+        "approvedDueDate": null,
+        "aiStatus": "live",
+        "excerpt": "QA Small Iso asked: \"Could we pay invoice QC-1 on 2026-12-02?\" Open the request please.",
+        "originalDue": "2026-11-22",
+        "originalDueText": "Sun 22 Nov 2026",
+        "dueNow": "2026-11-22",
+        "dueNowText": "Sun 22 Nov 2026",
+        "dueNowFrom": "invoice",
+        "withStaff": null,
+        "withStaffWhy": null,
+        "withdrawnReason": null,
+        "decision": null,
+        "ordinal": 1,
+        "flags": [],
+        "waitingOn": "owner"
+       },
+       {
+        "id": "req_dd21abbd0e4b94cf",
+        "status": "awaiting_owner",
+        "version": 1,
+        "createdAt": "2026-10-23T15:40:39.197500+00:00",
+        "invoiceReference": "QD-1",
+        "customerName": "QA NoDue Iso",
+        "customerId": "customer_df0bd96b9be02214",
+        "invoiceId": "invoice_dc45573ae294b2a4",
+        "requestedDueDate": "2026-11-30",
+        "requestedDueDateText": "Mon 30 Nov 2026",
+        "outcome": null,
+        "approvedDueDate": null,
+        "aiStatus": "live",
+        "excerpt": "QA NoDue Iso asked: \"Can we pay invoice QD-1 on 2026-11-30?\" Open the request, then tell me in the case what the numbers",
+        "originalDue": null,
+        "originalDueText": null,
+        "dueNow": null,
+        "dueNowText": null,
+        "dueNowFrom": "invoice",
+        "withStaff": null,
+        "withStaffWhy": null,
+        "withdrawnReason": null,
+        "decision": null,
+        "ordinal": 1,
+        "flags": [],
+        "waitingOn": "owner"
+       },
+       {
+        "id": "req_0069d228d1be785a",
+        "status": "awaiting_owner",
+        "version": 1,
+        "createdAt": "2026-10-23T15:35:03.216202+00:00",
+        "invoiceReference": "QB-1",
+        "customerName": "QA Boundary Iso",
+        "customerId": "customer_1d986024a222d2b9",
+        "invoiceId": "invoice_3bbe9569cb6de3b2",
+        "requestedDueDate": "2026-12-02",
+        "requestedDueDateText": "Wed 2 Dec 2026",
+        "outcome": null,
+        "approvedDueDate": null,
+        "aiStatus": "live",
+        "excerpt": "QA Boundary Iso asked: \"Could we pay invoice QB-1 on 2026-12-02?\" Open the request please.",
+        "originalDue": "2026-11-22",
+        "originalDueText": "Sun 22 Nov 2026",
+        "dueNow": "2026-11-22",
+        "dueNowText": "Sun 22 Nov 2026",
+        "dueNowFrom": "invoice",
+        "withStaff": null,
+        "withStaffWhy": null,
+        "withdrawnReason": null,
+        "decision": null,
+        "ordinal": 1,
+        "flags": [],
+        "waitingOn": "owner"
+       }
+      ],
+      "subject": null
+     }
+    },
+    {
+     "id": "D7fU9kj8XqH2XUZGMLIgxEH9CdEfyN5B",
+     "name": "prepareDecision",
+     "args": {
+      "outcome": "decline",
+      "reason": "this is only a test of what happens when the case is not clear",
+      "requestId": "req_d824b872e953834c"
+     },
+     "ok": true,
+     "result": {
+      "requestId": "req_d824b872e953834c",
+      "prepared": {
+       "version": 2,
+       "actorName": "AI Agent",
+       "actorRole": "owner",
+       "outcome": "decline",
+       "approvedDueDate": null,
+       "days": null,
+       "reason": "this is only a test of what happens when the case is not clear",
+       "comparison": {
+        "askedDays": 10,
+        "days": null,
+        "limitDays": null,
+        "withinLimit": null
+       },
+       "invoiceReference": "QC-1",
+       "askedDate": "2026-12-02",
+       "askedDateText": "Wed 2 Dec 2026",
+       "currentDue": "2026-11-22",
+       "currentDueText": "Sun 22 Nov 2026"
+      },
+      "revisionOf": 1,
+      "retained": [],
+      "reasonFrom": "message",
+      "figuresFrom": null,
+      "note": "Prepared, not decided: the owner confirms it with the Confirm decision button.",
+      "subject": {
+       "customerId": "customer_d99ba3b844a3865a",
+       "name": "QA Small Iso"
+      }
+     }
+    }
+   ],
+   "detail": "summary",
+   "withheld": null,
+   "subject": {
+    "customerId": "customer_d99ba3b844a3865a",
+    "name": "QA Small Iso"
+   },
+   "cards": [
+    {
+     "kind": "requests",
+     "primary": false
+    },
+    {
+     "kind": "prepared",
+     "primary": true
+    }
+   ],
+   "activity": [
+    {
+     "tool": "listRequests",
+     "label": "Reading the requests…"
+    },
+    {
+     "tool": "prepareDecision",
+     "label": "Preparing the decision…"
+    }
+   ],
+   "notes": []
+  },
+  "meta": {
+   "promptVersion": "lab-v0.16",
+   "model": "gemma-rp",
+   "latencyMs": 16173,
+   "modelRequests": 5
+  }
+ }
+]

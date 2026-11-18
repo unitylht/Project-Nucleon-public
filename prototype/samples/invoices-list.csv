@@ -1,0 +1,6 @@
+Customer,Invoice No,Invoice Date,Amount,Due Date,Balance
+Bayside Café,INV-1001,01/10/2026,"1,000.00",31/10/2026,1000.00
+Bayside Café,INV-1002,05/10/2026,400.00,04/11/2026,400.00
+Coastline Foods,INV-1001,03/10/2026,450.50,02/11/2026,450.50
+Coastline Foods,INV-1003,06/10/2026,800.00,,800.00
+Dune Traders,INV-1004,31/02/2026,300.00,,300.00

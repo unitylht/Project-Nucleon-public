@@ -1,0 +1,551 @@
+{
+ "resolve": {
+  "actionId": null,
+  "authority": {
+   "digest": "00009684faf42f33",
+   "mode": "delegated",
+   "paused": false,
+   "source": "owner_delegation_policy",
+   "version": 1
+  },
+  "caseId": "case_5535d6f6b016fbb4",
+  "communication": {
+   "note": "Nucleon sent nothing to the customer. Staff informs the customer.",
+   "sent": false
+  },
+  "comparables": [
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Kestrel Deli (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.2511,
+    "fictional": true,
+    "id": "fx-ex-02",
+    "kind": "extension",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.799,
+    "summary": "Fictional extension: 21 days on AUD 410.00"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Harbor Bakery (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.2757,
+    "fictional": true,
+    "id": "fx-ex-01",
+    "kind": "extension",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.784,
+    "summary": "Fictional extension: 14 days on AUD 520.00"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Pinewood Grocer (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.4886,
+    "fictional": true,
+    "id": "fx-ex-03",
+    "kind": "extension",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.672,
+    "summary": "Fictional extension: 30 days on AUD 630.00"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Marlow Florist (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.5162,
+    "fictional": true,
+    "id": "fx-ex-04",
+    "kind": "extension",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.66,
+    "summary": "Fictional extension: 10 days on AUD 380.00"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Tidewater Caterers (fictional)",
+    "dataset": "fictional_example",
+    "distance": 1.8607,
+    "fictional": true,
+    "id": "fx-ex-05",
+    "kind": "extension",
+    "outcome": "defaulted",
+    "ownerDecision": "decline",
+    "sameCustomer": false,
+    "similarity": 0.35,
+    "summary": "Fictional extension: 45 days on AUD 1,200.00"
+   }
+  ],
+  "createdAt": "2026-10-26T12:43:01.482944+00:00",
+  "customer": {
+   "id": "customer_demo_bayview",
+   "name": "Bayview Gelato Co (fictional)"
+  },
+  "dataset": "live",
+  "decision": {
+   "approvedDueDate": "2026-11-10",
+   "approvedDueDateText": "Tue 10 Nov 2026",
+   "asOf": "2026-10-24",
+   "asOfText": "Sat 24 Oct 2026",
+   "at": "2026-10-26T12:43:01.484288+00:00",
+   "authoritySource": {
+    "digest": "00009684faf42f33",
+    "mode": "delegated",
+    "paused": false,
+    "source": "owner_delegation_policy",
+    "version": 1
+   },
+   "by": "agent",
+   "exposure": 48000,
+   "outcome": "approve",
+   "requestDecisionId": "decision_fac4e08a6d7e0e97"
+  },
+  "evidence": {
+   "contradictions": [],
+   "depositNotes": [],
+   "depositShare": null,
+   "depositSources": [],
+   "exposure": 48000,
+   "insufficient": [],
+   "items": [
+    {
+     "detail": "The records for this customer are complete: no unreadable amount, missing due date or unplaced payment.",
+     "key": "records_complete",
+     "label": "Records complete",
+     "status": "verified"
+    }
+   ],
+   "missing": [],
+   "status": "sufficient",
+   "verifiedDeposit": null
+  },
+  "evidenceLink": null,
+  "handling": "autonomous_approve",
+  "keyFacts": {
+   "amountMark": "stated",
+   "amountOwed": {
+    "currency": "AUD",
+    "minorUnits": "48000",
+    "scale": 2,
+    "text": "AUD 480.00"
+   },
+   "amountText": "AUD 480.00 (stated as of Sat 24 Oct)",
+   "asOfDate": "2026-10-24",
+   "asOfDateText": "Sat 24 Oct 2026",
+   "currentDueDate": "2026-10-18",
+   "currentDueDateText": "Sun 18 Oct 2026",
+   "daysOverdueAsOf": 6,
+   "daysOverdueNote": null,
+   "extensionDays": 23,
+   "invoiceReference": "DEMO-301",
+   "kind": "extension",
+   "originalDueDate": "2026-10-18",
+   "originalDueDateText": "Sun 18 Oct 2026",
+   "requestedDueDate": "2026-11-10",
+   "requestedDueDateText": "Tue 10 Nov 2026"
+  },
+  "kind": "extension",
+  "needs": [],
+  "outcome": {
+   "label": "open_not_due",
+   "text": "Still open, not yet past the approved date."
+  },
+  "policyChangedSinceAssessment": false,
+  "reasons": [
+   "Within every bound of the policy, with the evidence verified."
+  ],
+  "recommendation": {
+   "context": null,
+   "reasoning": "Fictional: a reliable customer, an ordinary request.",
+   "recommendation": "approve",
+   "text": "The assistant recommended approval"
+  },
+  "reliability": {
+   "comparablesDeclinedMajority": false,
+   "evaluation": {
+    "agreement": "5/6",
+    "dataset": "fictional_evaluation",
+    "outcomes": {
+     "defaulted": 1,
+     "late": 1,
+     "repaid": 4
+    },
+    "ownerApproved": 5,
+    "ownerDeclined": 1,
+    "reviewed": 7,
+    "wouldApprove": 6
+   },
+   "label": "SIMULATION on fictional evaluation cases: it shows how this policy would have compared with a fictional Owner's decisions, not how it performs on real credit decisions.",
+   "live": {
+    "agreement": null,
+    "dataset": "live",
+    "outcomes": {},
+    "ownerApproved": 0,
+    "ownerDeclined": 0,
+    "reviewed": 0,
+    "wouldApprove": 0
+   },
+   "required": true,
+   "rule": "at least 5 cases the policy would approve and Owner agreement of at least 0.8",
+   "sentence": "Track record established: the policy would approve 6 of 7 held-out fictional evaluation cases in this category, and the fictional Owner approved 5 of them. SIMULATION on fictional evaluation cases: it shows how this policy would have compared with a fictional Owner's decisions, not how it performs on real credit decisions.",
+   "simulation": true,
+   "status": "established"
+  },
+  "requestId": "req_731145bc3f917fde",
+  "risk": {
+   "checks": [
+    {
+     "key": "decision_exposure",
+     "label": "Exposure of this decision",
+     "sentence": "Exposure of this decision: AUD 480.00 is within the limit of AUD 1,000.00.",
+     "status": "pass"
+    },
+    {
+     "key": "customer_exposure",
+     "label": "The customer's total exposure after this decision",
+     "sentence": "The customer's total exposure after this decision: AUD 480.00 is within the limit of AUD 1,500.00. This is the RECORDED exposure; the records are not confirmed complete.",
+     "status": "pass"
+    },
+    {
+     "key": "autonomous_30d",
+     "label": "Autonomous approvals in 30 days (with this one)",
+     "sentence": "Autonomous approvals in 30 days (with this one): AUD 480.00 is within the limit of AUD 5,000.00.",
+     "status": "pass"
+    },
+    {
+     "key": "extension_days",
+     "label": "Days past the current due date",
+     "sentence": "Days past the current due date: 23 days is within the limit of 30 days.",
+     "status": "pass"
+    },
+    {
+     "key": "nothing_else_overdue",
+     "label": "Nothing else overdue",
+     "sentence": "Nothing else is overdue.",
+     "status": "pass"
+    },
+    {
+     "key": "late_history",
+     "label": "Earlier late payments",
+     "sentence": "Late share of earlier payments 0 is within the limit of 0.25.",
+     "status": "pass"
+    },
+    {
+     "key": "unusual_size",
+     "label": "Size against earlier invoices",
+     "sentence": "The amount is about 1.04 times the median earlier invoice (within the 3 times the Owner allows).",
+     "status": "pass"
+    }
+   ],
+   "failing": [],
+   "status": "within",
+   "unknown": []
+  },
+  "status": "decided",
+  "statusText": "Approved within the Owner's delegation policy (policy version 1): invoice DEMO-301 moved to Tue 10 Nov 2026. It takes effect now inside Nucleon. Nucleon sent nothing to the customer. Staff informs the customer.",
+  "subject": {
+   "customerId": "customer_demo_bayview",
+   "name": "Bayview Gelato Co (fictional)"
+  },
+  "updatedAt": "2026-10-26T12:43:01.484295+00:00",
+  "version": 1,
+  "warnings": [
+   "The customer's total exposure (AUD 480.00) is the RECORDED exposure: the records are not confirmed complete, so more may be owed."
+  ],
+  "why": null
+ },
+ "status": {
+  "actionId": null,
+  "authority": {
+   "digest": "00009684faf42f33",
+   "mode": "delegated",
+   "paused": false,
+   "source": "owner_delegation_policy",
+   "version": 1
+  },
+  "caseId": "case_5535d6f6b016fbb4",
+  "communication": {
+   "note": "Nucleon sent nothing to the customer. Staff informs the customer.",
+   "sent": false
+  },
+  "comparables": [
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Kestrel Deli (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.2511,
+    "fictional": true,
+    "id": "fx-ex-02",
+    "kind": "extension",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.799,
+    "summary": "Fictional extension: 21 days on AUD 410.00"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Harbor Bakery (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.2757,
+    "fictional": true,
+    "id": "fx-ex-01",
+    "kind": "extension",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.784,
+    "summary": "Fictional extension: 14 days on AUD 520.00"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Pinewood Grocer (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.4886,
+    "fictional": true,
+    "id": "fx-ex-03",
+    "kind": "extension",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.672,
+    "summary": "Fictional extension: 30 days on AUD 630.00"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Marlow Florist (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.5162,
+    "fictional": true,
+    "id": "fx-ex-04",
+    "kind": "extension",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.66,
+    "summary": "Fictional extension: 10 days on AUD 380.00"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Tidewater Caterers (fictional)",
+    "dataset": "fictional_example",
+    "distance": 1.8607,
+    "fictional": true,
+    "id": "fx-ex-05",
+    "kind": "extension",
+    "outcome": "defaulted",
+    "ownerDecision": "decline",
+    "sameCustomer": false,
+    "similarity": 0.35,
+    "summary": "Fictional extension: 45 days on AUD 1,200.00"
+   }
+  ],
+  "createdAt": "2026-10-26T12:43:01.482944+00:00",
+  "customer": {
+   "id": "customer_demo_bayview",
+   "name": "Bayview Gelato Co (fictional)"
+  },
+  "dataset": "live",
+  "decision": {
+   "approvedDueDate": "2026-11-10",
+   "approvedDueDateText": "Tue 10 Nov 2026",
+   "asOf": "2026-10-24",
+   "asOfText": "Sat 24 Oct 2026",
+   "at": "2026-10-26T12:43:01.484288+00:00",
+   "authoritySource": {
+    "digest": "00009684faf42f33",
+    "mode": "delegated",
+    "paused": false,
+    "source": "owner_delegation_policy",
+    "version": 1
+   },
+   "by": "agent",
+   "exposure": 48000,
+   "outcome": "approve",
+   "requestDecisionId": "decision_fac4e08a6d7e0e97"
+  },
+  "evidence": {
+   "contradictions": [],
+   "depositNotes": [],
+   "depositShare": null,
+   "depositSources": [],
+   "exposure": 48000,
+   "insufficient": [],
+   "items": [
+    {
+     "detail": "The records for this customer are complete: no unreadable amount, missing due date or unplaced payment.",
+     "key": "records_complete",
+     "label": "Records complete",
+     "status": "verified"
+    }
+   ],
+   "missing": [],
+   "status": "sufficient",
+   "verifiedDeposit": null
+  },
+  "evidenceLink": null,
+  "handling": "autonomous_approve",
+  "keyFacts": {
+   "amountMark": "stated",
+   "amountOwed": {
+    "currency": "AUD",
+    "minorUnits": "48000",
+    "scale": 2,
+    "text": "AUD 480.00"
+   },
+   "amountText": "AUD 480.00 (stated as of Sat 24 Oct)",
+   "asOfDate": "2026-10-24",
+   "asOfDateText": "Sat 24 Oct 2026",
+   "currentDueDate": "2026-10-18",
+   "currentDueDateText": "Sun 18 Oct 2026",
+   "daysOverdueAsOf": 6,
+   "daysOverdueNote": null,
+   "extensionDays": 23,
+   "invoiceReference": "DEMO-301",
+   "kind": "extension",
+   "originalDueDate": "2026-10-18",
+   "originalDueDateText": "Sun 18 Oct 2026",
+   "requestedDueDate": "2026-11-10",
+   "requestedDueDateText": "Tue 10 Nov 2026"
+  },
+  "kind": "extension",
+  "needs": [],
+  "outcome": {
+   "label": "open_not_due",
+   "text": "Still open, not yet past the approved date."
+  },
+  "policyChangedSinceAssessment": false,
+  "reasons": [
+   "Within every bound of the policy, with the evidence verified."
+  ],
+  "recommendation": {
+   "context": null,
+   "reasoning": "Fictional: a reliable customer, an ordinary request.",
+   "recommendation": "approve",
+   "text": "The assistant recommended approval"
+  },
+  "reliability": {
+   "comparablesDeclinedMajority": false,
+   "evaluation": {
+    "agreement": "5/6",
+    "dataset": "fictional_evaluation",
+    "outcomes": {
+     "defaulted": 1,
+     "late": 1,
+     "repaid": 4
+    },
+    "ownerApproved": 5,
+    "ownerDeclined": 1,
+    "reviewed": 7,
+    "wouldApprove": 6
+   },
+   "label": "SIMULATION on fictional evaluation cases: it shows how this policy would have compared with a fictional Owner's decisions, not how it performs on real credit decisions.",
+   "live": {
+    "agreement": null,
+    "dataset": "live",
+    "outcomes": {},
+    "ownerApproved": 0,
+    "ownerDeclined": 0,
+    "reviewed": 0,
+    "wouldApprove": 0
+   },
+   "required": true,
+   "rule": "at least 5 cases the policy would approve and Owner agreement of at least 0.8",
+   "sentence": "Track record established: the policy would approve 6 of 7 held-out fictional evaluation cases in this category, and the fictional Owner approved 5 of them. SIMULATION on fictional evaluation cases: it shows how this policy would have compared with a fictional Owner's decisions, not how it performs on real credit decisions.",
+   "simulation": true,
+   "status": "established"
+  },
+  "request": {
+   "decision": {
+    "approvedDueDate": "2026-11-10",
+    "approvedDueDateText": "Tue 10 Nov 2026",
+    "approvedExtensionDays": 23,
+    "authority": {
+     "policyVersion": 1,
+     "source": "owner_delegation_policy"
+    },
+    "days": 23,
+    "decidedOn": "2026-10-26",
+    "decidedOnText": "Mon 26 Oct 2026",
+    "decisionSource": "delegated_policy",
+    "delegationCaseId": "case_5535d6f6b016fbb4",
+    "followedRecommendation": null,
+    "outcome": "approve",
+    "reason": "Approved within the owner's delegation policy (version 1). Fictional: a reliable customer, an ordinary request."
+   },
+   "id": "req_731145bc3f917fde",
+   "status": "completed"
+  },
+  "requestId": "req_731145bc3f917fde",
+  "risk": {
+   "checks": [
+    {
+     "key": "decision_exposure",
+     "label": "Exposure of this decision",
+     "sentence": "Exposure of this decision: AUD 480.00 is within the limit of AUD 1,000.00.",
+     "status": "pass"
+    },
+    {
+     "key": "customer_exposure",
+     "label": "The customer's total exposure after this decision",
+     "sentence": "The customer's total exposure after this decision: AUD 480.00 is within the limit of AUD 1,500.00. This is the RECORDED exposure; the records are not confirmed complete.",
+     "status": "pass"
+    },
+    {
+     "key": "autonomous_30d",
+     "label": "Autonomous approvals in 30 days (with this one)",
+     "sentence": "Autonomous approvals in 30 days (with this one): AUD 480.00 is within the limit of AUD 5,000.00.",
+     "status": "pass"
+    },
+    {
+     "key": "extension_days",
+     "label": "Days past the current due date",
+     "sentence": "Days past the current due date: 23 days is within the limit of 30 days.",
+     "status": "pass"
+    },
+    {
+     "key": "nothing_else_overdue",
+     "label": "Nothing else overdue",
+     "sentence": "Nothing else is overdue.",
+     "status": "pass"
+    },
+    {
+     "key": "late_history",
+     "label": "Earlier late payments",
+     "sentence": "Late share of earlier payments 0 is within the limit of 0.25.",
+     "status": "pass"
+    },
+    {
+     "key": "unusual_size",
+     "label": "Size against earlier invoices",
+     "sentence": "The amount is about 1.04 times the median earlier invoice (within the 3 times the Owner allows).",
+     "status": "pass"
+    }
+   ],
+   "failing": [],
+   "status": "within",
+   "unknown": []
+  },
+  "status": "decided",
+  "statusText": "Approved within the Owner's delegation policy (policy version 1): invoice DEMO-301 moved to Tue 10 Nov 2026. It takes effect now inside Nucleon. Nucleon sent nothing to the customer. Staff informs the customer.",
+  "subject": {
+   "customerId": "customer_demo_bayview",
+   "name": "Bayview Gelato Co (fictional)"
+  },
+  "updatedAt": "2026-10-26T12:43:01.484295+00:00",
+  "version": 1,
+  "warnings": [
+   "The customer's total exposure (AUD 480.00) is the RECORDED exposure: the records are not confirmed complete, so more may be owed."
+  ],
+  "why": null
+ }
+}

@@ -1,0 +1,728 @@
+{
+ "resolve": {
+  "actionId": "act_1bc88f67f50ac578",
+  "authority": {
+   "digest": "00009684faf42f33",
+   "mode": "delegated",
+   "paused": false,
+   "source": "owner_delegation_policy",
+   "version": 3
+  },
+  "caseId": "case_f5343a2a6594b07e",
+  "communication": {
+   "note": "Nucleon sent nothing to the customer. Staff informs the customer.",
+   "sent": false
+  },
+  "comparables": [
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Birchwood Pantry (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.0,
+    "fictional": true,
+    "id": "fx-tr-02",
+    "kind": "trial_credit",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 1.0,
+    "summary": "Fictional trial credit: order AUD 600.00, exposure AUD 450.00, 14-day terms"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's earlier case.",
+    "customerName": "Northside Cafe (fictional)",
+    "dataset": "live",
+    "distance": 0.2877,
+    "fictional": false,
+    "id": "case_fc3a35fadfbb6d35",
+    "kind": "trial_credit",
+    "outcome": "unknown",
+    "ownerDecision": "decline",
+    "sameCustomer": false,
+    "similarity": 0.777,
+    "summary": "Within every bound of the policy, with the evidence verified."
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Cobble Lane Cafe (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.2877,
+    "fictional": true,
+    "id": "fx-tr-03",
+    "kind": "trial_credit",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.777,
+    "summary": "Fictional trial credit: order AUD 800.00, exposure AUD 600.00, 14-day terms"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Alder Street Kiosk (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.4055,
+    "fictional": true,
+    "id": "fx-tr-01",
+    "kind": "trial_credit",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.711,
+    "summary": "Fictional trial credit: order AUD 400.00, exposure AUD 300.00, 14-day terms"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Dunmore Juice Bar (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.5108,
+    "fictional": true,
+    "id": "fx-tr-04",
+    "kind": "trial_credit",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.662,
+    "summary": "Fictional trial credit: order AUD 1,000.00, exposure AUD 750.00, 14-day terms"
+   }
+  ],
+  "createdAt": "2026-10-26T12:43:01.504660+00:00",
+  "customer": {
+   "id": "customer_demo_lakeside",
+   "name": "Lakeside Kiosk (fictional)"
+  },
+  "dataset": "live",
+  "decision": {
+   "asOf": "2026-10-24",
+   "asOfText": "Sat 24 Oct 2026",
+   "at": "2026-10-26T12:43:01.562439+00:00",
+   "authoritySource": {
+    "digest": "00009684faf42f33",
+    "mode": "delegated",
+    "paused": false,
+    "source": "owner_delegation_policy",
+    "version": 3
+   },
+   "by": "agent",
+   "creditLine": {
+    "approvedOn": "2026-10-24",
+    "approvedOnText": "Sat 24 Oct 2026",
+    "dueDate": "2026-11-07",
+    "dueDateText": "Sat 7 Nov 2026",
+    "exposure": 45000,
+    "orderAmount": 60000,
+    "termsDays": 14,
+    "verifiedDeposit": 15000
+   },
+   "decidedBy": "nucleon_agent",
+   "decidedByKind": "agent",
+   "exposure": 45000,
+   "outcome": "approve",
+   "requestedBy": {
+    "actorId": "staff_demo",
+    "channel": "person",
+    "role": "staff"
+   }
+  },
+  "evidence": {
+   "contradictions": [],
+   "depositNotes": [
+    "AUD 150.00 — checked by Staff in the bank account (not a recorded payment); reference DEP-LK-02, received Fri 23 Oct 2026",
+    "AUD 150.00 — reported by the customer, not verified; reference DEP-LK-01, received Fri 23 Oct 2026 — it does not count towards the deposit"
+   ],
+   "depositShare": "0.25",
+   "depositSources": [
+    {
+     "amount": 15000,
+     "counted": true,
+     "factId": "fact_6f04a986be407140",
+     "level": "staff_checked_bank",
+     "notCounted": null,
+     "receivedDate": "2026-10-23",
+     "receivedDateText": "Fri 23 Oct 2026",
+     "reference": "DEP-LK-02",
+     "source": "staff_confirmed",
+     "text": "AUD 150.00 — checked by Staff in the bank account (not a recorded payment); reference DEP-LK-02, received Fri 23 Oct 2026"
+    },
+    {
+     "amount": 15000,
+     "counted": false,
+     "factId": "fact_fac3ea23ea1514f0",
+     "level": "staff_assertion",
+     "notCounted": "customer_statement",
+     "receivedDate": "2026-10-23",
+     "receivedDateText": "Fri 23 Oct 2026",
+     "reference": "DEP-LK-01",
+     "source": "staff_confirmed",
+     "text": "AUD 150.00 — reported by the customer, not verified; reference DEP-LK-01, received Fri 23 Oct 2026 — it does not count towards the deposit"
+    }
+   ],
+   "exposure": 45000,
+   "insufficient": [],
+   "items": [
+    {
+     "detail": "The records for this customer are complete: no unreadable amount, missing due date or unplaced payment.",
+     "key": "records_complete",
+     "label": "Records complete",
+     "status": "verified"
+    },
+    {
+     "detail": "AUD 150.00 verified: AUD 150.00 — checked by Staff in the bank account (not a recorded payment); reference DEP-LK-02, received Fri 23 Oct 2026.",
+     "key": "deposit",
+     "label": "Deposit",
+     "status": "verified"
+    },
+    {
+     "detail": "Confirmed by Staff: Lakeside Kiosk (fictional) (Registration 111 (fictional)), seen by Staff on a document.",
+     "key": "business_identity",
+     "label": "Business identity",
+     "status": "verified"
+    },
+    {
+     "detail": "Exposure is not over the level where a trade reference is needed.",
+     "key": "trade_reference",
+     "label": "Trade reference",
+     "status": "not_needed"
+    }
+   ],
+   "missing": [],
+   "status": "sufficient",
+   "verifiedDeposit": 15000
+  },
+  "evidenceLink": false,
+  "handling": "autonomous_approve",
+  "keyFacts": {
+   "asOfDate": "2026-10-24",
+   "asOfDateText": "Sat 24 Oct 2026",
+   "depositShare": "0.25",
+   "depositSources": [
+    {
+     "amount": {
+      "currency": "AUD",
+      "minorUnits": "15000",
+      "scale": 2,
+      "text": "AUD 150.00"
+     },
+     "counted": true,
+     "level": "staff_checked_bank",
+     "levelText": "checked by Staff in the bank account (not a recorded payment)",
+     "notCounted": null,
+     "receivedDate": "2026-10-23",
+     "receivedDateText": "Fri 23 Oct 2026",
+     "reference": "DEP-LK-02",
+     "text": "AUD 150.00 — checked by Staff in the bank account (not a recorded payment); reference DEP-LK-02, received Fri 23 Oct 2026"
+    },
+    {
+     "amount": {
+      "currency": "AUD",
+      "minorUnits": "15000",
+      "scale": 2,
+      "text": "AUD 150.00"
+     },
+     "counted": false,
+     "level": "staff_assertion",
+     "levelText": "reported by the customer, not verified",
+     "notCounted": "customer_statement",
+     "receivedDate": "2026-10-23",
+     "receivedDateText": "Fri 23 Oct 2026",
+     "reference": "DEP-LK-01",
+     "text": "AUD 150.00 — reported by the customer, not verified; reference DEP-LK-01, received Fri 23 Oct 2026 — it does not count towards the deposit"
+    }
+   ],
+   "dueDateIfApproved": "2026-11-07",
+   "dueDateIfApprovedText": "Sat 7 Nov 2026",
+   "exposure": {
+    "currency": "AUD",
+    "minorUnits": "45000",
+    "scale": 2,
+    "text": "AUD 450.00"
+   },
+   "kind": "trial_credit",
+   "orderAmount": {
+    "currency": "AUD",
+    "minorUnits": "60000",
+    "scale": 2,
+    "text": "AUD 600.00"
+   },
+   "termsDays": 14,
+   "verifiedDeposit": {
+    "currency": "AUD",
+    "minorUnits": "15000",
+    "scale": 2,
+    "text": "AUD 150.00"
+   }
+  },
+  "kind": "trial_credit",
+  "needs": [],
+  "outcome": {
+   "label": "unknown",
+   "text": "No invoice issued after the approval is in the records."
+  },
+  "policyChangedSinceAssessment": false,
+  "reasons": [
+   "Within every bound of the policy, with the evidence verified."
+  ],
+  "recommendation": {
+   "context": null,
+   "reasoning": "Fictional: a reliable customer, an ordinary request.",
+   "recommendation": "approve",
+   "text": "The assistant recommended approval"
+  },
+  "reliability": {
+   "comparablesDeclinedMajority": false,
+   "evaluation": {
+    "agreement": "1",
+    "dataset": "fictional_evaluation",
+    "outcomes": {
+     "late": 1,
+     "repaid": 4
+    },
+    "ownerApproved": 5,
+    "ownerDeclined": 0,
+    "reviewed": 6,
+    "wouldApprove": 5
+   },
+   "label": "SIMULATION on fictional evaluation cases: it shows how this policy would have compared with a fictional Owner's decisions, not how it performs on real credit decisions.",
+   "live": {
+    "agreement": "0",
+    "dataset": "live",
+    "outcomes": {
+     "unknown": 1
+    },
+    "ownerApproved": 0,
+    "ownerDeclined": 1,
+    "reviewed": 1,
+    "wouldApprove": 1
+   },
+   "required": true,
+   "rule": "at least 5 cases the policy would approve and Owner agreement of at least 0.8",
+   "sentence": "Track record established: the policy would approve 5 of 6 held-out fictional evaluation cases in this category, and the fictional Owner approved 5 of them. SIMULATION on fictional evaluation cases: it shows how this policy would have compared with a fictional Owner's decisions, not how it performs on real credit decisions.",
+   "simulation": true,
+   "status": "established"
+  },
+  "requestId": null,
+  "risk": {
+   "checks": [
+    {
+     "key": "decision_exposure",
+     "label": "Exposure of this decision",
+     "sentence": "Exposure of this decision: AUD 450.00 is within the limit of AUD 1,000.00.",
+     "status": "pass"
+    },
+    {
+     "key": "customer_exposure",
+     "label": "The customer's total exposure after this decision",
+     "sentence": "The customer's total exposure after this decision: AUD 450.00 is within the limit of AUD 1,500.00. This is the RECORDED exposure; the records are not confirmed complete.",
+     "status": "pass"
+    },
+    {
+     "key": "autonomous_30d",
+     "label": "Autonomous approvals in 30 days (with this one)",
+     "sentence": "Autonomous approvals in 30 days (with this one): AUD 450.00 is within the limit of AUD 5,000.00.",
+     "status": "pass"
+    },
+    {
+     "key": "trial_in_force",
+     "label": "A trial credit already in force",
+     "sentence": "No trial credit for this customer is in force.",
+     "status": "pass"
+    },
+    {
+     "key": "first_credit",
+     "label": "First credit",
+     "sentence": "The customer has no earlier invoices.",
+     "status": "pass"
+    },
+    {
+     "key": "trial_exposure",
+     "label": "Trial credit exposure",
+     "sentence": "Trial credit exposure: AUD 450.00 is within the limit of AUD 600.00.",
+     "status": "pass"
+    },
+    {
+     "key": "trial_terms",
+     "label": "Terms",
+     "sentence": "Terms: 14 days is within the limit of 30 days.",
+     "status": "pass"
+    }
+   ],
+   "failing": [],
+   "status": "within",
+   "unknown": []
+  },
+  "status": "decided",
+  "statusText": "Approved within the Owner's delegation policy (policy version 3): trial credit of AUD 450.00 exposure on 14-day terms. It takes effect now inside Nucleon. Nucleon sent nothing to the customer. Staff informs the customer.",
+  "updatedAt": "2026-10-26T12:43:01.562444+00:00",
+  "version": 3,
+  "warnings": [
+   "The customer's total exposure (AUD 450.00) is the RECORDED exposure: the records are not confirmed complete, so more may be owed.",
+   "AUD 150.00 — checked by Staff in the bank account (not a recorded payment); reference DEP-LK-02, received Fri 23 Oct 2026",
+   "AUD 150.00 — reported by the customer, not verified; reference DEP-LK-01, received Fri 23 Oct 2026 — it does not count towards the deposit"
+  ],
+  "why": null
+ },
+ "status": {
+  "actionId": "act_1bc88f67f50ac578",
+  "authority": {
+   "digest": "00009684faf42f33",
+   "mode": "delegated",
+   "paused": false,
+   "source": "owner_delegation_policy",
+   "version": 3
+  },
+  "caseId": "case_f5343a2a6594b07e",
+  "communication": {
+   "note": "Nucleon sent nothing to the customer. Staff informs the customer.",
+   "sent": false
+  },
+  "comparables": [
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Birchwood Pantry (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.0,
+    "fictional": true,
+    "id": "fx-tr-02",
+    "kind": "trial_credit",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 1.0,
+    "summary": "Fictional trial credit: order AUD 600.00, exposure AUD 450.00, 14-day terms"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's earlier case.",
+    "customerName": "Northside Cafe (fictional)",
+    "dataset": "live",
+    "distance": 0.2877,
+    "fictional": false,
+    "id": "case_fc3a35fadfbb6d35",
+    "kind": "trial_credit",
+    "outcome": "unknown",
+    "ownerDecision": "decline",
+    "sameCustomer": false,
+    "similarity": 0.777,
+    "summary": "Within every bound of the policy, with the evidence verified."
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Cobble Lane Cafe (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.2877,
+    "fictional": true,
+    "id": "fx-tr-03",
+    "kind": "trial_credit",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.777,
+    "summary": "Fictional trial credit: order AUD 800.00, exposure AUD 600.00, 14-day terms"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Alder Street Kiosk (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.4055,
+    "fictional": true,
+    "id": "fx-tr-01",
+    "kind": "trial_credit",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.711,
+    "summary": "Fictional trial credit: order AUD 400.00, exposure AUD 300.00, 14-day terms"
+   },
+   {
+    "analogyNote": "Analogy, not this customer's history: another customer's fictional example case.",
+    "customerName": "Dunmore Juice Bar (fictional)",
+    "dataset": "fictional_example",
+    "distance": 0.5108,
+    "fictional": true,
+    "id": "fx-tr-04",
+    "kind": "trial_credit",
+    "outcome": "repaid",
+    "ownerDecision": "approve",
+    "sameCustomer": false,
+    "similarity": 0.662,
+    "summary": "Fictional trial credit: order AUD 1,000.00, exposure AUD 750.00, 14-day terms"
+   }
+  ],
+  "createdAt": "2026-10-26T12:43:01.504660+00:00",
+  "customer": {
+   "id": "customer_demo_lakeside",
+   "name": "Lakeside Kiosk (fictional)"
+  },
+  "dataset": "live",
+  "decision": {
+   "asOf": "2026-10-24",
+   "asOfText": "Sat 24 Oct 2026",
+   "at": "2026-10-26T12:43:01.562439+00:00",
+   "authoritySource": {
+    "digest": "00009684faf42f33",
+    "mode": "delegated",
+    "paused": false,
+    "source": "owner_delegation_policy",
+    "version": 3
+   },
+   "by": "agent",
+   "creditLine": {
+    "approvedOn": "2026-10-24",
+    "approvedOnText": "Sat 24 Oct 2026",
+    "dueDate": "2026-11-07",
+    "dueDateText": "Sat 7 Nov 2026",
+    "exposure": 45000,
+    "orderAmount": 60000,
+    "termsDays": 14,
+    "verifiedDeposit": 15000
+   },
+   "decidedBy": "nucleon_agent",
+   "decidedByKind": "agent",
+   "exposure": 45000,
+   "outcome": "approve",
+   "requestedBy": {
+    "actorId": "staff_demo",
+    "channel": "person",
+    "role": "staff"
+   }
+  },
+  "evidence": {
+   "contradictions": [],
+   "depositNotes": [
+    "AUD 150.00 — checked by Staff in the bank account (not a recorded payment); reference DEP-LK-02, received Fri 23 Oct 2026",
+    "AUD 150.00 — reported by the customer, not verified; reference DEP-LK-01, received Fri 23 Oct 2026 — it does not count towards the deposit"
+   ],
+   "depositShare": "0.25",
+   "depositSources": [
+    {
+     "amount": 15000,
+     "counted": true,
+     "factId": "fact_6f04a986be407140",
+     "level": "staff_checked_bank",
+     "notCounted": null,
+     "receivedDate": "2026-10-23",
+     "receivedDateText": "Fri 23 Oct 2026",
+     "reference": "DEP-LK-02",
+     "source": "staff_confirmed",
+     "text": "AUD 150.00 — checked by Staff in the bank account (not a recorded payment); reference DEP-LK-02, received Fri 23 Oct 2026"
+    },
+    {
+     "amount": 15000,
+     "counted": false,
+     "factId": "fact_fac3ea23ea1514f0",
+     "level": "staff_assertion",
+     "notCounted": "customer_statement",
+     "receivedDate": "2026-10-23",
+     "receivedDateText": "Fri 23 Oct 2026",
+     "reference": "DEP-LK-01",
+     "source": "staff_confirmed",
+     "text": "AUD 150.00 — reported by the customer, not verified; reference DEP-LK-01, received Fri 23 Oct 2026 — it does not count towards the deposit"
+    }
+   ],
+   "exposure": 45000,
+   "insufficient": [],
+   "items": [
+    {
+     "detail": "The records for this customer are complete: no unreadable amount, missing due date or unplaced payment.",
+     "key": "records_complete",
+     "label": "Records complete",
+     "status": "verified"
+    },
+    {
+     "detail": "AUD 150.00 verified: AUD 150.00 — checked by Staff in the bank account (not a recorded payment); reference DEP-LK-02, received Fri 23 Oct 2026.",
+     "key": "deposit",
+     "label": "Deposit",
+     "status": "verified"
+    },
+    {
+     "detail": "Confirmed by Staff: Lakeside Kiosk (fictional) (Registration 111 (fictional)), seen by Staff on a document.",
+     "key": "business_identity",
+     "label": "Business identity",
+     "status": "verified"
+    },
+    {
+     "detail": "Exposure is not over the level where a trade reference is needed.",
+     "key": "trade_reference",
+     "label": "Trade reference",
+     "status": "not_needed"
+    }
+   ],
+   "missing": [],
+   "status": "sufficient",
+   "verifiedDeposit": 15000
+  },
+  "evidenceLink": false,
+  "handling": "autonomous_approve",
+  "keyFacts": {
+   "asOfDate": "2026-10-24",
+   "asOfDateText": "Sat 24 Oct 2026",
+   "depositShare": "0.25",
+   "depositSources": [
+    {
+     "amount": {
+      "currency": "AUD",
+      "minorUnits": "15000",
+      "scale": 2,
+      "text": "AUD 150.00"
+     },
+     "counted": true,
+     "level": "staff_checked_bank",
+     "levelText": "checked by Staff in the bank account (not a recorded payment)",
+     "notCounted": null,
+     "receivedDate": "2026-10-23",
+     "receivedDateText": "Fri 23 Oct 2026",
+     "reference": "DEP-LK-02",
+     "text": "AUD 150.00 — checked by Staff in the bank account (not a recorded payment); reference DEP-LK-02, received Fri 23 Oct 2026"
+    },
+    {
+     "amount": {
+      "currency": "AUD",
+      "minorUnits": "15000",
+      "scale": 2,
+      "text": "AUD 150.00"
+     },
+     "counted": false,
+     "level": "staff_assertion",
+     "levelText": "reported by the customer, not verified",
+     "notCounted": "customer_statement",
+     "receivedDate": "2026-10-23",
+     "receivedDateText": "Fri 23 Oct 2026",
+     "reference": "DEP-LK-01",
+     "text": "AUD 150.00 — reported by the customer, not verified; reference DEP-LK-01, received Fri 23 Oct 2026 — it does not count towards the deposit"
+    }
+   ],
+   "dueDateIfApproved": "2026-11-07",
+   "dueDateIfApprovedText": "Sat 7 Nov 2026",
+   "exposure": {
+    "currency": "AUD",
+    "minorUnits": "45000",
+    "scale": 2,
+    "text": "AUD 450.00"
+   },
+   "kind": "trial_credit",
+   "orderAmount": {
+    "currency": "AUD",
+    "minorUnits": "60000",
+    "scale": 2,
+    "text": "AUD 600.00"
+   },
+   "termsDays": 14,
+   "verifiedDeposit": {
+    "currency": "AUD",
+    "minorUnits": "15000",
+    "scale": 2,
+    "text": "AUD 150.00"
+   }
+  },
+  "kind": "trial_credit",
+  "needs": [],
+  "outcome": {
+   "label": "unknown",
+   "text": "No invoice issued after the approval is in the records."
+  },
+  "policyChangedSinceAssessment": false,
+  "reasons": [
+   "Within every bound of the policy, with the evidence verified."
+  ],
+  "recommendation": {
+   "context": null,
+   "reasoning": "Fictional: a reliable customer, an ordinary request.",
+   "recommendation": "approve",
+   "text": "The assistant recommended approval"
+  },
+  "reliability": {
+   "comparablesDeclinedMajority": false,
+   "evaluation": {
+    "agreement": "1",
+    "dataset": "fictional_evaluation",
+    "outcomes": {
+     "late": 1,
+     "repaid": 4
+    },
+    "ownerApproved": 5,
+    "ownerDeclined": 0,
+    "reviewed": 6,
+    "wouldApprove": 5
+   },
+   "label": "SIMULATION on fictional evaluation cases: it shows how this policy would have compared with a fictional Owner's decisions, not how it performs on real credit decisions.",
+   "live": {
+    "agreement": "0",
+    "dataset": "live",
+    "outcomes": {
+     "unknown": 1
+    },
+    "ownerApproved": 0,
+    "ownerDeclined": 1,
+    "reviewed": 1,
+    "wouldApprove": 1
+   },
+   "required": true,
+   "rule": "at least 5 cases the policy would approve and Owner agreement of at least 0.8",
+   "sentence": "Track record established: the policy would approve 5 of 6 held-out fictional evaluation cases in this category, and the fictional Owner approved 5 of them. SIMULATION on fictional evaluation cases: it shows how this policy would have compared with a fictional Owner's decisions, not how it performs on real credit decisions.",
+   "simulation": true,
+   "status": "established"
+  },
+  "requestId": null,
+  "risk": {
+   "checks": [
+    {
+     "key": "decision_exposure",
+     "label": "Exposure of this decision",
+     "sentence": "Exposure of this decision: AUD 450.00 is within the limit of AUD 1,000.00.",
+     "status": "pass"
+    },
+    {
+     "key": "customer_exposure",
+     "label": "The customer's total exposure after this decision",
+     "sentence": "The customer's total exposure after this decision: AUD 450.00 is within the limit of AUD 1,500.00. This is the RECORDED exposure; the records are not confirmed complete.",
+     "status": "pass"
+    },
+    {
+     "key": "autonomous_30d",
+     "label": "Autonomous approvals in 30 days (with this one)",
+     "sentence": "Autonomous approvals in 30 days (with this one): AUD 450.00 is within the limit of AUD 5,000.00.",
+     "status": "pass"
+    },
+    {
+     "key": "trial_in_force",
+     "label": "A trial credit already in force",
+     "sentence": "No trial credit for this customer is in force.",
+     "status": "pass"
+    },
+    {
+     "key": "first_credit",
+     "label": "First credit",
+     "sentence": "The customer has no earlier invoices.",
+     "status": "pass"
+    },
+    {
+     "key": "trial_exposure",
+     "label": "Trial credit exposure",
+     "sentence": "Trial credit exposure: AUD 450.00 is within the limit of AUD 600.00.",
+     "status": "pass"
+    },
+    {
+     "key": "trial_terms",
+     "label": "Terms",
+     "sentence": "Terms: 14 days is within the limit of 30 days.",
+     "status": "pass"
+    }
+   ],
+   "failing": [],
+   "status": "within",
+   "unknown": []
+  },
+  "status": "decided",
+  "statusText": "Approved within the Owner's delegation policy (policy version 3): trial credit of AUD 450.00 exposure on 14-day terms. It takes effect now inside Nucleon. Nucleon sent nothing to the customer. Staff informs the customer.",
+  "subject": {
+   "customerId": "customer_demo_lakeside",
+   "name": "Lakeside Kiosk (fictional)"
+  },
+  "updatedAt": "2026-10-26T12:43:01.562444+00:00",
+  "version": 3,
+  "warnings": [
+   "The customer's total exposure (AUD 450.00) is the RECORDED exposure: the records are not confirmed complete, so more may be owed.",
+   "AUD 150.00 — checked by Staff in the bank account (not a recorded payment); reference DEP-LK-02, received Fri 23 Oct 2026",
+   "AUD 150.00 — reported by the customer, not verified; reference DEP-LK-01, received Fri 23 Oct 2026 — it does not count towards the deposit"
+  ],
+  "why": null
+ }
+}

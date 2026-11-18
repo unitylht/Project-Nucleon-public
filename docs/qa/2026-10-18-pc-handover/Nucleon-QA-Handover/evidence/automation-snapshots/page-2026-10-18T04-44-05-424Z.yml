@@ -1,0 +1,30 @@
+- generic [ref=e2]:
+  - banner [ref=e9354]:
+    - link "Nucleon Payment extensions" [ref=e9355] [cursor=pointer]:
+      - /url: "#/"
+      - generic [ref=e9356]: Nucleon
+      - generic [ref=e9357]: Payment extensions
+    - group "Acting as" [ref=e9358]:
+      - button "Staff" [pressed] [ref=e9359] [cursor=pointer]
+      - button "Owner" [ref=e9360] [cursor=pointer]
+    - paragraph [ref=e9361]:
+      - generic [ref=e9363]: Agent ready
+    - link "Records" [ref=e9364] [cursor=pointer]:
+      - /url: "#/records"
+    - link "Demo c onsole" [ref=e9365] [cursor=pointer]:
+      - /url: "#/console"
+    - button "Sign out" [ref=e9366] [cursor=pointer]
+  - generic [ref=e9367]:
+    - navigation "Cases" [ref=e9368]:
+      - generic [ref=e9369]:
+        - generic [ref=e9370]: New request
+        - textbox "New request" [ref=e9371]:
+          - /placeholder: Paste the customer's message
+        - alert
+        - alert
+        - generic [ref=e9372]:
+          - button "Send to the agent" [ref=e9373] [cursor=pointer]
+          - group [ref=e9374]:
+            - generic "Try a sample" [ref=e9375] [cursor=pointer]
+    - main [ref=e9376]
+  - contentinfo [ref=e9377]: Fictional demo data. Nothing is sent to customers, and only the owner decides an outcome.

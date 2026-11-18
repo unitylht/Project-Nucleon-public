@@ -1,0 +1,128 @@
+- generic [ref=e2]:
+  - banner [ref=e4127]:
+    - link "Nucleon Payment extensions" [ref=e4128] [cursor=pointer]:
+      - /url: "#/"
+      - generic [ref=e4129]: Nucleon
+      - generic [ref=e4130]: Payment extensions
+    - group "Acting as" [ref=e4131]:
+      - button "Staff" [pressed] [ref=e4132] [cursor=pointer]
+      - button "Owner" [ref=e4133] [cursor=pointer]
+    - paragraph [ref=e4134]:
+      - generic [ref=e4136]: Agent ready
+    - link "Records" [ref=e4137] [cursor=pointer]:
+      - /url: "#/records"
+    - link "Demo c onsole" [ref=e4138] [cursor=pointer]:
+      - /url: "#/console"
+    - button "Sign out" [ref=e4139] [cursor=pointer]
+  - generic [ref=e4140]:
+    - navigation "Cases" [ref=e4141]:
+      - generic [ref=e4142]:
+        - generic [ref=e4143]: New request
+        - textbox "New request" [ref=e4144]:
+          - /placeholder: Paste the customer's message
+        - alert
+        - alert
+        - generic [ref=e4145]:
+          - button "Send to the agent" [ref=e4146] [cursor=pointer]
+          - group [ref=e4147]:
+            - generic "Try a sample" [ref=e4148] [cursor=pointer]
+      - generic [ref=e4149]:
+        - generic [ref=e4462]:
+          - heading "For you" [level=2] [ref=e4463]
+          - list [ref=e4464]:
+            - listitem [ref=e4465]:
+              - button "Customer not identified yet Hi, Harbour here - can we move our invoice to 30 October? 17 Oct, 2:54 pm Needs your answer" [ref=e4466] [cursor=pointer]:
+                - generic [ref=e4467]: Customer not identified yet
+                - generic [ref=e4468]: Hi, Harbour here - can we move our invoice to 30 October?
+                - time [ref=e4469]: 17 Oct, 2:54 pm
+                - generic [ref=e4470]: Needs your answer
+        - generic [ref=e4471]:
+          - heading "Other cases" [level=2] [ref=e4472]
+          - list [ref=e4473]:
+            - listitem [ref=e4474]:
+              - button "CL1018T Manual A fictional CL1018T-001, to Sat 14 Nov 18 Oct, 3:37 pm With the owner" [ref=e4475] [cursor=pointer]:
+                - generic [ref=e4476]: CL1018T Manual A fictional
+                - generic [ref=e4477]: CL1018T-001, to Sat 14 Nov
+                - time [ref=e4478]: 18 Oct, 3:37 pm
+                - generic [ref=e4479]: With the owner
+            - listitem [ref=e4480]:
+              - button "Release check café (fictional) RC-1, to Fri 6 Nov 18 Oct, 2:33 pm Approved to Fri 6 Nov" [ref=e4481] [cursor=pointer]:
+                - generic [ref=e4482]: Release check café (fictional)
+                - generic [ref=e4483]: RC-1, to Fri 6 Nov
+                - time [ref=e4484]: 18 Oct, 2:33 pm
+                - generic [ref=e4485]: Approved to Fri 6 Nov
+            - listitem [ref=e4486]:
+              - button "Harbour Demo Supplies DEMO-101, to Fri 30 Oct 16 Oct, 11:19 pm With the owner" [ref=e4487] [cursor=pointer]:
+                - generic [ref=e4488]: Harbour Demo Supplies
+                - generic [ref=e4489]: DEMO-101, to Fri 30 Oct
+                - time [ref=e4490]: 16 Oct, 11:19 pm
+                - generic [ref=e4491]: With the owner
+            - listitem [ref=e4492]:
+              - button "Harbour Demo Logistics DEMO-201, to Fri 23 Oct 17 Oct, 1:13 am With the owner" [ref=e4493] [cursor=pointer]:
+                - generic [ref=e4494]: Harbour Demo Logistics
+                - generic [ref=e4495]: DEMO-201, to Fri 23 Oct
+                - time [ref=e4496]: 17 Oct, 1:13 am
+                - generic [ref=e4497]: With the owner
+    - main [ref=e4180]:
+      - article [ref=e4498]:
+        - generic [ref=e4499]:
+          - generic [ref=e4500]:
+            - heading "CL1018T Manual A fictional" [level=1] [ref=e4501]
+            - generic [ref=e4502]: Invoice CL1018T-001
+          - paragraph [ref=e4503]: Waiting for the owner's decision. Nothing to do yet.
+          - paragraph [ref=e4504]: Prepared by the Gemma agent, running locally.
+        - generic [aria-hidden] [ref=e4505]:
+          - generic [ref=e4507]:
+            - generic [ref=e4508]: Today
+            - generic [ref=e4509]: Fri 16 Oct
+          - generic [ref=e4510]:
+            - generic [ref=e4511]: Asked for
+            - generic [ref=e4512]: Sat 14 Nov
+        - generic [ref=e4514]:
+          - region [ref=e4515]:
+            - heading "Key facts" [level=2] [ref=e4516]
+            - generic [ref=e4517]:
+              - generic [ref=e4518]:
+                - term [ref=e4519]: Outstanding
+                - definition [ref=e4520]: Not recorded
+              - generic [ref=e4521]:
+                - term [ref=e4522]: Due date now
+                - definition [ref=e4523]: Not on record
+              - generic [ref=e4524]:
+                - term [ref=e4525]: Asked to pay on
+                - definition [ref=e4526]: Sat 14 Nov 2026
+              - generic [ref=e4527]:
+                - term [ref=e4528]: Extension
+                - definition [ref=e4529]: Not calculated
+              - generic [ref=e4530]:
+                - term [ref=e4531]: Overdue today
+                - definition [ref=e4532]: Unknown
+            - paragraph [ref=e4533]: Calculated by the app from the invoice record. No due date is on record, so the day counts aren't calculated. Today is fixed at Fri 16 Oct 2026 for this demo.
+          - region [ref=e4534]:
+            - heading "What the customer wrote" [level=2] [ref=e4535]
+            - blockquote [ref=e4536]:
+              - text: Test CL1018T.
+              - mark [ref=e4537]: Could we pay invoice CL1018T-001 on 14 November 2026 instead
+              - generic [ref=e4538]: (the request)
+              - text: "?"
+            - paragraph [ref=e4539]: "Their words as received, not verified. Underlined: the request, as picked out by the agent."
+          - region [ref=e4540]:
+            - heading "Worth checking" [level=2] [ref=e4541]
+            - list [ref=e4542]:
+              - listitem [ref=e4543]: Invoice CL1018T-001 exists for more than one customer; staff chose the one for CL1018T Manual A fictional.
+              - listitem [ref=e4544]: No due date is on record for this invoice (no payment terms recorded), so the extension length and days overdue are not calculated.
+              - listitem [ref=e4545]: No amount still owed is recorded for this invoice, so the brief does not say how much is outstanding.
+          - region [ref=e4546]:
+            - heading "What the owner has noted" [level=2] [ref=e4547]
+            - paragraph [ref=e4548]:
+              - text: CL1018T fictional test customer. Prefers a written payment date.
+              - generic [ref=e4549]: CL1018T Manual A fictional
+            - paragraph [ref=e4550]: Confirmed by the owner. Practice data.
+        - generic [ref=e4551]:
+          - group [ref=e4552]:
+            - generic "Evidence and sources" [ref=e4553] [cursor=pointer]
+          - group [ref=e4554]:
+            - generic "Activity" [ref=e4555] [cursor=pointer]
+          - group [ref=e4556]:
+            - generic "Technical details" [ref=e4557] [cursor=pointer]
+  - contentinfo [ref=e4183]: Fictional demo data. Nothing is sent to customers, and only the owner decides an outcome.

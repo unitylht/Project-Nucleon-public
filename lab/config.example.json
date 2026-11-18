@@ -1,0 +1,11 @@
+{
+  "host": "127.0.0.1",
+  "port": 8630,
+  "rootPath": "/lab",
+  "recordsUrl": "http://127.0.0.1:8631",
+  "publicOrigins": ["https://nucleon.example.org"],
+  "mcpTokens": {"<owner token>": "owner", "<staff token>": "staff"},
+  "recordsPublicUrl": "http://127.0.0.1:8631",
+  "timingLog": "logs/tool-timing.jsonl",
+  "recordsLog": "<the records instance's service log, e.g. ~/Library/Logs/nucleon-lab/service.log>"
+}

@@ -1,0 +1,4 @@
+Customer,Invoice number,Invoice date,Invoice amount,Due date
+PD1018U Imported A fictional,PD1018U-BAD-001,2026-02-31,100.00,2026-10-10
+PD1018U Imported A fictional,PD1018U-BAD-002,2026-10-05,1O0.00,2026-10-10
+PD1018U Imported A fictional,PD1018U-VALID-PREVIEW,2026-10-05,250.00,2026-10-10

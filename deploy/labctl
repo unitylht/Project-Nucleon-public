@@ -1,0 +1,80 @@
+#!/bin/bash
+# labctl - control the Nucleon Lab service (an MCP server, served under /lab/mcp/) on the home-server Mac (launchd user agent).
+#
+#   labctl install              venv $BASE/runtime-lab/venv (created if missing), pip install lab/requirements.txt
+#   labctl deploy <git-ref>     fetch, check out <git-ref> detached in $BASE/app, install, run lab/tests, restart
+#   labctl status               launchd state, deployed commit, loopback mcp/ (401 without a bearer token)
+#   labctl restart
+#   labctl logs [N]             last N lines of the Lab log (default 40)
+#   labctl render-plist         write ~/Library/LaunchAgents/local.nucleon.lab.plist from the template (then launchctl bootstrap)
+#
+# Layout (outside Git): $BASE/{app,config/lab.json,data,runtime-lab/venv}; log ~/Library/Logs/nucleon-lab/lab.log.
+# The Lab's records instance (local.nucleon.lab-records, 127.0.0.1:8623) shares $BASE/app and is driven by nucleonctl:
+#   NUCLEON_BASE=~/srv/nucleon-lab NUCLEON_LABEL=local.nucleon.lab-records NUCLEON_LOGDIR=~/Library/Logs/nucleon-lab ~/srv/nucleon-lab/bin/nucleonctl <cmd>
+set -euo pipefail
+BASE="${NUCLEON_LAB_BASE:-$HOME/srv/nucleon-lab}"
+LABEL=local.nucleon.lab
+PLIST="$HOME/Library/LaunchAgents/$LABEL.plist"
+PY="$HOME/srv/nucleon/runtime/python-3.12.14/bin/python3"
+VENV="$BASE/runtime-lab/venv"   # not $BASE/runtime: that is a symlink to the shared ~/srv/nucleon/runtime
+APP="$BASE/app"
+CONFIG="$BASE/config/lab.json"
+LOGDIR="$HOME/Library/Logs/nucleon-lab"
+LOG="$LOGDIR/lab.log"
+DOMAIN="gui/$(id -u)"
+RECORDS="NUCLEON_BASE=$BASE NUCLEON_LABEL=local.nucleon.lab-records NUCLEON_LOGDIR=$LOGDIR $BASE/bin/nucleonctl"
+umask 077
+
+port() { "$PY" -c 'import json,sys; print(json.load(open(sys.argv[1]))["port"])' "$CONFIG"; }
+
+install() {
+  [ -x "$VENV/bin/python" ] || PYTHONDONTWRITEBYTECODE=1 "$PY" -m venv "$VENV"   # no .pyc written into the shared runtime
+  "$VENV/bin/pip" install --quiet --disable-pip-version-check -r "$APP/lab/requirements.txt"
+}
+
+render_plist() {
+  mkdir -p "$LOGDIR" "$(dirname "$PLIST")" && chmod 700 "$LOGDIR" && touch "$LOG" && chmod 600 "$LOG"
+  sed -e "s#__VENV__#$VENV#g" -e "s#__APP__#$APP#g" -e "s#__CONFIG__#$CONFIG#g" -e "s#__BASE__#$BASE#g" -e "s#__LOG__#$LOG#g" -e "s#__LABEL__#$LABEL#g" \
+    "$APP/deploy/local.nucleon.lab.plist.template" > "$PLIST.new"
+  plutil -lint "$PLIST.new" >/dev/null && mv -f "$PLIST.new" "$PLIST"   # a failed render never replaces a working plist
+  echo "wrote $PLIST; load it with: launchctl bootstrap $DOMAIN $PLIST"
+}
+
+restart() {
+  if launchctl print "$DOMAIN/$LABEL" >/dev/null 2>&1; then launchctl kickstart -k "$DOMAIN/$LABEL"
+  else [ -f "$PLIST" ] || { echo "no $PLIST: run labctl render-plist first" >&2; exit 1; }; launchctl bootstrap "$DOMAIN" "$PLIST"; fi
+  local p; p=$(port)
+  for _ in $(seq 1 100); do
+    if [ "$(curl -s -o /dev/null -w '%{http_code}' "http://127.0.0.1:$p/mcp/")" = 401 ]; then echo "ready on 127.0.0.1:$p"; return 0; fi
+    sleep 0.2
+  done
+  echo "the Lab did not answer on 127.0.0.1:$p; see: labctl logs" >&2; return 1
+}
+
+case "${1:-status}" in
+  install) install ;;
+  deploy)
+    ref="${2:?usage: labctl deploy <git-ref>}"
+    old=$(git -C "$APP" rev-parse --short HEAD)
+    git -C "$APP" fetch --quiet origin
+    git -C "$APP" checkout --quiet --detach "$ref"
+    mkdir -p "$BASE/bin" && cp "$APP/deploy/labctl" "$BASE/bin/labctl.new" && chmod 755 "$BASE/bin/labctl.new"
+    mv -f "$BASE/bin/labctl.new" "$BASE/bin/labctl"   # a rename, not an overwrite: bash may be reading the running copy
+    install
+    if ! (cd "$APP" && "$VENV/bin/python" -W ignore -m unittest discover -s lab/tests -q 2>&1 | tail -3); then
+      echo "tests failed; checkout left at $(git -C "$APP" rev-parse --short HEAD); to revert: labctl deploy $old" >&2; exit 1
+    fi
+    restart
+    git -C "$APP" log -1 --format='deployed: %h %s'
+    echo "the records instance shares this checkout and is deployed separately: $RECORDS deploy $ref"
+    echo "its codes rotate on restart; the Lab reads them from recordsLog in $CONFIG, so nothing needs refreshing" ;;
+  status)
+    launchctl print "$DOMAIN/$LABEL" 2>/dev/null | grep -E '^\s+(state|pid|last exit code) =' || echo "not loaded"
+    git -C "$APP" log -1 --format='deployed: %h %s (%ci)' 2>/dev/null || true
+    p=$(port 2>/dev/null) || { echo "no $CONFIG"; exit 1; }
+    curl -s -o /dev/null -w "loopback http://127.0.0.1:$p/mcp/ -> %{http_code} (401 expected)\n" "http://127.0.0.1:$p/mcp/" || true ;;
+  restart) restart ;;
+  logs) [ -f "$LOG" ] || exit 0; grep -viE 'access code|service code|bearer' "$LOG" | tail -n "${2:-40}" ;;   # the Lab logs neither; a guard all the same
+  render-plist) render_plist ;;
+  *) sed -n '2,13p' "$0"; exit 2 ;;
+esac

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nucleon Demo Runbook</title>
+<style>
+:root{--ink:#13212e;--muted:#5b6b7a;--line:#d5dde5;--accent:#1f5f8b;--ok:#1d7a4a;--bad:#b3261e;--amber:#9a5b00;--bg:#f4f6f8}
+*{box-sizing:border-box}body{margin:0;font:16px -apple-system,Helvetica,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:800px;margin:32px auto;padding:0 16px}h1{font-size:26px;margin:0 0 4px}.lede{color:var(--muted);margin:0 0 20px}
+section{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:14px}
+.head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}h2{font-size:19px;margin:0}
+.where{font-size:13px;font-weight:600;color:var(--accent);background:#e8f0f6;border-radius:999px;padding:3px 10px;white-space:nowrap}
+p{color:var(--muted);margin:6px 0 12px}h3{font-size:15px;margin:16px 0 6px}
+ol,ul{margin:6px 0 10px;padding-left:22px}li{margin:4px 0}
+.prompt{display:flex;gap:10px;align-items:flex-start;background:#f7f9fb;border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:8px 0}
+.prompt q{flex:1;quotes:none;font-size:16px;line-height:1.45}
+button{font:inherit;font-size:14px;padding:6px 12px;border-radius:8px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer;white-space:nowrap}
+button.main{border-color:var(--accent);background:var(--accent);color:#fff}button.done{border-color:var(--ok);color:var(--ok);background:#fff}
+table{border-collapse:collapse;width:100%;font-size:15px}td{padding:7px 6px;border-top:1px solid var(--line);vertical-align:middle}
+td.v{font-family:ui-monospace,Menlo,monospace;font-size:14px;white-space:nowrap}td:last-child{text-align:right;width:1%}
+.expect{border-left:4px solid var(--ok);background:#f1f8f4;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0}
+.expect b{color:var(--ok)}.note{border-left:4px solid var(--amber);background:#fdf6ec;border-radius:0 8px 8px 0;padding:10px 14px;margin:10px 0;font-size:15px}
+.say{font-size:15px;color:var(--muted)}.say b{color:var(--ink)}
+code{font-family:ui-monospace,Menlo,monospace;font-size:14px;background:#eef2f5;border-radius:5px;padding:1px 5px}
+.cmd{display:flex;gap:10px;align-items:center;background:#13212e;color:#e6edf3;border-radius:10px;padding:10px 14px;margin:8px 0}
+.cmd code{flex:1;background:none;color:inherit;overflow-x:auto;white-space:nowrap}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0}
+a.go{font-size:15px;padding:8px 14px;border-radius:8px;background:var(--accent);color:#fff;text-decoration:none}
+.foot{font-size:14px;color:var(--muted);margin:18px 0 40px}
+</style></head><body><main>
+<h1>Nucleon demo runbook</h1>
+<p class="lede">The same steps as the video, in the same order, with every prompt and value ready to copy. Logins and codes are on the launcher page (<code>demo-launcher.html</code>); this page holds no secrets. All data is fictional.</p>
+
+<section>
+<div class="head"><h2>0. Before you start</h2><span class="where">This Mac</span></div>
+<ol>
+<li><b>Browser A</b>: sign in to LibreChat, <b>and</b> sign in to Nucleon as <b>Staff</b> in the same browser. The Lakeside card's button opens a new tab here, so it needs the Staff session.</li>
+<li><b>Browser B</b> (another browser or a private window): sign in to Nucleon as <b>Owner</b> and open the Owner page (<code>#/delegation</code>).</li>
+<li>Data should be clean: policy version 0 (Advisory), nothing decided. If anyone has run cases since, reset first:</li>
+</ol>
+<div class="cmd"><code>~/Developer/nucleon-local/bin/demo-reset</code><button data-copy="~/Developer/nucleon-local/bin/demo-reset">Copy</button></div>
+<p>It should end with <code>Qwen loaded with context 32768: OK</code>. A reset restarts Nucleon and signs everyone out of it: sign in again as Staff (Browser A) and Owner (Browser B).</p>
+<div class="note">Use a <b>new chat</b> with the agent <b>Nucleon ADA Staff (Qwen)</b> for each case (launcher: "Open ADA agent chat"). Each case can be run once per reset: a second run returns the stored result instead of deciding again.</div>
+</section>
+
+<section>
+<div class="head"><h2>Shortcut: jump to the end of the video</h2><span class="where">This Mac</span></div>
+<p>Loads the data exactly as it was when the video finished recording: policy version 1, Northside approved, Harbourline waiting for the Owner, Lakeside approved. The video's own chats still hold their cards, so you can reopen them and click through instantly; nothing is sent to the agent.</p>
+<div class="cmd"><code>~/Developer/nucleon-local/bin/demo-video-state</code><button data-copy="~/Developer/nucleon-local/bin/demo-video-state">Copy</button></div>
+<p>The command restarts Nucleon, which signs everyone out of it: <b>sign in to Nucleon again</b> (Staff in Browser A, Owner in Browser B). Then open the chats in Browser A (signed in to LibreChat with the launcher's main account, the same one as in the video):</p>
+<div class="row">
+<a class="go" href="https://nucleon.tail492813.ts.net/c/2bb8988d-3935-5316-b8e4-1518c8ee8df5" target="_blank" rel="noopener">Northside chat</a>
+<a class="go" href="https://nucleon.tail492813.ts.net/c/3049c2f4-c804-5048-b450-5e08ef3a6325" target="_blank" rel="noopener">Harbourline chat</a>
+<a class="go" href="https://nucleon.tail492813.ts.net/c/50116008-331e-5eb4-9c48-d845f087e07b" target="_blank" rel="noopener">Lakeside chat</a>
+</div>
+<ul>
+<li><b>Lakeside's card button</b> opens the Staff form page with the information already submitted and the result at the top, as at the end of the video.</li>
+<li><b>Owner page</b>: Harbourline is waiting with Approve / Decline; Northside and Lakeside are under the agent's decisions.</li>
+<li>Don't type new requests for these three customers in this state: the agent would return the stored results. For a fresh live run, use <code>demo-reset</code> and steps 1–5.</li>
+<li>Switch freely: <code>demo-video-state</code> and <code>demo-reset</code> each keep a backup of the data they replace.</li>
+</ul>
+</section>
+
+<section>
+<div class="head"><h2>1. The owner sets the limits</h2><span class="where">Browser B · Owner page</span></div>
+<p>Scroll to the policy form and enter these values, then press <b>Save as version 1</b>.</p>
+<table>
+<tr><td>Mode</td><td class="v">Delegated</td><td></td></tr>
+<tr><td>Most one decision may add (exposure)</td><td class="v">1000.00</td><td><button data-copy="1000.00">Copy</button></td></tr>
+<tr><td>Most a customer may owe after a decision</td><td class="v">1500.00</td><td><button data-copy="1500.00">Copy</button></td></tr>
+<tr><td>The agent may decide payment extensions</td><td class="v">✓ ticked</td><td></td></tr>
+<tr><td>Longest extension (days past the current due date)</td><td class="v">30</td><td><button data-copy="30">Copy</button></td></tr>
+<tr><td>Trial credit for new customers</td><td class="v">On, within the limits below</td><td></td></tr>
+<tr><td>Most trial credit exposure (order less verified deposit)</td><td class="v">600.00</td><td><button data-copy="600.00">Copy</button></td></tr>
+<tr><td>Smallest deposit (% of the order)</td><td class="v">25</td><td><button data-copy="25">Copy</button></td></tr>
+</table>
+<h3>Open "Advanced"</h3>
+<table>
+<tr><td>Most the agent may approve in 30 days</td><td class="v">5000.00</td><td><button data-copy="5000.00">Copy</button></td></tr>
+<tr><td>Most earlier payments that may have been late (%)</td><td class="v">25</td><td><button data-copy="25">Copy</button></td></tr>
+<tr><td>Longest trial terms (days)</td><td class="v">30</td><td><button data-copy="30">Copy</button></td></tr>
+<tr><td>A trade reference is needed above this exposure</td><td class="v">1000.00</td><td><button data-copy="1000.00">Copy</button></td></tr>
+<tr><td>A deposit Staff only checked counts up to this exposure</td><td class="v">600.00</td><td><button data-copy="600.00">Copy</button></td></tr>
+<tr><td>Send to the Owner an amount above this many times the customer's usual</td><td class="v">3</td><td><button data-copy="3">Copy</button></td></tr>
+<tr><td>Track record: reviewed cases the policy would approve</td><td class="v">5</td><td><button data-copy="5">Copy</button></td></tr>
+<tr><td>Track record: how often the Owner agreed (%)</td><td class="v">80</td><td><button data-copy="80">Copy</button></td></tr>
+<tr><td>An extension needs nothing else overdue</td><td class="v">✓ ticked</td><td></td></tr>
+<tr><td>Note for this version</td><td class="v">Class demo: fictional values</td><td><button data-copy="Class demo: fictional values">Copy</button></td></tr>
+</table>
+<div class="expect"><b>Expect:</b> the page now shows policy version 1, Delegated. Leave the other Advanced fields empty.</div>
+<p class="say"><b>Point to make:</b> these are the bounds the agent decides within; each save is a new version of the policy.</p>
+</section>
+
+<section>
+<div class="head"><h2>2. Northside Cafe: approved by the agent</h2><span class="where">Browser A · new ADA chat</span></div>
+<div class="prompt"><q>Northside Cafe is a new customer and wants AUD 800 of stock on 14-day terms; they paid a deposit.</q><button class="main" data-copy="Northside Cafe is a new customer and wants AUD 800 of stock on 14-day terms; they paid a deposit.">Copy prompt</button></div>
+<ol>
+<li>Send it. The agent finds Northside in Nucleon's records, then asks Nucleon to check the request against the policy.</li>
+<li>Scroll to the decision card and read it from the top.</li>
+</ol>
+<div class="expect"><b>Expect:</b> <b>Approved</b> under policy version 1. Order $800 − verified deposit $200 (reference DEP-NS-01) = <b>$600 exposure</b>, within the $600 new-customer limit. Every limit it was checked against is listed below. The card arrives in about 10–20 s, the full reply in 30–60 s.</div>
+<p class="say"><b>Point to make:</b> Nucleon sends nothing to the customer; Staff tell them. A new customer is no longer another phone call to the owner. An early "Would be decided" preview card is not the decision; wait for the final card.</p>
+</section>
+
+<section>
+<div class="head"><h2>3. Harbourline Catering: too big, goes to the owner</h2><span class="where">Browser A · new ADA chat</span></div>
+<div class="prompt"><q>Harbourline Catering, a new customer, wants AUD 5,000 on 14-day terms with a deposit.</q><button class="main" data-copy="Harbourline Catering, a new customer, wants AUD 5,000 on 14-day terms with a deposit.">Copy prompt</button></div>
+<div class="expect"><b>Expect:</b> <b>sent to the Owner, nothing approved</b>. Order $5,000 − deposit $1,000 = <b>$4,000 exposure</b>, over the $1,000 limit for one decision.</div>
+<h3>Then show it waiting</h3>
+<ol><li>Browser B: reload the Owner page. Harbourline is under the waiting cases with <b>Needs your decision</b>, a reason box, and Approve / Decline.</li></ol>
+<p class="say"><b>Point to make:</b> Nucleon's own system holds the agent to the limit, whatever the AI says. In the video we only showed it waiting; deciding it is optional, and it changes the data until the next reset.</p>
+</section>
+
+<section>
+<div class="head"><h2>4. Lakeside Kiosk: missing information, Staff fill it in</h2><span class="where">Browser A · new ADA chat</span></div>
+<div class="prompt"><q>Lakeside Kiosk, a new customer, wants AUD 600 on 14-day terms.</q><button class="main" data-copy="Lakeside Kiosk, a new customer, wants AUD 600 on 14-day terms.">Copy prompt</button></div>
+<div class="expect"><b>Expect:</b> the card asks <b>Staff for information</b>: Nucleon has no record of a deposit or of the business identity. It does not go to the owner.</div>
+<ol>
+<li>Scroll down the card and click <b>Provide information in Nucleon</b>. The form opens in a new tab, signed in as Staff.</li>
+<li>Fill in the form:</li>
+</ol>
+<table>
+<tr><td>Amount received</td><td class="v">150.00</td><td><button data-copy="150.00">Copy</button></td></tr>
+<tr><td>Date received</td><td class="v">24 Oct 2026</td><td></td></tr>
+<tr><td>Payment reference</td><td class="v">DEP-LK-FICT-01</td><td><button data-copy="DEP-LK-FICT-01">Copy</button></td></tr>
+<tr><td>How you know</td><td class="v">I saw it arrive in the bank account…</td><td></td></tr>
+<tr><td>Business registration number</td><td class="v">000 111 222 (fictional)</td><td><button data-copy="000 111 222 (fictional)">Copy</button></td></tr>
+<tr><td>Trading name</td><td class="v">Lakeside Kiosk Pty Ltd (fictional)</td><td><button data-copy="Lakeside Kiosk Pty Ltd (fictional)">Copy</button></td></tr>
+<tr><td>How you know</td><td class="v">On a document</td><td></td></tr>
+</table>
+<ol start="3"><li>Press <b>Submit information</b>, then scroll to the top of the page.</li></ol>
+<div class="expect"><b>Expect:</b> Nucleon checks again: $600 − $150 = <b>$450 exposure</b>, within the limits, so it is <b>approved</b> by the agent.</div>
+<p class="say"><b>Point to make:</b> Staff confirm only what they saw themselves. The date field is a date picker: type or pick it rather than pasting.</p>
+</section>
+
+<section>
+<div class="head"><h2>5. What the owner sees afterwards</h2><span class="where">Browser B · Owner page</span></div>
+<ol>
+<li>Reload the Owner page and scroll down slowly.</li>
+<li><b>Waiting</b>: Harbourline, needs your decision.</li>
+<li><b>Decided by the agent</b>: Northside and Lakeside, each with Agree / Disagree / Override.</li>
+<li><b>Suggestions</b>: changes to the policy based on reviewed cases (suggestions only).</li>
+</ol>
+<p class="say"><b>Point to make:</b> the owner monitors and acts when they see fit. Over time, as more decisions are recorded and checked, they can hand over more, one policy version at a time. The track-record check uses made-up past cases for this demo, so it is a simulation.</p>
+</section>
+
+<section>
+<div class="head"><h2>6. Afterwards</h2><span class="where">This Mac</span></div>
+<p>Put the demo back to clean data (keeps a backup of the current data first):</p>
+<div class="cmd"><code>~/Developer/nucleon-local/bin/demo-reset</code><button data-copy="~/Developer/nucleon-local/bin/demo-reset">Copy</button></div>
+<h3>If something goes wrong</h3>
+<ul>
+<li><b>Agent loops or repeats tool calls</b>: Qwen's context is probably not 32768. Run <code>demo-reset</code> and follow its warning line.</li>
+<li><b>Card button opens a Nucleon login page</b>: Browser A is not signed in to Nucleon as Staff. Sign in, then click the button again.</li>
+<li><b>A case says it was already handled</b>: it was run before this reset. Reset, save version 1 again, and rerun.</li>
+<li><b>Agent asks a question instead of deciding</b>: answer it or rerun with the exact prompt above; it asks rather than guessing on vague requests.</li>
+</ul>
+</section>
+<p class="foot">Prompts and values match the video's recording script (<code>record_v2.py</code>). Expected numbers come from that recording's backend records.</p>
+</main><script>
+async function copyText(text) {
+  try { await navigator.clipboard.writeText(text); return true; } catch (e) {}
+  const t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select();
+  let ok = false; try { ok = document.execCommand('copy'); } catch (e) {} t.remove(); return ok;
+}
+document.querySelectorAll('[data-copy]').forEach(b => b.addEventListener('click', async () => {
+  const label = b.textContent, ok = await copyText(b.dataset.copy);
+  b.textContent = ok ? 'Copied' : 'Copy failed'; b.classList.toggle('done', ok);
+  setTimeout(() => { b.textContent = label; b.classList.remove('done'); }, 1500);
+}));
+</script></body></html>

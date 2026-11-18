@@ -1,0 +1,50 @@
+#!/bin/zsh
+# Local Nucleon dev environment: records backend (8631) + Lab/MCP (8630) + the LM Studio title proxy (1235), all on 127.0.0.1.
+L=${NUCLEON_LOCAL_HOME:-$HOME/Developer/nucleon-local}
+REPO=${NUCLEON_REPO:-$HOME/Developer/Project-Nucleon}
+PY=$L/venv/bin/python
+export PYTHONDONTWRITEBYTECODE=1
+
+pidof_() { [[ -f $L/run/$1.pid ]] && kill -0 "$(cat $L/run/$1.pid)" 2>/dev/null && cat $L/run/$1.pid }
+
+start_one() {  # name port cmd...
+  local name=$1 port=$2; shift 2
+  if pidof_ $name >/dev/null; then echo "$name already running (pid $(pidof_ $name))"; return 0; fi
+  if lsof -nP -iTCP:$port -sTCP:LISTEN >/dev/null 2>&1; then echo "port $port is busy; not starting $name" >&2; return 1; fi
+  (cd $REPO && nohup "$@" >>$L/logs/$name.log 2>&1 & echo $! >$L/run/$name.pid)
+  for i in {1..40}; do
+    lsof -nP -iTCP:$port -sTCP:LISTEN >/dev/null 2>&1 && { echo "$name started (pid $(cat $L/run/$name.pid), port $port)"; return 0; }
+    pidof_ $name >/dev/null || { echo "$name exited; see $L/logs/$name.log" >&2; return 1; }
+    sleep 0.5
+  done
+  echo "$name did not answer in time; see $L/logs/$name.log" >&2; return 1
+}
+
+stop_one() {
+  local name=$1 pid
+  if pid=$(pidof_ $name); then
+    kill $pid; for i in {1..20}; do kill -0 $pid 2>/dev/null || break; sleep 0.25; done
+    kill -0 $pid 2>/dev/null && kill -9 $pid
+    echo "$name stopped"
+  else echo "$name not running"; fi
+  rm -f $L/run/$name.pid
+}
+
+case ${1:-status} in
+  start)
+    start_one records 8631 python3 prototype/server.py --config $L/config/records.json || exit 1
+    start_one lab 8630 $PY -m lab --config $L/config/lab.json
+    start_one titleproxy 1235 python3 $L/bin/title-proxy ;;   # LM Studio pass-through that pre-fills titles (LibreChat points at :1235)
+  stop) stop_one titleproxy; stop_one lab; stop_one records ;;
+  restart) $0 stop; $0 start ;;
+  status)
+    for n in records lab titleproxy; do
+      if p=$(pidof_ $n); then echo "$n: running pid $p"; else echo "$n: stopped"; fi
+    done
+    lsof -nP -iTCP:8630 -iTCP:8631 -iTCP:1235 -sTCP:LISTEN 2>/dev/null | awk 'NR>1{print "  listen "$9" ("$1" "$2")"}'
+    echo "records /api/tools -> $(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8631/api/tools) (401 expected without a session)"
+    echo "lab /mcp/ no token  -> $(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8630/mcp/) (401 expected)" ;;
+  logs) tail -n ${2:-40} -f $L/logs/records.log $L/logs/lab.log ;;
+  test-mcp) $PY $L/tests/mcp_check.py ;;
+  *) echo "usage: nucleon-local start|stop|restart|status|logs|test-mcp" >&2; exit 2 ;;
+esac

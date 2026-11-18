@@ -1,0 +1,210 @@
+{
+ "invoices": {
+  "asOf": "2026-10-18",
+  "asOfText": "Sun 18 Oct 2026",
+  "completeTo": {
+   "invoices": null,
+   "payments": null
+  },
+  "completeness": {
+   "asOf": "2026-10-18",
+   "asOfText": "Sun 18 Oct 2026",
+   "balanceEstablished": false,
+   "caveatText": "Not a confirmed balance: invoice records are not confirmed complete; payment records are not confirmed complete. No payments are recorded, which does not show that none were made. The opening balance, and what it includes, is not fully settled.",
+   "invoices": {
+    "completeTo": null,
+    "contradicted": 0,
+    "lastActivity": "2026-10-06",
+    "lastActivityText": "Tue 6 Oct 2026",
+    "recordedCount": 2,
+    "state": "notConfirmed"
+   },
+   "payments": {
+    "completeTo": null,
+    "contradicted": 0,
+    "lastActivity": null,
+    "recordedCount": 0,
+    "state": "notConfirmed"
+   },
+   "reasons": [
+    "invoices_not_confirmed",
+    "payments_not_confirmed",
+    "no_payments_recorded",
+    "no_opening_balance"
+   ]
+  },
+  "customerId": "customer_c0b31a3acd193a6c",
+  "filter": {
+   "dueOn": "2026-12-25",
+   "dueOnText": "Fri 25 Dec 2026",
+   "noneText": null,
+   "text": "due on Fri 25 Dec 2026 (original or approved)"
+  },
+  "invoiceCount": 1,
+  "invoices": [
+   {
+    "allocations": [],
+    "allocationsText": "No payment is allocated to this invoice.",
+    "amountAsOf": null,
+    "amountText": "AUD 200.00 (worked out)",
+    "daysOverdue": 0,
+    "dueDate": "2026-12-25",
+    "dueDateText": "Fri 25 Dec 2026",
+    "invoiceId": "invoice_954850ee0b1c0fb1",
+    "mark": "worked out",
+    "matchedOn": "original_due",
+    "originalDueText": "Fri 25 Dec 2026",
+    "reference": "INV-2",
+    "settled": false,
+    "status": "open",
+    "stillOwed": "AUD 200.00",
+    "stillOwedText": "Still owed: AUD 200.00 (worked out: the invoice amount AUD 200.00 (as recorded) less the payments applied to it, by recorded allocation first and then oldest first).",
+    "totalText": "AUD 200.00 (as recorded), the original invoice amount"
+   }
+  ],
+  "name": "Bayside Café",
+  "scopeText": "This list shows only the matching invoices of Bayside Café, not the customer's complete account balance.",
+  "subject": {
+   "customerId": "customer_c0b31a3acd193a6c",
+   "name": "Bayside Café"
+  },
+  "which": "all"
+ },
+ "overview": {
+  "asOf": "2026-10-18",
+  "asOfText": "Sun 18 Oct 2026",
+  "balanceLine": "Owed now AUD 1,200.00 (worked out; invoices not confirmed complete; payments not confirmed complete), all of it not yet due. Still owed per invoice: INV-1 AUD 1,000.00 (worked out); INV-2 AUD 200.00 (worked out).",
+  "caseCount": 0,
+  "completeTo": {
+   "invoices": null,
+   "payments": null
+  },
+  "completeness": {
+   "asOf": "2026-10-18",
+   "asOfText": "Sun 18 Oct 2026",
+   "balanceEstablished": false,
+   "caveatText": "Not a confirmed balance: invoice records are not confirmed complete; payment records are not confirmed complete. No payments are recorded, which does not show that none were made. The opening balance, and what it includes, is not fully settled.",
+   "invoices": {
+    "completeTo": null,
+    "contradicted": 0,
+    "lastActivity": "2026-10-06",
+    "lastActivityText": "Tue 6 Oct 2026",
+    "recordedCount": 2,
+    "state": "notConfirmed"
+   },
+   "payments": {
+    "completeTo": null,
+    "contradicted": 0,
+    "lastActivity": null,
+    "recordedCount": 0,
+    "state": "notConfirmed"
+   },
+   "reasons": [
+    "invoices_not_confirmed",
+    "payments_not_confirmed",
+    "no_payments_recorded",
+    "no_opening_balance"
+   ]
+  },
+  "creditHeld": {
+   "amount": "AUD 0.00",
+   "amountText": "AUD 0.00 (worked out, customer credit held)",
+   "mark": "worked out"
+  },
+  "customerId": "customer_c0b31a3acd193a6c",
+  "invoiceCount": 2,
+  "invoices": [
+   {
+    "allocations": [],
+    "allocationsText": "No payment is allocated to this invoice.",
+    "amountAsOf": null,
+    "amountText": "AUD 1,000.00 (worked out)",
+    "daysOverdue": 0,
+    "dueDate": "2026-11-05",
+    "dueDateText": "Thu 5 Nov 2026",
+    "invoiceId": "invoice_f4777cf88ec5d78a",
+    "mark": "worked out",
+    "originalDueText": "Thu 5 Nov 2026",
+    "reference": "INV-1",
+    "settled": false,
+    "status": "open",
+    "stillOwed": "AUD 1,000.00",
+    "stillOwedText": "Still owed: AUD 1,000.00 (worked out: the invoice amount AUD 1,000.00 (as recorded) less the payments applied to it, by recorded allocation first and then oldest first).",
+    "totalText": "AUD 1,000.00 (as recorded), the original invoice amount"
+   },
+   {
+    "allocations": [],
+    "allocationsText": "No payment is allocated to this invoice.",
+    "amountAsOf": null,
+    "amountText": "AUD 200.00 (worked out)",
+    "daysOverdue": 0,
+    "dueDate": "2026-12-25",
+    "dueDateText": "Fri 25 Dec 2026",
+    "invoiceId": "invoice_954850ee0b1c0fb1",
+    "mark": "worked out",
+    "originalDueText": "Fri 25 Dec 2026",
+    "reference": "INV-2",
+    "settled": false,
+    "status": "open",
+    "stillOwed": "AUD 200.00",
+    "stillOwedText": "Still owed: AUD 200.00 (worked out: the invoice amount AUD 200.00 (as recorded) less the payments applied to it, by recorded allocation first and then oldest first).",
+    "totalText": "AUD 200.00 (as recorded), the original invoice amount"
+   }
+  ],
+  "knownAmountCount": 2,
+  "lastActivity": {
+   "invoices": "2026-10-06",
+   "invoicesText": "Tue 6 Oct 2026",
+   "payments": null
+  },
+  "link": "#/customers/customer_c0b31a3acd193a6c",
+  "name": "Bayside Café",
+  "notAllocated": {
+   "amount": "AUD 0.00",
+   "amountText": "AUD 0.00 (as recorded, received, not matched to an invoice)",
+   "mark": "as recorded"
+  },
+  "openCases": [],
+  "openCount": 2,
+  "openingPaid": false,
+  "overdueCount": 0,
+  "overdueText": "2 open invoices, 0 overdue",
+  "owedFromOpening": {
+   "amount": "AUD 0.00",
+   "amountText": "AUD 0.00 (worked out, left of the opening balance, of unknown age)",
+   "mark": "worked out"
+  },
+  "owedNoDueDate": {
+   "amount": "AUD 0.00",
+   "amountText": "AUD 0.00 (worked out, on invoices with no due date, so overdue is not known)",
+   "mark": "worked out"
+  },
+  "owedNotYetDue": {
+   "amount": "AUD 1,200.00",
+   "amountText": "AUD 1,200.00 (worked out, not yet due)",
+   "mark": "worked out"
+  },
+  "owedNow": {
+   "amount": "AUD 1,200.00",
+   "amountText": "AUD 1,200.00 (worked out, owed now)",
+   "mark": "worked out"
+  },
+  "owedOverdue": {
+   "amount": "AUD 0.00",
+   "amountText": "AUD 0.00 (worked out, overdue)",
+   "mark": "worked out"
+  },
+  "payments": [],
+  "recordedNet": {
+   "amount": "AUD 1,200.00",
+   "amountText": "AUD 1,200.00 (as recorded, recorded invoices less recorded payments)",
+   "mark": "as recorded"
+  },
+  "recordsExist": true,
+  "subject": {
+   "customerId": "customer_c0b31a3acd193a6c",
+   "name": "Bayside Café"
+  },
+  "termsText": "Invoices are issued on 55-day terms (the median of due date minus issue date over 2 recorded invoices)"
+ }
+}

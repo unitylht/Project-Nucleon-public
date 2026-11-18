@@ -1,0 +1,105 @@
+# POC config (git-ignored). Schema: https://www.librechat.ai/docs/configuration/librechat_yaml
+version: 1.3.17
+cache: true
+
+interface:
+  modelSelect: true       # needed: the agent picker
+  customWelcome: "Ask the Nucleon assistant. Your Nucleon pages: https://nucleon.dracooz.top"
+  # S6b: trimmed to the one thing members use, the agents
+  parameters: false
+  presets: false
+  prompts: false
+  bookmarks: false
+  multiConvo: false
+  agents:
+    use: true
+    # create: not set here on purpose, so each role keeps its own setting (ADMIN may build agents; group member
+    # accounts, role USER, may not). An explicit value would overwrite both roles at every start.
+    share: false
+    public: false
+
+endpoints:
+  # SSRF exemption list (applies to user-provided baseURLs); harmless for the admin-defined one below.
+  allowedAddresses:
+    - 'host.docker.internal:1234'
+    - 'host.docker.internal:1235'   # the title proxy in front of LM Studio (deploy/m3-local/bin/title-proxy)
+
+  agents:
+    disableBuilder: false
+    recursionLimit: 25
+    titleTiming: 'final'   # generate title after the reply finishes (avoid contending with the main reply on single-slot LM Studio)
+    # no allowedProviders -> all providers incl. custom endpoints can back an agent
+
+  custom:
+    - name: 'LM Studio'
+      apiKey: 'lm-studio'            # dummy; LM Studio does not check it
+      baseURL: 'http://host.docker.internal:1235/v1'   # via title-proxy (pass-through to LM Studio :1234 that pre-fills conversation titles; see deploy/m3-local/bin/title-proxy)
+      models:
+        default: ['qwen3.5-35b-a3b', 'openai/gpt-oss-20b', 'gemma4-26b', 'gemma4-31b']
+        fetch: false      # explicit list only; hides the embedding model from the picker (rag_api uses its own env)
+      titleConvo: true
+      titleModel: 'current_model'
+      modelDisplayLabel: 'LM Studio (local)'
+
+mcpServers:
+  # Both servers share one URL; they differ only by bearer token (set in .env, see banner at top).
+  # startup left at default (true) so the log shows the 401 while tokens are empty.
+  nucleon-staff:
+    type: streamable-http
+    url: https://nucleon.dracooz.top/lab/mcp/
+    headers:
+      Authorization: "Bearer ${NUCLEON_STAFF_MCP_TOKEN}"
+    timeout: 120000
+    requiresOAuth: false   # skip OAuth auto-detection (401 otherwise gets treated as OAuth-required)
+    chatMenu: false        # remote M6: only reachable through the agents that use it, never from a member's chat menu
+  nucleon-owner:
+    type: streamable-http
+    url: https://nucleon.dracooz.top/lab/mcp/
+    headers:
+      Authorization: "Bearer ${NUCLEON_OWNER_MCP_TOKEN}"
+    timeout: 120000
+    requiresOAuth: false   # skip OAuth auto-detection (401 otherwise gets treated as OAuth-required)
+    chatMenu: false        # remote M6: only reachable through the agents that use it, never from a member's chat menu
+  # Local Nucleon dev (fictional data; ~/Developer/nucleon-local). nucleon-local-staff has the Staff role; nucleon-local-owner (below) the Owner role, read-only use.
+  nucleon-local-staff:
+    type: streamable-http
+    url: http://host.docker.internal:8630/mcp/
+    headers:
+      Authorization: "Bearer ${NUCLEON_LOCAL_STAFF_MCP_TOKEN}"
+    timeout: 120000
+    requiresOAuth: false
+    chatMenu: false        # only reachable through the Staff agent; a plain chat must not attach the Nucleon tools
+  # The Owner's read-only assistant (S3): the same Lab URL as nucleon-local-staff, the OWNER token. The Lab fixes the role from the token, so this
+  # connection can never reach a Staff-only or write tool (deploy/m3-local/tests/mcp_check.py checks it). Used only by the agent
+  # "Nucleon ADA Owner (Qwen)" (agents/seed_owner_agent_3080.js); NUCLEON_LOCAL_OWNER_MCP_TOKEN in LibreChat's .env is the Owner token of the Lab's config.
+  nucleon-local-owner:
+    type: streamable-http
+    url: http://host.docker.internal:8630/mcp/
+    headers:
+      Authorization: "Bearer ${NUCLEON_LOCAL_OWNER_MCP_TOKEN}"
+    timeout: 120000
+    requiresOAuth: false
+    chatMenu: false        # only reachable through the Owner agent, never from a member's chat menu
+
+# SSRF exemption for the local Nucleon Lab only (one host:port; allowedDomains is deliberately NOT set, because that
+# would turn on an allowlist and block the remote nucleon-* servers). See packages/api/src/auth/domain.ts isDomainAllowedCore.
+mcpSettings:
+  allowedAddresses:
+    - 'host.docker.internal:8630'
+
+# One default for every new chat: the Staff agent (S6b, 31 Oct 2026). The raw LM Studio endpoint stays selectable for the admin's tests but
+# is never the default. The Owner agent is reached from "My Agents" by the owner account or by the launcher's direct link; it is not listed
+# here because a spec is global and Staff would see (and fail on) it.
+modelSpecs:
+  enforce: false
+  prioritize: true
+  list:
+    - name: nucleon-staff
+      label: Nucleon assistant
+      default: true
+      description: Payment requests, customers and invoices; prepares cases for the Owner. Fictional data.
+      showIconInHeader: true
+      hideBadgeRow: true
+      preset:
+        endpoint: agents
+        agent_id: <the Staff agent id from seed_ada_agent_3080.js>

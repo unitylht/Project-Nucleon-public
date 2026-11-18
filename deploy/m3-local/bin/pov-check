@@ -1,0 +1,88 @@
+#!/bin/zsh
+# Is the public PoV up? One PASS/FAIL line per check; exit status 1 on any FAIL. Read-only: starts and changes nothing.
+#   pov-check            local services, model, tunnel, caffeinate, and the two public hostnames seen from the edge
+#   pov-check --local    skip the two public hostname checks (no internet needed)
+# For the edge checks behind Cloudflare Access: a service token (Zero Trust: Access, Service credentials) with a Service Auth policy on the
+# app, as CF_ACCESS_CLIENT_ID and CF_ACCESS_CLIENT_SECRET in the environment or, by default, read from $L/config/cf-access-service-token
+# (two KEY=value lines, mode 600). With it the checks go through Access to the origin and read the page; without it they only expect the
+# Access login redirect. The values are only sent as headers and never printed. Cloudflare's browser integrity check refuses a bare client,
+# so the requests carry a User-Agent.
+# Fictional data only; nothing here reads or prints a secret.
+set -u
+L=${NUCLEON_LOCAL_HOME:-$HOME/Developer/nucleon-local}
+LMS=${LMS:-$HOME/.lmstudio/bin/lms}
+CF_LOG=${CF_LOG:-$L/logs/cloudflared.log}
+MODEL=qwen3.5-35b-a3b; CTX_WANT=32768
+RECORDS_PUBLIC=https://nucleon.dracooz.top/; LIBRECHAT_PUBLIC=https://creditease.dracooz.top/
+local_only=0
+for a in "$@"; do case $a in --local) local_only=1;; *) echo "usage: pov-check [--local]" >&2; exit 2;; esac; done
+fail=0
+ok()  { printf 'PASS  %-34s %s\n' "$1" "$2"; }
+bad() { printf 'FAIL  %-34s %s\n' "$1" "$2"; fail=1; }
+code() { curl -s -o /dev/null -w '%{http_code}' --max-time "${2:-5}" "${@:3}" "$1" 2>/dev/null; }   # url, timeout, curl args; 000 = no answer
+TOKEN_FILE=${CF_ACCESS_TOKEN_FILE:-$L/config/cf-access-service-token}
+if [[ -z ${CF_ACCESS_CLIENT_ID:-} && -r $TOKEN_FILE ]]; then
+  CF_ACCESS_CLIENT_ID=$(sed -n 's/^CF_ACCESS_CLIENT_ID=//p' "$TOKEN_FILE" | tr -d ' \r'); CF_ACCESS_CLIENT_SECRET=$(sed -n 's/^CF_ACCESS_CLIENT_SECRET=//p' "$TOKEN_FILE" | tr -d ' \r')
+fi
+
+# 1-3 the three local services
+c=$(code http://127.0.0.1:8631/api/tools)
+[[ $c == 401 ]] && ok "records :8631" "answers 401 without a session (expected)" || bad "records :8631" "got ${c:-none}, expected 401 (nucleon-local start?)"
+c=$(code http://127.0.0.1:8630/mcp/)
+[[ $c == 401 ]] && ok "lab :8630" "answers 401 without a token (expected)" || bad "lab :8630" "got ${c:-none}, expected 401 (nucleon-local start?)"
+c=$(code http://127.0.0.1:1235/v1/models)
+[[ $c == 200 ]] && ok "title proxy :1235" "forwards to LM Studio (titles pre-filled)" || bad "title proxy :1235" "got ${c:-none}, expected 200 (nucleon-local start?)"
+c=$(code http://127.0.0.1:3080/)
+[[ $c == 200 ]] && ok "librechat :3080" "answers 200" || bad "librechat :3080" "got ${c:-none}, expected 200 (docker ps; docker logs LibreChat)"
+
+# 4 the model: loaded with its 32768-token context (the same check as bin/demo-reset; docs/KNOWN-LIMITATIONS.md L-002)
+ctx=$($LMS ps --json 2>/dev/null | python3 -c 'import json,sys; print(next((m.get("contextLength") for m in json.load(sys.stdin) if m.get("identifier") == "'$MODEL'"), ""))' 2>/dev/null)
+[[ $ctx == $CTX_WANT ]] && ok "lm studio $MODEL" "loaded, context $CTX_WANT" \
+  || bad "lm studio $MODEL" "context '${ctx:-not loaded}', want $CTX_WANT: $LMS unload $MODEL; $LMS load $MODEL --context-length $CTX_WANT --identifier $MODEL -y"
+
+# 5 cloudflared running, and its log shows a registered connection in the last 24 hours
+if pgrep -f 'cloudflared tunnel run' >/dev/null; then ok "cloudflared process" "running (pid $(pgrep -f 'cloudflared tunnel run' | head -1))"
+else bad "cloudflared process" "not running (launchctl print gui/$(id -u)/com.nucleon.cloudflared)"; fi
+last=$(grep 'Registered tunnel connection' "$CF_LOG" 2>/dev/null | tail -1 | awk '{print $1}')   # e.g. 2026-10-31T01:02:03Z
+then=""; [[ -n $last ]] && then=$(date -j -u -f '%Y-%m-%dT%H:%M:%SZ' "${last%%.*}" +%s 2>/dev/null || date -j -u -f '%Y-%m-%dT%H:%M:%SZ' "$last" +%s 2>/dev/null)
+now=$(date +%s)
+if [[ -z $then ]]; then bad "cloudflared registered" "no 'Registered tunnel connection' in $CF_LOG"
+elif (( now - then <= 86400 )); then ok "cloudflared registered" "last registration $last ($(( (now - then) / 60 )) min ago)"
+else bad "cloudflared registered" "last registration $last is older than 24 h (launchctl kickstart -k gui/$(id -u)/com.nucleon.cloudflared)"; fi
+
+# 6 caffeinate keeps the Mac awake
+pgrep -f 'caffeinate -dimsu' >/dev/null && ok "caffeinate" "running (-dimsu)" || bad "caffeinate" "not running (launchctl print gui/$(id -u)/com.nucleon.caffeinate)"
+
+# 7-8 the public hostnames from the edge. With a service token: through Access to the origin, 200 and the real page (Nucleon's page links
+# its versioned stylesheet; LibreChat's /api/config is JSON). Without one: 302/303 to the Cloudflare Access login. 5xx or no answer = the tunnel is down.
+if (( local_only == 0 )); then
+  ua=(-A 'nucleon-pov-check/1.0'); hdr=()
+  [[ -n ${CF_ACCESS_CLIENT_ID:-} && -n ${CF_ACCESS_CLIENT_SECRET:-} ]] && hdr=(-H "CF-Access-Client-Id: $CF_ACCESS_CLIENT_ID" -H "CF-Access-Client-Secret: $CF_ACCESS_CLIENT_SECRET")
+  for url in $RECORDS_PUBLIC ${LIBRECHAT_PUBLIC}api/config; do
+    host=${${url#https://}%%/*}
+    if (( ${#hdr} )); then
+      body=$(curl -s --max-time 15 $ua $hdr -w '\n%{http_code}' "$url" 2>/dev/null); c=${body##*$'\n'}; body=${body%$'\n'*}
+      want='static/app.css?v='; [[ $url == *api/config ]] && want='"appTitle"'
+      case $c in
+        200) [[ $body == *"$want"* ]] && ok "edge $host" "200 through Access, page content as expected" || bad "edge $host" "200 but not the expected page (origin answered something else)" ;;
+        302|303) bad "edge $host" "$c to the Access login: the service token was not accepted (policy, account or expiry)" ;;
+        403) bad "edge $host" "403 (Access refused the token, or Cloudflare refused the client)" ;;
+        5??) bad "edge $host" "$c: tunnel down or origin unreachable" ;;
+        000) bad "edge $host" "no answer (DNS, internet or Cloudflare)" ;;
+        *) bad "edge $host" "unexpected $c" ;;
+      esac
+    else
+      c=$(code $url 15 $ua)
+      case $c in
+        200) ok "edge $host" "200" ;;
+        302|303) ok "edge $host" "$c (Cloudflare Access login; no service token file, so the origin is not checked)" ;;
+        5??) bad "edge $host" "$c: tunnel down or origin unreachable" ;;
+        000) bad "edge $host" "no answer (DNS, internet or Cloudflare)" ;;
+        *) bad "edge $host" "unexpected $c (expected 200, 302 or 303)" ;;
+      esac
+    fi
+  done
+fi
+
+(( fail == 0 )) && echo "PoV: all checks passed" || echo "PoV: FAILED"
+exit $fail

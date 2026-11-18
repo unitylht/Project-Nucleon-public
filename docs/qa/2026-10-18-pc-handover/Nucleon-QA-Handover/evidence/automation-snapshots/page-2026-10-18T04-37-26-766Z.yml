@@ -1,0 +1,103 @@
+- generic [ref=e2]:
+  - banner [ref=e4127]:
+    - link "Nucleon Payment extensions" [ref=e4128] [cursor=pointer]:
+      - /url: "#/"
+      - generic [ref=e4129]: Nucleon
+      - generic [ref=e4130]: Payment extensions
+    - group "Acting as" [ref=e4131]:
+      - button "Staff" [pressed] [ref=e4132] [cursor=pointer]
+      - button "Owner" [ref=e4133] [cursor=pointer]
+    - paragraph [ref=e4134]:
+      - generic [ref=e4136]: Agent ready
+    - link "Records" [ref=e4137] [cursor=pointer]:
+      - /url: "#/records"
+    - link "Demo c onsole" [ref=e4138] [cursor=pointer]:
+      - /url: "#/console"
+    - button "Sign out" [ref=e4139] [cursor=pointer]
+  - generic [ref=e4140]:
+    - navigation "Cases" [ref=e4141]:
+      - generic [ref=e4142]:
+        - generic [ref=e4143]: New request
+        - textbox "New request" [ref=e4144]:
+          - /placeholder: Paste the customer's message
+        - alert
+        - alert
+        - generic [ref=e4145]:
+          - button "Send to the agent" [ref=e4146] [cursor=pointer]
+          - group [ref=e4147]:
+            - generic "Try a sample" [ref=e4148] [cursor=pointer]
+      - generic [ref=e4149]:
+        - generic [ref=e4269]:
+          - heading "For you" [level=2] [ref=e4270]
+          - list [ref=e4271]:
+            - listitem [ref=e4272]:
+              - button "Customer not identified yet Test CL1018T. Could we pay invoice CL1018T-001 on 14 November 2026 instead? 18 Oct, 3:37 pm Needs your answer" [ref=e4273] [cursor=pointer]:
+                - generic [ref=e4274]: Customer not identified yet
+                - generic [ref=e4275]: Test CL1018T. Could we pay invoice CL1018T-001 on 14 November 2026 instead?
+                - time [ref=e4276]: 18 Oct, 3:37 pm
+                - generic [ref=e4277]: Needs your answer
+            - listitem [ref=e4278]:
+              - button "Customer not identified yet Hi, Harbour here - can we move our invoice to 30 October? 17 Oct, 2:54 pm Needs your answer" [ref=e4279] [cursor=pointer]:
+                - generic [ref=e4280]: Customer not identified yet
+                - generic [ref=e4281]: Hi, Harbour here - can we move our invoice to 30 October?
+                - time [ref=e4282]: 17 Oct, 2:54 pm
+                - generic [ref=e4283]: Needs your answer
+        - generic [ref=e4284]:
+          - heading "Other cases" [level=2] [ref=e4285]
+          - list [ref=e4286]:
+            - listitem [ref=e4287]:
+              - button "Release check café (fictional) RC-1, to Fri 6 Nov 18 Oct, 2:33 pm Approved to Fri 6 Nov" [ref=e4288] [cursor=pointer]:
+                - generic [ref=e4289]: Release check café (fictional)
+                - generic [ref=e4290]: RC-1, to Fri 6 Nov
+                - time [ref=e4291]: 18 Oct, 2:33 pm
+                - generic [ref=e4292]: Approved to Fri 6 Nov
+            - listitem [ref=e4293]:
+              - button "Harbour Demo Supplies DEMO-101, to Fri 30 Oct 16 Oct, 11:19 pm With the owner" [ref=e4294] [cursor=pointer]:
+                - generic [ref=e4295]: Harbour Demo Supplies
+                - generic [ref=e4296]: DEMO-101, to Fri 30 Oct
+                - time [ref=e4297]: 16 Oct, 11:19 pm
+                - generic [ref=e4298]: With the owner
+            - listitem [ref=e4299]:
+              - button "Harbour Demo Logistics DEMO-201, to Fri 23 Oct 17 Oct, 1:13 am With the owner" [ref=e4300] [cursor=pointer]:
+                - generic [ref=e4301]: Harbour Demo Logistics
+                - generic [ref=e4302]: DEMO-201, to Fri 23 Oct
+                - time [ref=e4303]: 17 Oct, 1:13 am
+                - generic [ref=e4304]: With the owner
+    - main [ref=e4180]:
+      - article [ref=e4305]:
+        - generic [ref=e4306]:
+          - heading "Customer not identified yet" [level=1] [ref=e4308]
+          - paragraph [ref=e4309]: The agent needs one more detail from you.
+          - paragraph [ref=e4310]: Prepared by the Gemma agent, running locally.
+        - generic [ref=e4311]:
+          - region [ref=e4313]:
+            - heading "What the customer wrote" [level=2] [ref=e4314]
+            - blockquote [ref=e4315]: Test CL1018T. Could we pay invoice CL1018T-001 on 14 November 2026 instead?
+            - paragraph [ref=e4316]: Their words as received, not verified.
+          - complementary [ref=e4317]:
+            - generic [ref=e4318]:
+              - heading "The agent needs a detail" [level=2] [ref=e4319]
+              - paragraph [ref=e4320]: Invoice CL1018T-001 exists for more than one customer. Which customer sent this request?
+              - group "Which customer's invoice is it?" [ref=e4321]:
+                - generic [ref=e4323] [cursor=pointer]:
+                  - radio "CL1018T Manual A fictional C-0004 · invoice CL1018T-001 · issued Mon 5 Oct" [ref=e4324]
+                  - generic [ref=e4325]:
+                    - text: CL1018T Manual A fictional
+                    - generic [ref=e4326]: C-0004 · invoice CL1018T-001 · issued Mon 5 Oct
+                - generic [ref=e4327] [cursor=pointer]:
+                  - radio "CL1018T Manual B fictional C-0005 · invoice CL1018T-001 · issued Mon 5 Oct · due Sat 10 Oct" [ref=e4328]
+                  - generic [ref=e4329]:
+                    - text: CL1018T Manual B fictional
+                    - generic [ref=e4330]: C-0005 · invoice CL1018T-001 · issued Mon 5 Oct · due Sat 10 Oct
+                - alert
+              - alert
+              - button "Send to the agent" [ref=e4331] [cursor=pointer]
+              - paragraph [ref=e4332]: Your answer is recorded as coming from staff.
+        - generic [ref=e4333]:
+          - group [ref=e4334]:
+            - generic "Evidence and sources" [ref=e4335] [cursor=pointer]
+          - group [ref=e4336]:
+            - generic "Activity" [ref=e4337] [cursor=pointer]
+          - group [ref=e4338]:
+            - generic "Technical details" [ref=e4339] [cursor=pointer]
+  - contentinfo [ref=e4183]: Fictional demo data. Nothing is sent to customers, and only the owner decides an outcome.

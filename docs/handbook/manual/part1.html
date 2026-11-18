@@ -1,0 +1,262 @@
+<header class="masthead">
+<p class="kicker">Nucleon</p>
+<h1>Nucleon Operating Manual</h1>
+<p class="lede">What every part of Nucleon is for, what each setting on the Control panel does, and a set of ready scenarios to try. Written for a first-time Owner and for the person demonstrating it.</p>
+<p class="note">Every screenshot and every example in this manual uses the fictional demonstration data. The customers, amounts and dates are made up. The practice workspace shows a fixed business date of Saturday 24 October 2026, so every example is calculated as of that day. The screenshots are easier to read on a laptop than on a phone.</p>
+</header>
+
+<nav class="toc" aria-label="Contents">
+<h2 id="contents">Contents</h2>
+<ol>
+<li><a href="#start">Start here</a></li>
+<li><a href="#exposure">Exposure, explained</a></li>
+<li><a href="#tour">A tour of every page</a>
+<ol>
+<li><a href="#tour-owner">Owner view</a></li>
+<li><a href="#tour-staff">Staff view</a></li>
+<li><a href="#tour-chat">The two chat assistants</a></li>
+</ol></li>
+<li><a href="#panel">The Control panel, item by item</a>
+<ol>
+<li><a href="#cp-top">Top of the page, presets and pause</a></li>
+<li><a href="#cp-basic">Basic</a></li>
+<li><a href="#cp-review">Approvals you have not looked at, and the track record</a></li>
+<li><a href="#cp-exceptions">Exceptions the agent may decide</a></li>
+<li><a href="#cp-overage">A little over a money limit</a></li>
+<li><a href="#cp-decline">When the agent may decline on its own</a></li>
+<li><a href="#cp-advanced">Advanced</a></li>
+<li><a href="#cp-save">Note and Save</a></li>
+<li><a href="#cp-rules">Standing rules for one customer</a></li>
+<li><a href="#cp-schedule">Scheduled changes</a></li>
+<li><a href="#cp-model">The team's model</a></li>
+<li><a href="#cp-versions">Versions and live counts</a></li>
+</ol></li>
+<li><a href="#quick">Quick setup and the Doctor</a></li>
+<li><a href="#scenarios">Scenarios to try</a></li>
+<li><a href="#why">Why did it come to me?</a></li>
+<li><a href="#glossary">Glossary</a></li>
+</ol>
+</nav>
+
+<section id="start">
+<h2>1. Start here</h2>
+<p>Nucleon helps a small business decide credit requests from its customers. Staff tell a chat assistant what a customer is asking for, for example more time to pay an invoice or a first order on credit. Nucleon checks the request against the rules the Owner has set. If the request is inside every rule, the agent approves it. If anything is outside a rule, the request comes to the Owner. If Staff need to supply a fact, such as a deposit they saw, Nucleon asks them and decides again. Nucleon never sends anything to a customer. Staff tell the customer.</p>
+
+<h3>The two roles</h3>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Role</th><th scope="col">Who</th><th scope="col">What they do in Nucleon</th></tr></thead>
+<tbody>
+<tr><th scope="row">Owner</th><td>The person who owns the credit risk</td><td>Sets the rules on the Control panel, decides the requests that come to them on the Decide page, reviews what the agent decided, and watches the Dashboard.</td></tr>
+<tr><th scope="row">Staff</th><td>The people who talk to customers</td><td>Ask the chat assistant about a customer's request, confirm facts they have seen themselves (a deposit, a business registration), and keep the customer records up to date. Staff cannot change the rules and cannot decide a request that came to the Owner.</td></tr>
+</tbody></table></div>
+
+<h3>The life of a request in six steps</h3>
+<ol class="steps">
+<li><b>A customer asks.</b> Staff type the request to the Staff assistant, for example "Bayview Gelato Co asks to move invoice DEMO-301 to 10 November".</li>
+<li><b>The assistant looks it up.</b> It finds the customer and the invoice in the records and gives a recommendation: approve, decline or escalate, with a short reason.</li>
+<li><b>Nucleon checks the rules.</b> Nucleon's own rules check the request against every rule on the Control panel and against the facts in the records. The AI does not decide.</li>
+<li><b>One of three things happens.</b> The agent approves it (inside every rule), or Nucleon asks Staff for information, or the request comes to the Owner.</li>
+<li><b>The Owner decides what came to them.</b> On the Decide page the Owner approves or declines. The Owner can also agree with, disagree with or override what the agent decided.</li>
+<li><b>Staff tell the customer.</b> Nucleon sends nothing. Later Nucleon looks at the records and shows whether the customer paid by the new date.</li>
+</ol>
+<p class="callout">The agent decides only what is inside every rule you set. Everything else comes to you. Nothing is ever sent to a customer.</p>
+</section>
+
+<section id="exposure">
+<h2>2. Exposure, explained</h2>
+<p><b>Exposure is money a customer owes you that you have not been paid yet.</b> It is what you would lose if they never paid.</p>
+<p>Nucleon looks at exposure in two ways, and each has its own limit on the Control panel. The two limits answer two different questions, so it helps to keep them apart.</p>
+
+<h3>(a) The exposure of one decision</h3>
+<p>This is the money riding on this one request. The limit is called <b>Most money one request may involve (the exposure of one decision)</b>.</p>
+<ul>
+<li>For a <b>payment extension</b> it is the amount still unpaid on that invoice. The invoice is 1,000, 300 has been paid, so the exposure is <b>700</b>.</li>
+<li>For <b>trial credit</b> to a new customer it is the order less the deposit already received. The order is 600, the deposit is 150, so the exposure is <b>450</b>.</li>
+</ul>
+
+<h3>(b) The customer's total exposure</h3>
+<p>This is everything that customer would still owe you across all their invoices if the request is granted. The limit is called <b>Most one customer may owe you in total (the customer's total exposure)</b>.</p>
+<p>An extension lends no new money. It keeps existing money out for longer. So the total is simply everything the customer owes now. Nucleon also adds any trial credit the agent approved for that customer that is still in force. For a trial credit the total is what the customer owes now plus the new exposure of the order.</p>
+
+<h3>A worked example</h3>
+<p>Both limits are 1,000. A customer has invoice A with 700 unpaid and invoice B with 500 unpaid. They ask for more time on A.</p>
+
+<figure class="diagram" aria-label="Two bars. The first bar shows invoice A only, 700, inside the limit of 1,000. The second bar shows invoice A plus invoice B, 1,200, passing the limit of 1,000.">
+<div class="bars">
+<div class="bar-row"><div class="bar-label">Exposure of the decision<br><span>Invoice A only: 700</span></div>
+<div class="bar-track"><div class="seg a" style="width:46.7%">A 700</div><div class="limit" style="left:66.7%"><span>limit 1,000</span></div></div>
+<div class="bar-verdict ok">Inside</div></div>
+<div class="bar-row"><div class="bar-label">The customer's total exposure<br><span>A 700 + B 500 = 1,200</span></div>
+<div class="bar-track"><div class="seg a" style="width:46.7%">A 700</div><div class="seg b" style="width:33.3%">B 500</div><div class="limit" style="left:66.7%"><span>limit 1,000</span></div></div>
+<div class="bar-verdict bad">Over</div></div>
+<p class="scale">Scale: the full bar is 1,500.</p>
+</div>
+<figcaption>Decision exposure counts only the invoice the request is about. The total counts everything the customer owes.</figcaption>
+</figure>
+
+<p><b>Result:</b> the decision exposure is 700, inside the limit. The total is 1,200, over the limit. The request comes to the Owner. The sentence on the request page says which limit failed: "The customer's total exposure after this decision: AUD 1,200.00 is over the limit of AUD 1,000.00." This is the wording Nucleon produces.</p>
+
+<h4>Three variations</h4>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">What changes</th><th scope="col" class="num">Exposure of the decision (limit 1,000)</th><th scope="col" class="num">Customer's total (limit 1,000)</th><th scope="col">Result</th></tr></thead>
+<tbody>
+<tr><th scope="row">Starting point: A 700 unpaid, B 500 unpaid</th><td class="num">700, inside</td><td class="num">1,200, over</td><td>Comes to the Owner. The total limit failed.</td></tr>
+<tr><th scope="row">B is paid off, so A 700 and nothing else</th><td class="num">700, inside</td><td class="num">700, inside</td><td>The agent may approve, if every other rule also holds.</td></tr>
+<tr><th scope="row">A has 1,500 unpaid, B is paid off</th><td class="num">1,500, over</td><td class="num">1,500, over</td><td>Comes to the Owner. The first limit failed (and the total with it).</td></tr>
+<tr><th scope="row">The limit for the customer is raised to 1,500, A 700 and B 500 as at the start</th><td class="num">700, inside</td><td class="num">1,200, inside 1,500</td><td>The agent may approve, if every other rule also holds.</td></tr>
+</tbody></table></div>
+<p class="small">In the demonstration the customer limit (1,500) is higher than the limit for one request (1,000), which is the usual arrangement.</p>
+
+<h3>Why there are two limits</h3>
+<p>The first limit stops a single big request. The second limit stops many small requests from adding up for the same customer. A customer could ask for more time on five invoices of 400 each. Every request passes the first limit. The fifth pushes the customer's total to 2,000, and the second limit catches it.</p>
+
+<h3>Trial credit has its own third limit</h3>
+<p>For a first order on credit there is a third limit, <b>Most trial credit exposure (the order less the deposit received)</b>. It works like the first limit but is set separately, because a customer you have never traded with deserves a tighter number.</p>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Order</th><th scope="col">Deposit received</th><th scope="col" class="num">Exposure</th><th scope="col">Against a limit of 500</th></tr></thead>
+<tbody>
+<tr><td class="num">600</td><td class="num">150</td><td class="num">450</td><td>Inside. The agent may approve.</td></tr>
+<tr><td class="num">600</td><td class="num">none</td><td class="num">600</td><td>Over. It comes to the Owner.</td></tr>
+<tr><td class="num">600</td><td class="num">300</td><td class="num">300</td><td>Inside. A bigger deposit brings the exposure down.</td></tr>
+</tbody></table></div>
+<p>A bigger deposit therefore makes a bigger order possible. The separate setting <b>Smallest deposit (% of the order; 0 = none asked)</b> adds a second test on the deposit itself.</p>
+
+<h3>Part payments, incomplete records and the budget</h3>
+<ul>
+<li><b>Part payments reduce exposure.</b> Exposure is what is still unpaid, not the invoice total. An invoice of 1,000 with 300 paid counts as 700.</li>
+<li><b>If the records are incomplete,</b> Nucleon says the total is "the RECORDED exposure". It is what the records show, and more may be owed. The sentence reads: "The customer's total exposure (AUD 900.00) is the RECORDED exposure: the records are not confirmed complete, so more may be owed." It is a warning only. Nucleon still applies the limit to the recorded figure. Only you can confirm on the Customers page that a customer's records are complete.</li>
+<li><b>Unknown is never zero.</b> If the amount still owed is not recorded, the exposure is unknown, and a request with an unknown exposure comes to the Owner.</li>
+<li><b>Most the agent may approve in 30 days (all approvals still in force)</b> (under Advanced) is a different kind of limit. It is a budget for the agent across all customers: the exposure of everything it approved in the last 30 days, added up.</li>
+</ul>
+
+[[fig:08-evaluation-cards-with-abn.jpg|The three evaluation cards on a request page: Evidence, Business risk and Demonstrated reliability. The Business risk card lists each limit with its figure, for example Exposure of this decision AUD 450.00 is within the limit of AUD 1,000.00, and The customer's total exposure after this decision AUD 450.00 is within the limit of AUD 1,500.00, with the RECORDED exposure warning.|The Business risk card on a real request page lists the two exposure limits one by one, each with the figure and the limit. Here a trial credit of 450 is inside the 1,000 and 1,500 limits.]]
+</section>
+
+<section id="tour">
+<h2>3. A tour of every page</h2>
+<p>The pages are listed in the order of the menu at the top of the screen. The Owner's bar shows Home, Assistant (only when a chat address is set up), Decide, Control panel, Dashboard and Customers. A last item, More, holds Requests, Imports, Model, Knowledge and Setup. Staff see a shorter bar: Home, Assistant, Requests and Customers, and under More: Imports, Knowledge and Setup. Quick setup and the Doctor have no menu item. The Owner opens them from the Home page and the Control panel.</p>
+
+<h3 id="tour-owner">Owner view</h3>
+
+<h4>Home</h4>
+<p><b>For:</b> what needs you now. <b>Open it:</b> every morning. The first line says how many requests wait for your decision, with a "Decide now" button; before any rules are saved it offers "Let's get started" instead. Below it are four shortcut cards (Control panel, Decide, Dashboard, Doctor), a short "Where to start" list, what happened since you last looked, the requests waiting for you, recent agent decisions and the live counts. "Mark all as read" clears the list of news. The count "N need you" sits on the Decide item in the menu and is shown on every page.</p>
+[[fig:01-home-owner.jpg|The Owner's Home page with four cards, a Where to start list, news, requests waiting for the Owner, recent agent decisions and live counts.|Home as the Owner sees it, with two requests waiting (Cityside Desserts and Harbourline Catering) and one approved by the agent.]]
+
+<h4>Get started</h4>
+<p><b>For:</b> setting Nucleon up the first time, in three choices on one path. <b>Open it:</b> from the "Let's get started" button on Home, or from the "Where to start" list. Nothing is saved until the last button, "Save and finish".</p>
+<ol>
+<li><b>How strict.</b> Choose Strict, Balanced or Relaxed. The amounts are worked out from your own open invoices, and the box beside the levels shows how many of them the agent would decide and what would still come to you. If rules are already saved you can keep them as they are.</li>
+<li><b>Customers.</b> Tick any customer whose requests must always come to you. Then say what happens when a new customer asks for a first order on credit: it always comes to you, or the agent may give a small first order on credit. A small first order means up to the level's largest-invoice amount at risk after the deposit, a deposit of at least a quarter, up to 30 days to pay, and only once Staff have confirmed who the business is. Larger first orders come to you. The finer settings for new customers (a different amount, a trade reference, terms) are on the Control panel.</li>
+<li><b>What you see.</b> Choose how much the pages show: Simple, Standard or Detailed (see below).</li>
+</ol>
+<p>A level sets six things only: the largest invoice, the most one customer may owe, the two day limits, whether a customer with another overdue invoice still qualifies, and how much late paying is tolerated. Everything else in your policy stays as it was. You never need to run Get started again to change one of these: all three choices are also at the top of the Control panel, under "Quick settings".</p>
+[[fig:33-get-started-level.jpg|The Get started page at step 1 of 3: three level cards (Strict, Balanced, Relaxed) with Balanced chosen, and a box on the right showing how many open invoices the agent would decide and a plain list of what it decides and what comes to the Owner.|Get started, step 1. The box on the right changes as you pick a level.]]
+
+<h4>How much the pages show: Simple, Standard, Detailed</h4>
+<p>The Owner's pages can show less or more. The choice changes only what you see in your own browser. It never changes a rule, and every setting stays reachable at every level.</p>
+<ul>
+<li><b>Simple:</b> the explanations under the settings are hidden. The menu is Home, Assistant, Decide and Rules (Rules opens Quick setup); the other pages are under More. On the Control panel the sections for occasional use are folded into "More settings and history".</li>
+<li><b>Standard</b> (the default): each explanation shows one line. Click the line to read all of it.</li>
+<li><b>Detailed:</b> every explanation in full. The figures in this manual were taken at this level.</li>
+</ul>
+<p>Change it in step 3 of Get started or under "Quick settings" on the Control panel. Staff pages always show their instructions in full.</p>
+[[fig:34-get-started-display.jpg|The Get started page at step 3 of 3: three choices (Simple, Standard, Detailed) and a preview box showing the menu and one setting as they would look.|Get started, step 3. The preview shows the same setting at the level you pick.]]
+
+<h4>Assistant</h4>
+<p>A link in the menu, right after Home, that opens the chat in a new tab. It appears only when the chat address is set up. See "The two chat assistants" below.</p>
+
+<h4>Decide</h4>
+<p><b>For:</b> your work list. Under "Waiting for you" are the requests that need your decision. Under "Autonomous decisions to review" are the approvals the agent made, for you to agree with, disagree with or override. Under "Recently reviewed" are the ones you have handled. <b>Open it:</b> every day. The count "N need you" in the menu sits on this item. Each row shows, before you open it, the invoice, its dates, the days asked and the amount. The reason is written to you. For a hold it says which cause it is, for example "On hold: this customer is on your list of customers the agent never decides (Control panel, Advanced)". Press Open on a row to see the facts, the assistant's recommendation, the closest earlier cases and the track record wording. For a waiting request you type a reason (required) and press Approve or Decline. When you approve an extension you can change the new due date first. Nothing is sent to the customer.</p>
+[[fig:05-decide-page.jpg|The Decide page with three requests waiting for the Owner and one opened to show the facts, a date field, a reason box and the Approve and Decline buttons. Below are the agent's decisions to review.|The Decide page with the Cityside Desserts row opened.]]
+
+<p>A reason is always asked for when you approve or decline, because your reasons are what you will look back on when you tune the rules. Above the reason box are a few common reasons: one click fills the box, and you can change the words before you decide.</p>
+
+<h4>Control panel</h4>
+<p><b>For:</b> your rules for the agent. This is the most important page and the next big part of this manual describes it item by item. <b>Open it:</b> to set limits, pause the agent or see which rules are in force.</p>
+
+<h4>Dashboard</h4>
+<p><b>For:</b> how the assistant is doing. At the top is "What customers owe now": for each customer the outstanding balance, how much of it is overdue, trial credit in force, the total at risk (outstanding balance plus trial credit, the figure the limit is checked against) and the limit. When a customer has one open invoice, all of it overdue, and no trial credit, the three money columns show the same figure. Below are the stage counts and the impact figures (how much the agent decides, how often the Owner steps in, how many were overridden) and what happened to the approved decisions. <b>Open it:</b> weekly. Fictional cases are never counted in the live figures.</p>
+[[fig:09-dashboard.jpg|The Dashboard page with a "What customers owe now" table for each customer, counts of where cases are in the loop, impact figures and a usage table.|The Dashboard. The "Exposure now" table is the quickest way to see each customer's total against the limit.]]
+
+<h4>Customers</h4>
+<p><b>For:</b> each customer's invoices, payments, opening balance and whether the records are complete. <b>Open it:</b> to check what a customer owes or to fix a mistake in the records. Open a customer to see their invoices, payments, notes and requests. Staff and the Owner can correct entries here. Only the Owner confirms "Payments complete to", which removes the RECORDED exposure warning.</p>
+[[fig:13-customers.jpg|The Customers page listing the six fictional customers with their balances.|The Customers list.]]
+[[fig:14-customer-page.jpg|One customer page for Bayview Gelato Co: owed now AUD 480.00, a table of seven invoices with their status and a section of recorded totals.|One customer. "Owed now" is the figure the exposure limits read. The table lists every invoice and how much of each is still owed.]]
+
+<h4>Under "More"</h4>
+<p>The last five pages sit under the item "More" at the end of the menu: Requests, Imports, Model, Knowledge and Setup. Press More to open them. Every address is the same as before.</p>
+[[fig:18-nav-more-open.jpg|The Owner's menu with the More item open, listing Requests, Imports, Model, Knowledge and Setup.|The Owner's menu. Home, Assistant, Decide, Control panel, Dashboard and Customers are in the bar. The other five pages are under More.]]
+<h4>Requests</h4>
+<p>Under "More" in the Owner's menu. <b>For:</b> every request, past and present, with who each one waits for. <b>Open it:</b> to find a request or see where it stands. The list on the left can be filtered (All, For you, In progress, Done). Pick a row to read it. The buttons on the right take you to the Decide page or to the oldest form request. To decide, use the Decide page.</p>
+[[fig:03-requests-list.jpg|The Requests page: a list of requests on the left with filters, and a panel on the right saying three requests need the Owner's decision.|The Requests list. Each row shows the customer, the invoice or order, the status and when it arrived.]]
+
+<h4>A request page</h4>
+<p>Opening a request shows its page. At the top is the plain statement of where it stands. Below are the six stages (Request, Evidence, Evaluation, Decision, Owner feedback, Outcome), "What the evaluation found" in three cards, and a timeline of every step. The three cards are <b>Evidence</b> (are the records readable, is the deposit verified, is the business identity confirmed), <b>Business risk</b> (each limit with its figure) and <b>Demonstrated reliability</b> (the track record). When the request waits for you, the decision box with the Approve and Decline buttons is at the top.</p>
+[[fig:04-request-page-with-timeline.jpg|A request page for Cityside Desserts: the plain status, the decision box, the six stages, the three evaluation cards for Evidence, Business risk and Demonstrated reliability, and the timeline of steps.|A request page that waits for the Owner. The reason sits in the Business risk card: the amount is 4.5 times the customer's median invoice, over the 3 times the Owner allows.]]
+
+<h4>Imports</h4>
+<p><b>For:</b> bringing in an invoice list or a list of payments from a CSV file. You check every row before anything changes, and an applied import can be reverted. <b>Open it:</b> when you start with a real business and have the invoices in a spreadsheet.</p>
+[[fig:15-imports.jpg|The Imports page with the option to import a CSV file and the list of earlier imports.|The Imports page.]]
+
+<h4>Model</h4>
+<p><b>For:</b> the team's model, the small statistical model that learns from the Owner's own approve and decline decisions and gives "the chance you would decline". The page shows the model in force, how often it agreed with you, the settings, the training table, a questionnaire called "Teach it your limits", a form called "Add a decision you made yourself" and the saved versions. <b>Open it:</b> when you want to fit a new model or check how well it matches your decisions. The model is described in "The team's model" part of the Control panel section.</p>
+[[fig:12-model-page.jpg|The Model page: model in force with bars for each factor, agreement with the Owner, settings, training table, a Teach it your limits question and saved versions.|The Model page. The bars show how much each factor pushes towards "decline".]]
+
+<p><b>Add a decision you made yourself.</b> Use it for a case you decided outside Nucleon, on the phone or in a meeting. You pick the customer. You say what was asked: more time to pay an invoice (then which invoice and how many days after its due date), or a first order on credit (then the amount and the days to pay). You say what you decided, approved or declined. You can add a few words on why. Press "Add this decision". Under the form, "Your last N answers" lists what you added and answered before.</p>
+<p>Example: Bayview Gelato Co asked you by phone for 30 more days on an invoice. You declined: "Already paid late twice." Pick Bayview, pick the invoice, type 30, choose "I declined it", type the reason and press the button. From then on this case can appear among the similar cases beside a later request, with your reason, and it is a row in the model's training table marked as typed in by you.</p>
+<p>It is stored like an answer to "Teach it your limits", but marked as typed in by you. It never counts in the track record. It changes no rule and no invoice.</p>
+[[fig:32-model-own-filled.jpg|The form Add a decision you made yourself filled in for Bayview Gelato Co: invoice DEMO-301, 30 days, I declined it, and a short reason.|The form before pressing Add this decision.]]
+[[fig:19-model-own-decision.jpg|The Model page section after pressing Add this decision: the form is empty again and below it the opened list Your last answers shows one declined answer for Bayview Gelato Co.|After pressing the button the form is cleared and the answer appears under Your last answers.]]
+<h4>Knowledge</h4>
+<p><b>For:</b> short notes the agent shows the Owner in requests: context about a customer or the business, or a rule staff should follow. Only notes the Owner has confirmed are used. No note changes a calculation. <b>Open it:</b> when you want the agent to remember something, for example "this customer always pays at month end".</p>
+[[fig:16-knowledge.jpg|The Knowledge page with a form to add a note and the list of notes.|The Knowledge page.]]
+
+<h4>Setup</h4>
+<p><b>For:</b> getting the workspace ready: practice or real, the currency, and at least one customer with an open invoice. It also lists the chat assistant's tools with an On/Off switch for each, and which role each tool serves. <b>Open it:</b> once at the start, and when the assistant says it needs a tool switched on.</p>
+[[fig:17-setup.jpg|The Setup page: required items with their status, recommended items, a summary of the workspace and the start of the agent tools table.|The top of the Setup page. The long table of agent tools below it is cut off here.]]
+
+<h4>Quick setup and the Doctor (no menu item)</h4>
+<p>See the section "Quick setup and the Doctor".</p>
+
+<h3 id="tour-staff">Staff view</h3>
+<p>Staff see Home, Assistant, Requests and Customers in the bar, and Imports, Knowledge and Setup under More. The count "N need you" sits on Requests. They cannot open the Control panel, Decide, Dashboard, Model, Quick setup or the Doctor. The Control panel tells them that only the Owner sets the rules.</p>
+
+<h4>Home</h4>
+<p>The Home page has three shortcut cards (Requests, Customers, Imports) and a "Where to start" list: ask the assistant, answer when it asks for information, and add a new customer to the records first. Below are what happened since you last looked, a switch called "Requests go to the Owner" (the button "Practise without sending to the Owner" turns it off for practice) and the information Nucleon is waiting for from Staff, with a link for each.</p>
+[[fig:02-home-staff.jpg|The Staff Home page with three cards, a Where to start list, a news item saying Nucleon needs information for Lakeside Kiosk, and an Information needed row.|Home as Staff see it. "Information Nucleon is waiting for from you" lists Lakeside Kiosk (deposit and business identity).]]
+
+<h4>Requests, Customers, Imports, Knowledge, Setup</h4>
+<p>These work as described above, except that Staff cannot decide a request that came to the Owner and cannot confirm that a customer's records are complete. Staff keep the customer records up to date.</p>
+
+<h4>The "Information needed" page</h4>
+<p>When the assistant needs a fact, the answer card gives a button "Provide information in Nucleon". It opens the page below. Staff confirm only what they have seen themselves. The page says "You are confirming facts, not approving credit". For a trial credit it asks for the deposit and the business identity.</p>
+<ul>
+<li><b>Deposit:</b> the amount received, the date, an optional payment reference, and how they know: they saw it arrive in the bank account, or a receipt or remittance document. What the customer says does not count.</li>
+<li><b>Business identity:</b> the registration number (an ABN or ACN in Australia), the trading name, whether they saw it in a registry lookup or on a document, and optionally "Registered since" (the date the register shows the business as active from).</li>
+<li><b>As Staff type an ABN</b> with 11 digits, a line under the date says "This is a well-formed ABN (the number passes the ABN check)" or "This number fails the ABN check, so one of its digits is probably mistyped". The check only catches typing mistakes. It is not a lookup of the register. Staff are told to check the number is active on abr.business.gov.au.</li>
+</ul>
+[[fig:06-staff-information-form.jpg|The Information needed form for Lakeside Kiosk with the deposit fields filled in, the business identity fields filled with ABN 51 824 753 556, a trading name, a document choice and a Registered since date, and the live ABN note.|The Staff form for a new customer. The values typed are the ones used in scenario 2 in this manual. The live note under "Registered since" appears as the number is typed.]]
+<p>After Staff press "Submit information", the page shows where the request stands now. Nucleon decides again by itself.</p>
+[[fig:07-staff-result-after-submit.jpg|The result box on the Staff page after submitting: Approved within the Owner's delegation policy, with the deposit source and a reminder that Nucleon sent nothing to the customer.|The result Staff see straight after submitting. The request is approved by the agent. Staff tell the customer.]]
+<p>The Owner then sees the identity facts on the request page, in the Evidence card: the ABN sentence, how long the business has been registered, and a link "Look up ABN ... in the Australian Business Register" that opens abr.business.gov.au. This is for the Owner to read. No rule uses it.</p>
+<p>Figure 1 near the top of the manual shows this Evidence card and the Business risk card for the same request.</p>
+
+<h3 id="tour-chat">The two chat assistants</h3>
+<p>The chat lives in a separate application (LibreChat), so there are no screenshots of it in this manual. The prompts to paste are in the scenarios section.</p>
+<h4>The Staff assistant</h4>
+<ul>
+<li>It helps Staff with one request at a time. A request is either a trial credit for a new customer (an order amount and terms in days) or an extension of one existing invoice (the invoice number and the new due date).</li>
+<li>If the message mixes the two, or an extension names no invoice, it asks one short question and stops. It never guesses.</li>
+<li>It finds the customer and the invoice in the records, gives its recommendation (approve, decline or escalate) with a short reason, and asks Nucleon to apply the Owner's rules. It does not decide.</li>
+<li>Its reply is at most two sentences. The status card under the reply is the truth, because it comes from Nucleon's own records and rules. If the text and the card disagree, believe the card. It says something is approved only when the card says so.</li>
+<li>When Nucleon needs information, the reply tells Staff to use the button on the card.</li>
+<li>If Staff send the same request again after something changed outside the chat, it asks Nucleon again and reports the new answer. A request that is still waiting for the Owner stays waiting.</li>
+<li>It can be slow. The decision card usually appears in 10 to 20 seconds and the full reply in 30 to 60 seconds.</li>
+</ul>
+<h4>The Owner assistant</h4>
+<ul>
+<li>It is read-only. It explains decisions, lists what is waiting for the Owner, answers what-if questions ("what if the extension limit were 45 days?"), summarises the effect of the agent and reports the model's status and the Doctor's findings.</li>
+<li>It cannot change anything. It cannot decide, approve, decline, override, give feedback or save a rule. For any action it names the current status and sends the Owner to the Decide page or the Control panel.</li>
+<li>A what-if answer is a simulation. The fictional counts are practice cases and nothing is saved.</li>
+</ul>
+</section>

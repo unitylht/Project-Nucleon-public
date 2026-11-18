@@ -1,0 +1,12 @@
+Your tag is HL1815A
+
+Use this exact tag in the guide’s manual names, invoice references, messages and source labels.
+Your CSVs already use it. No editing is needed for your first run.
+In a pair, use one person’s folder and tag consistently.
+Use a new tag throughout if you repeat the run.
+
+Source labels
+HL1815A Invoice test
+HL1815A Payment test
+HL1815A Invalid preview
+HL1815A Revert test

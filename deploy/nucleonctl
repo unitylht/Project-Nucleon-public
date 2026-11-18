@@ -1,0 +1,113 @@
+#!/bin/bash
+# nucleonctl - control the Project Nucleon prototype service on the home-server Mac (launchd user agent).
+#
+#   nucleonctl status              launchd state, deployed commit, loopback/HTTPS health
+#   nucleonctl start | stop | restart
+#   nucleonctl codes               current STAFF/OWNER (and demo console OPERATOR) codes; they rotate on every restart
+#   nucleonctl logs [N]            last N service log lines (default 40)
+#   nucleonctl deploy <git-ref>    back up production DB, fetch, check out <git-ref> detached, run unit tests, restart
+#   nucleonctl backup [db-file]    consistent SQLite backup (default: production DB) into $BASE/backups
+#   nucleonctl clone-db <db-file> <name>  consistent copy into data/test-<name>.sqlite3 (for isolated testing)
+#   nucleonctl isolate <name> [unreachable-model|truncated-model]
+#                                  restart on a separate test database (and optional model fault)
+#   nucleonctl production          restart on the production config/database
+#
+# Layout (outside Git): $BASE/{runtime,app,config,data,reports}; log ~/Library/Logs/nucleon/service.log
+set -euo pipefail
+BASE="${NUCLEON_BASE:-$HOME/srv/nucleon}"
+LABEL="${NUCLEON_LABEL:-local.nucleon.prototype}"   # a second instance (the preview) sets NUCLEON_BASE, NUCLEON_LABEL and NUCLEON_LOGDIR
+PLIST="$HOME/Library/LaunchAgents/$LABEL.plist"
+PY="$BASE/runtime/python-3.12.14/bin/python3"
+APP="$BASE/app"
+PROD="$BASE/config/production.json"
+ACTIVE="$BASE/config/service.json"
+LOGDIR="${NUCLEON_LOGDIR:-$HOME/Library/Logs/nucleon}"
+LOG="$LOGDIR/service.log"
+DOMAIN="gui/$(id -u)"
+umask 077
+
+cfg() { "$PY" -c 'import json,sys; c=json.load(open(sys.argv[1])); print(eval(sys.argv[2], {}, {"c": c}))' "$ACTIVE" "$1"; }
+
+install_plist() {
+  mkdir -p "$LOGDIR" && chmod 700 "$LOGDIR" && touch "$LOG" && chmod 600 "$LOG"   # log holds the access codes and the service codes
+  sed -e "s#__PY__#$PY#g" -e "s#__APP__#$APP#g" -e "s#__CONFIG__#$ACTIVE#g" -e "s#__BASE__#$BASE#g" -e "s#__LOG__#$LOG#g" -e "s#__LABEL__#$LABEL#g" \
+    "$APP/deploy/local.nucleon.prototype.plist.template" > "$PLIST"
+  plutil -lint "$PLIST" >/dev/null
+}
+
+start() { install_plist; launchctl bootstrap "$DOMAIN" "$PLIST" 2>/dev/null || launchctl kickstart -k "$DOMAIN/$LABEL"; wait_ready; }
+stop() { launchctl bootout "$DOMAIN/$LABEL" 2>/dev/null || true; }
+restart() { install_plist; if launchctl print "$DOMAIN/$LABEL" >/dev/null 2>&1; then launchctl kickstart -k "$DOMAIN/$LABEL"; else launchctl bootstrap "$DOMAIN" "$PLIST"; fi; wait_ready; }
+
+wait_ready() {
+  local port; port=$(cfg 'c["port"]')
+  for _ in $(seq 1 50); do
+    if curl -s -o /dev/null "http://127.0.0.1:$port/"; then echo "ready on 127.0.0.1:$port"; return 0; fi
+    sleep 0.2
+  done
+  echo "service did not answer on 127.0.0.1:$port; see: nucleonctl logs" >&2; return 1
+}
+
+sqlite_copy() {  # sqlite_copy <src> <dst>: online backup API, safe while the service is running
+  "$PY" -c 'import sqlite3, sys; s = sqlite3.connect("file:" + sys.argv[1] + "?mode=ro", uri=True); d = sqlite3.connect(sys.argv[2]); s.backup(d); d.execute("PRAGMA journal_mode=DELETE"); d.close(); s.close()' "$1" "$2"
+  rm -f "$2-wal" "$2-shm"
+  chmod 600 "$2"
+}
+
+backup() {
+  local src="${1:-$("$PY" -c 'import json,sys; print(json.load(open(sys.argv[1]))["db"])' "$PROD")}"
+  mkdir -p "$BASE/backups" && chmod 700 "$BASE/backups"
+  local dst="$BASE/backups/$(basename "$src" .sqlite3)-$(date +%Y%m%d-%H%M%S).sqlite3"
+  sqlite_copy "$src" "$dst"
+  echo "backup: $dst ($("$PY" -c 'import sqlite3,sys; print(sqlite3.connect(sys.argv[1]).execute("select count(*) from requests").fetchone()[0])' "$dst") requests)"
+}
+
+with_config() {  # with_config <db-file> <fault>
+  "$PY" - "$PROD" "$ACTIVE" "$1" "$2" <<'PY'
+import json, sys
+prod, active, db, fault = sys.argv[1:]
+c = json.load(open(prod))
+c['db'] = db
+if fault == 'unreachable-model':
+    c['model']['baseUrl'] = 'http://127.0.0.1:9/v1'          # nothing listens on the discard port
+elif fault == 'truncated-model':
+    c['model']['maxTokens'] = {'extract_request': 8, 'handle_request': 8}  # real model, cut-off output
+elif fault:
+    sys.exit('unknown fault ' + fault)
+json.dump(c, open(active, 'w'), indent=2)
+PY
+}
+
+case "${1:-status}" in
+  status)
+    launchctl print "$DOMAIN/$LABEL" 2>/dev/null | grep -E '^\s+(state|pid|last exit code) =' || echo "not loaded"
+    git -C "$APP" log -1 --format='deployed: %h %s (%ci)' 2>/dev/null || true
+    echo "config: db=$(cfg 'c["db"]') mode=$(cfg 'c["agentMode"]') model=$(cfg 'c["model"]["baseUrl"]')"
+    port=$(cfg 'c["port"]'); curl -s -o /dev/null -w "loopback http://127.0.0.1:$port/ -> %{http_code}\n" "http://127.0.0.1:$port/" || true
+    for o in $(cfg '" ".join(c.get("publicOrigins", []))'); do curl -s -o /dev/null -w "$o -> %{http_code}\n" -m 10 "$o/" || true; done ;;
+  start) start ;;
+  stop) stop ;;
+  restart) restart ;;
+  codes) awk '/ URL: http/{n=0} /^(STAFF|OWNER|OPERATOR) access code: /{a[++n]=$0} END{for(i=1;i<=n;i++) print a[i]}' "$LOG" ;;   # latest start only
+  logs) grep -vE '^(STAFF|OWNER|OPERATOR) (access|service) code: ' "$LOG" | tail -n "${2:-40}" ;;
+  deploy)
+    ref="${2:?usage: nucleonctl deploy <git-ref>}"
+    backup
+    git -C "$APP" fetch --quiet origin
+    git -C "$APP" checkout --quiet --detach "$ref"
+    (cd "$APP" && "$PY" -W ignore -m unittest discover -s prototype -p 'test_*.py' 2>&1 | tail -3)
+    restart
+    git -C "$APP" log -1 --format='deployed: %h %s' ;;
+  isolate)
+    name="${2:?usage: nucleonctl isolate <name> [unreachable-model|truncated-model]}"
+    [[ "$name" =~ ^[a-z0-9-]+$ ]] || { echo "name: lowercase letters, digits, dashes" >&2; exit 2; }
+    with_config "$BASE/data/test-$name.sqlite3" "${3:-}"
+    restart; echo "ISOLATED test database: $BASE/data/test-$name.sqlite3 ${3:-}" ;;
+  production) cp "$PROD" "$ACTIVE"; restart; echo "production config restored" ;;
+  backup) backup "${2:-}" ;;
+  clone-db)
+    src="${2:?usage: nucleonctl clone-db <db-file> <name>}"; name="${3:?usage: nucleonctl clone-db <db-file> <name>}"
+    [[ "$name" =~ ^[a-z0-9-]+$ ]] || { echo "name: lowercase letters, digits, dashes" >&2; exit 2; }
+    sqlite_copy "$src" "$BASE/data/test-$name.sqlite3"; echo "copied to $BASE/data/test-$name.sqlite3" ;;
+  *) sed -n '2,18p' "$0"; exit 2 ;;
+esac

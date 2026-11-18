@@ -1,0 +1,82 @@
+From cf328927a4cdbee45e9545baf56006bf25a01606 Mon Sep 17 00:00:00 2001
+From: unitylht <142583978+unitylht@users.noreply.github.com>
+Date: Tue, 27 Oct 2026 21:37:37 +1100
+Subject: [PATCH] feat(client): allow the Nucleon tailnet origin for
+ confirmation links
+
+Adds https://nucleon.tail492813.ts.net:8443 (the local Nucleon runtime behind
+Tailscale Serve, reachable only inside the tailnet and its shares) to
+ALLOWED_ORIGINS and accepts https: for listed origins. Loopback origins and all
+other checks are unchanged. Tests: 74/74 (5 new tailnet cases).
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ client/src/utils/__tests__/nucleonLinks.spec.ts | 13 +++++++++++--
+ client/src/utils/nucleonLinks.ts                |  4 +++-
+ 2 files changed, 14 insertions(+), 3 deletions(-)
+
+diff --git a/client/src/utils/__tests__/nucleonLinks.spec.ts b/client/src/utils/__tests__/nucleonLinks.spec.ts
+index 8b0aafb..5076d46 100644
+--- a/client/src/utils/__tests__/nucleonLinks.spec.ts
++++ b/client/src/utils/__tests__/nucleonLinks.spec.ts
+@@ -4,6 +4,7 @@ import { ALLOWED_ORIGINS, validateConfirmLink, openConfirmLink } from '../nucleo
+ const ID = 'act_0123456789abcdef';
+ const OK = `http://127.0.0.1:8631/#/actions/${ID}`;
+ const OK_TEST = `http://127.0.0.1:18631/#/actions/${ID}`;
++const OK_TAILNET = `https://nucleon.tail492813.ts.net:8443/#/actions/${ID}`;
+ 
+ const setActivation = (isActive: boolean | undefined) => {
+   Object.defineProperty(window.navigator, 'userActivation', {
+@@ -14,10 +15,14 @@ const setActivation = (isActive: boolean | undefined) => {
+ 
+ describe('validateConfirmLink', () => {
+   it('pins the allow-list', () => {
+-    expect([...ALLOWED_ORIGINS]).toEqual(['http://127.0.0.1:8631', 'http://127.0.0.1:18631']);
++    expect([...ALLOWED_ORIGINS]).toEqual([
++      'http://127.0.0.1:8631',
++      'http://127.0.0.1:18631',
++      'https://nucleon.tail492813.ts.net:8443',
++    ]);
+   });
+ 
+-  it.each([OK, OK_TEST])('accepts %s', (url) => {
++  it.each([OK, OK_TEST, OK_TAILNET])('accepts %s', (url) => {
+     expect(validateConfirmLink(url)).toBe(url);
+   });
+ 
+@@ -27,6 +32,10 @@ describe('validateConfirmLink', () => {
+     ['file scheme', `file:///etc/passwd#/actions/${ID}`],
+     ['https on allowed host', `https://127.0.0.1:8631/#/actions/${ID}`],
+     ['https other host', `https://evil.example/#/actions/${ID}`],
++    ['http on tailnet host', `http://nucleon.tail492813.ts.net:8443/#/actions/${ID}`],
++    ['tailnet host without port', `https://nucleon.tail492813.ts.net/#/actions/${ID}`],
++    ['tailnet suffix host', `https://nucleon.tail492813.ts.net.evil.com:8443/#/actions/${ID}`],
++    ['other tailnet machine', `https://other.tail492813.ts.net:8443/#/actions/${ID}`],
+     ['suffix host', `http://127.0.0.1:8631.evil.com/#/actions/${ID}`],
+     ['localhost', `http://localhost:8631/#/actions/${ID}`],
+     ['other port', `http://127.0.0.1:8632/#/actions/${ID}`],
+diff --git a/client/src/utils/nucleonLinks.ts b/client/src/utils/nucleonLinks.ts
+index f480ed6..5103b35 100644
+--- a/client/src/utils/nucleonLinks.ts
++++ b/client/src/utils/nucleonLinks.ts
+@@ -8,6 +8,8 @@
+ export const ALLOWED_ORIGINS: readonly string[] = [
+   'http://127.0.0.1:8631',
+   'http://127.0.0.1:18631',
++  /* the same Nucleon runtime over Tailscale Serve (HTTPS, reachable only inside the tailnet and shares) */
++  'https://nucleon.tail492813.ts.net:8443',
+ ];
+ 
+ const ACTION_HASH = /^#\/actions\/act_[0-9a-f]{16}$/;
+@@ -30,7 +32,7 @@ export function validateConfirmLink(raw: unknown): string | null {
+     return null;
+   }
+   if (
+-    url.protocol !== 'http:' ||
++    (url.protocol !== 'http:' && url.protocol !== 'https:') ||
+     !ALLOWED_ORIGINS.includes(url.origin) ||
+     url.username !== '' ||
+     url.password !== '' ||
+-- 
+2.39.5 (Apple Git-154)
+

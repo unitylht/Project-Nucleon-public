@@ -1,0 +1,4 @@
+Customer,Date,Amount,Reference,Invoice
+Bayside Café,14/10/2026,250.00,,
+Coastline Foods,14/10/2026,200.00,EFT 8001,INV-1002
+Coastline Foods,16/10/2026,450.50,EFT 8044,INV-1001

@@ -1,0 +1,158 @@
+#!/usr/bin/env python3
+"""Demo launcher: writes ~/Developer/nucleon-local/demo-launcher.html (mode 600) with a link to each login page and a "copy" button for each
+password or code, read from the local config at the moment this runs, then opens it in the default browser.
+The page holds the codes: keep it on this Mac, never share or screen-share it. Nothing is sent anywhere.
+With config/team-members.json (made by bin/team-accounts) it adds the group member LibreChat accounts, each with a
+"Copy password" and a "Copy invite message" button. With config/role-accounts.json (made by bin/role-accounts) it adds the two role
+accounts (Owner, Staff) with "Copy email" and "Copy password" buttons and the role in the title.
+Usage: demo-launcher [--no-open]"""
+import html, json, os, subprocess, sys
+
+H = os.path.expanduser('~')
+OUT = os.path.join(H, 'Developer', 'nucleon-local', 'demo-launcher.html')
+records = json.load(open(os.path.join(H, 'Developer', 'nucleon-local', 'config', 'records.json')))
+creds = dict(l.rstrip('\n').split(': ', 1) for l in open(os.path.join(H, 'Developer', 'LibreChat-POC-credentials.txt')) if ': ' in l)
+codes = records['accessCodes']
+AGENT = 'agent_biPGuKnO2VgHEQ67HsLHL'   # "Nucleon ADA Staff (Qwen)"
+OWNER_AGENT = 'agent_x8IHmsGoFKdtDgdQcgmTX'   # "Nucleon ADA Owner (Qwen)", read-only (S6a); a new chat defaults to the Staff agent (modelSpecs), so the Owner uses this link
+# the public addresses behind Cloudflare Access (S4, 31 Oct 2026): the assistant and Nucleon; the card's "Provide information" button opens NU, so sign in to Nucleon there.
+# Access asks for an email code first (only the emails in the Access policy "Nucleon PoV" get one).
+LC, NU = 'https://creditease.dracooz.top', 'https://nucleon.dracooz.top'
+
+rows = [
+    ('LibreChat (chat)', 'Staff chat with the agent "Nucleon ADA Staff (Qwen)"', LC + '/login',
+     [('Copy email', creds['email']), ('Copy password', creds['password'])],
+     [('Open ADA agent chat', LC + '/c/new?agent_id=' + AGENT)], LC + '/api/config'),
+    ('Nucleon: Staff', 'Browser A: the same browser as LibreChat (the card button opens here)', NU + '/',
+     [('Copy Staff code', codes['staff'])], [], NU + '/'),
+    ('Nucleon: Owner', 'Browser B: the Owner page for policy, decisions and override', NU + '/#/delegation',
+     [('Copy Owner code', codes['owner'])], [], NU + '/'),
+]
+secrets = {}
+cards = []
+for i, (title, sub, url, copies, extra, probe) in enumerate(rows):
+    buttons = []
+    for j, (label, value) in enumerate(copies):
+        key = 's%d_%d' % (i, j)
+        secrets[key] = value
+        buttons.append('<button class="copy" data-key="%s">%s</button>' % (key, html.escape(label)))
+    links = ['<a class="go" href="%s" target="_blank" rel="noopener">Open login page</a>' % html.escape(url)]
+    links += ['<a class="go alt" href="%s" target="_blank" rel="noopener">%s</a>' % (html.escape(u), html.escape(l)) for l, u in extra]
+    cards.append('''<section><div class="head"><h2>%s</h2><span class="dot" data-probe="%s" title="checking">●</span></div>
+<p>%s</p><div class="row">%s</div><div class="row">%s</div></section>''' % (html.escape(title), html.escape(probe), html.escape(sub), ''.join(links), ''.join(buttons)))
+
+TEAM = os.path.join(H, 'Developer', 'nucleon-local', 'config', 'team-members.json')
+BRIEF = 'https://claude.ai/artifact/MK69Yt6U8j1uviTxxE4MC1'   # "Nucleon PoV team brief" (share it with the team first)
+NAMES = {'member1': 'Phu', 'member2': 'Tony', 'member3': 'Hoang', 'member4': 'Chris'}   # who got which account (1 Nov 2026)
+
+
+def invite(m):
+    who = NAMES.get(m['username'], m['name'])
+    return ('Nucleon PoV login for %s (fictional data only)\n'
+            'Assistant (chat): %s   email %s   password %s\n'
+            'Nucleon pages: %s   Staff code %s   Owner code %s\n'
+            'Both sites first ask for YOUR email and send a one-time code (your email is on the list). '
+            'In the chat, a new chat is the Staff assistant. On the Nucleon pages paste the Staff code (or the Owner code to play the owner).\n'
+            'Please keep this to yourself. What to try: %s' % (who, LC, m['email'], m['password'], NU, codes['staff'], codes['owner'], BRIEF))
+
+
+if os.path.exists(TEAM):
+    team = json.load(open(TEAM))
+    chat = team['chatUrl']
+    trs = []
+    for i, m in enumerate(team['members']):
+        secrets['t%d_pw' % i] = m['password']
+        secrets['t%d_msg' % i] = invite(m)
+        trs.append('<tr><td>%s</td><td><code>%s</code></td><td><button class="copy" data-key="t%d_pw">Copy password</button> '
+                   '<button class="copy" data-key="t%d_msg">Copy invite message</button></td></tr>'
+                   % (html.escape(m['name']), html.escape(m['email']), i, i))
+    local = chat.startswith(('http://127.0.0.1', 'http://localhost'))
+    named = [m for m in team['members'] if m['username'] in NAMES]
+    secrets['team_all'] = (
+        'Nucleon PoV logins (fictional data only; please keep them in this group)\n\n'
+        'Two sites:\n'
+        '- Assistant (chat): %s\n'
+        '- Nucleon pages: %s\n\n'
+        'Step 1, on both sites: enter YOUR email (the Gmail you gave me on WhatsApp). A one-time code arrives by email '
+        '(check spam); type it in. This gate only lets the people on the list reach my MacBook, which hosts everything.\n\n'
+        'Step 2, the assistant: sign in with your own account\n' % (LC, NU)
+        + '\n'.join('- %s: email %s, password %s' % (NAMES[m['username']], m['email'], m['password']) for m in named)
+        + '\nA new chat is the Staff assistant. The owner\'s read-only assistant (what is waiting, why, what-if): %s/c/new?agent_id=%s\n\n'
+          'Step 3, the Nucleon pages: paste a code on the page. Staff code: %s. Owner code: %s (use it to play the owner). '
+          'The codes are fixed; tell me if one does not work.\n\n'
+          'What to try, step by step: %s\n'
+          'Everything is fictional: never type a real customer, bank or business detail.' % (LC, OWNER_AGENT, codes['staff'], codes['owner'], BRIEF))
+    cards.append('''<section><div class="head"><h2>Group member accounts (LibreChat)</h2></div>
+<p>One login per member, role "user": they can chat with "Nucleon ADA Staff (Qwen)" but can't build agents or see your chats.
+<b>One click for the whole team:</b> the message below holds both addresses, the four logins, the two Nucleon codes and the link to the team brief.%s</p>
+<div class="row"><button class="copy" data-key="team_all">Copy team message (all four logins + codes + links)</button></div>
+<table>%s</table><p class="warn">Per-member invite messages hold that person's login plus the codes. Add accounts with <code>bin/team-accounts --count N</code>, then run this launcher again.</p></section>'''
+                 % (' <b>%s only works on this Mac.</b>' % html.escape(chat) if local else '',
+                    ''.join(trs)))
+
+ROLEF = os.path.join(H, 'Developer', 'nucleon-local', 'config', 'role-accounts.json')
+if os.path.exists(ROLEF):
+    ra = json.load(open(ROLEF))
+    trs = []
+    for i, a in enumerate(ra['accounts']):
+        secrets['r%d_em' % i] = a['email']
+        secrets['r%d_pw' % i] = a['password']
+        link = LC + '/c/new?agent_id=' + (OWNER_AGENT if a['role'] == 'owner' else AGENT)
+        trs.append('<tr><td>%s (%s)</td><td><code>%s</code></td><td><a class="go alt" href="%s" target="_blank" rel="noopener">Open %s agent chat</a> '
+                   '<button class="copy" data-key="r%d_em">Copy email</button> <button class="copy" data-key="r%d_pw">Copy password</button></td></tr>'
+                   % (html.escape(a['name']), html.escape(a['role'].capitalize()), html.escape(a['email']), html.escape(link), html.escape(a['role'].capitalize()), i, i))
+    cards.append('''<section><div class="head"><h2>Role accounts (LibreChat)</h2></div>
+<p>One login per Nucleon role, LibreChat role "user" (no agent builder). Owner sees "Nucleon ADA Owner (Qwen)" and the Staff agent; Staff sees only "Nucleon ADA Staff (Qwen)".
+A new chat opens with the Staff agent by default; the Owner opens the Owner agent with the link here (or under "My Agents"). Both open Nucleon from the "Nucleon" icon in the left rail of LibreChat.</p>
+<table>%s</table><p class="warn">Create them with <code>bin/role-accounts</code>, then run this launcher again.</p></section>''' % ''.join(trs))
+
+secrets['cmd_reset'] = '~/Developer/nucleon-local/bin/demo-reset'
+secrets['cmd_video'] = '~/Developer/nucleon-local/bin/demo-video-state'
+secrets['cmd_check'] = '~/Developer/nucleon-local/bin/pov-check --local'
+cards.append('''<section><div class="head"><h2>Data state (paste in a terminal)</h2></div>
+<p>Clean fictional data (policy at version 0, no cases): <b>demo-reset</b>. The state at the end of the 28 Oct video (policy v1 saved, Northside approved, Harbourline waiting, Lakeside approved after the form): <b>demo-video-state</b>. Both keep a copy of the current data first. <b>pov-check</b> tells you if every service answers. The presentation runbook (28 Oct) is <a href="demo-runbook.html">demo-runbook.html</a>.</p>
+<div class="row"><button class="copy" data-key="cmd_reset">Copy: demo-reset</button><button class="copy" data-key="cmd_video">Copy: demo-video-state</button><button class="copy" data-key="cmd_check">Copy: pov-check</button></div></section>''')
+
+page = '''<!doctype html><html><head><meta charset="utf-8"><title>Nucleon demo launcher</title>
+<style>
+:root{--ink:#13212e;--muted:#5b6b7a;--line:#d5dde5;--accent:#1f5f8b;--ok:#1d7a4a;--bad:#b3261e;--bg:#f4f6f8}
+*{box-sizing:border-box}body{margin:0;font:16px -apple-system,Helvetica,sans-serif;color:var(--ink);background:var(--bg)}
+main{max-width:760px;margin:32px auto;padding:0 16px}h1{font-size:26px;margin:0 0 4px}.lede{color:var(--muted);margin:0 0 20px}
+section{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px 20px;margin-bottom:14px}
+.head{display:flex;justify-content:space-between;align-items:center}h2{font-size:19px;margin:0}p{color:var(--muted);margin:6px 0 12px}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+a.go,button{font:inherit;font-size:15px;padding:8px 14px;border-radius:8px;border:1px solid var(--accent);cursor:pointer;text-decoration:none}
+a.go{background:var(--accent);color:#fff}a.go.alt{background:#fff;color:var(--accent)}button{background:#fff;color:var(--ink);border-color:var(--line)}
+button.done{border-color:var(--ok);color:var(--ok)}.dot{font-size:18px;color:#aab4bf}.dot.up{color:var(--ok)}.dot.down{color:var(--bad)}
+.warn{font-size:14px;color:var(--muted);margin-top:18px}\ntable{border-collapse:collapse;width:100%%}td{padding:8px 6px;border-top:1px solid var(--line);vertical-align:middle}td:last-child{text-align:right;white-space:nowrap}code{font-size:14px}
+</style></head><body><main>
+<h1>Nucleon demo launcher</h1>
+<p class="lede">Nucleon over Cloudflare (this Mac serves it through the tunnel; Access asks for an email code first). The codes are copied, never shown. Don't screen-share this page.</p>
+<section><div class="head"><h2>How a tester or the boss gets in</h2></div>
+<p>No Cloudflare account is needed. 1. Their email address is added to the Access policy "Nucleon PoV" (Zero Trust dashboard, Access, Applications, Nucleon PoV, policy "Testers by email"). 2. They open the address, type that email, and get a six-digit code by email (check spam); it is valid for a few minutes, and the session then lasts 24 hours. 3. Then they sign in to LibreChat with the account we made for them, or to Nucleon with the Staff or Owner code. The email code is a temporary PoV measure, not part of the product.</p></section>
+%s
+<p class="warn">The green dot means the service answered. Generated by <code>~/Developer/nucleon-local/bin/demo-launcher</code> from the local config; run it again if the codes ever change.</p>
+</main><script>
+const S = %s;
+async function copy(text) {
+  try { await navigator.clipboard.writeText(text); return true; } catch (e) {}
+  const t = document.createElement('textarea'); t.value = text; t.style.position = 'fixed'; t.style.opacity = '0';
+  document.body.appendChild(t); t.select(); let ok = false; try { ok = document.execCommand('copy'); } catch (e) {} t.remove(); return ok;
+}
+document.querySelectorAll('button.copy').forEach(b => b.addEventListener('click', async () => {
+  const label = b.textContent; const ok = await copy(S[b.dataset.key]);
+  b.textContent = ok ? 'Copied ✓' : 'Copy failed'; b.classList.toggle('done', ok);
+  setTimeout(() => { b.textContent = label; b.classList.remove('done'); }, 1800);
+}));
+document.querySelectorAll('.dot').forEach(async d => {
+  const up = async (mode) => { try { await fetch(d.dataset.probe, {mode, cache: 'no-store'}); return true; } catch (e) { return false; } };
+  const ok = await up('cors') || await up('no-cors');   // LibreChat allows CORS but blocks no-cors reads; Nucleon answers no-cors
+  d.classList.add(ok ? 'up' : 'down'); d.title = ok ? 'answering' : 'not answering';
+});
+</script></body></html>''' % ('\n'.join(cards), json.dumps(secrets))
+
+fd = os.open(OUT, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+os.write(fd, page.encode()); os.close(fd); os.chmod(OUT, 0o600)
+print('wrote', OUT, '(mode 600; contains the demo codes, keep it local)')
+if '--no-open' not in sys.argv:
+    subprocess.run(['open', OUT])

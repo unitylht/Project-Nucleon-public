@@ -1,0 +1,18 @@
+### Notes on the draft slide plan (33 slides, 12 Nov)
+
+Chris's plan follows the double diamond and already covers most of what the slides ask for. These notes only compare it with the Week 8 and Week 9 slides; the plan is the team's call.
+
+| Draft slides | Note |
+| --- | --- |
+| 1 Title | The slides require more on page 1: a photo and the Scrum role of every member, the GitHub link, the live app link and any login the marker needs [W9 p4]. |
+| 3-9 Discover and Define (7 slides) | The suggested budget is about 8 pages for problem and discovery together [W9 p11], so this fits. Make slide 9 ("Validating the problem space") carry real evidence: who was interviewed, when, what they said. |
+| 10-12 Ideation, scope, agentic feature | The plan's own note says these can be combined. Keep slide 12 separate: the slides ask explicitly for the agent's goal, its authority, its escalation rules and which steps are human, tool or agent [W8 p19]. Pack sections 1 and 2 have the wording. |
+| 13 Methodology; "Project Delivery and Team Collaboration" (unnumbered) | Team practice is a marked criterion (Scrum-style cadence, shared accountability) [W8 p5]. Give it a numbered slide. |
+| 14-21 Architecture, data, rules, walkthroughs (8 slides) | Matches the suggested 7 pages for the build. Pack sections 3, 4 and 8 and the screenshots feed these. Tell the walkthroughs through the three use cases that the video uses [W8 p13]. Slide 18 "Onboarding" is new since Week 7: Quick setup and the Doctor exist because the owners needed about an hour to set up. |
+| 22-25 Proof of value (4 slides) | **Too few.** The slides suggest about 7 pages and judge "With Merit" on several test rounds traced to decisions [W8 p5, W9 p11]. Suggested split: (a) test plan: who tested, how close they are to the real user, which use cases; (b) baseline today, reported by the owner; (c) what was measured after; (d) the owners' session and what they said, in their words; (e) the finding that the owners' first policy let the agent decide 0 of about 20 open invoices, and why; (f) feedback → change table (pack section 5); (g) what is still not measured. "Simulated users aren't evidence" [W9 p6]: name Tony and Hoang as team members acting as users, and the owners as the real users. |
+| 23 Feedback and limitations; "Keep, Cut and Defer" | Good fit for the open-issues table above and pack section 9. |
+| 26 "What does the solution solve?" | Could be the before/after slide: steps and time for one request today versus with Nucleon. Label the baseline as reported by the owner. |
+| 27-30 Market, demand, go-to-market, unit economics (4 slides) | The slides ask for one go-to-market card: customer (one business type, size, place), channel, why switch, a 90-day pilot, the biggest barrier, in about 3 pages [W9 p10-11]. **Unit economics and pricing are not required** ("value to users is assessed, not pricing") [W8 p7, W9 p10]. Slides 28 and 30 could be dropped or folded into 29, freeing two pages for proof of value. Pack section 7 has the cost facts if a cost line is still wanted. |
+| 31-32 Roadmap, learnings | Pack section 10. One lesson with fresh evidence: a rule written in the prompt did not stop the assistant guessing; a check outside the model did (pack section 5, live test row). |
+| 33 Conclusion and video link | Fine. The video itself: max 10 minutes, at least 3 use cases, the agent acts and the owner approves [W9 p4]. |
+| Missing | "What changed since Week 7" is asked for in both the deck and the video [W9 p6, p12]: pack section 5 by week. Friction before and after, and "dashboard to briefing" [W8 p20-21], are course concepts the design slides can name. |

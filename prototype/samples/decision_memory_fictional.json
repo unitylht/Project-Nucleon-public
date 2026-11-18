@@ -1,0 +1,680 @@
+{
+ "label": "Fictional decision memory for the Adaptive Decision Authority demonstration. Every case is fictional and invented for this proof of concept; none is a real customer, decision or measured outcome. The fictional_evaluation cases are held out from retrieval and used only to back-test a policy (a SIMULATION).",
+ "currency": "AUD",
+ "scale": 2,
+ "asOf": "2026-10-24",
+ "cases": [
+  {
+   "id": "fx-ex-01",
+   "kind": "extension",
+   "dataset": "fictional_example",
+   "fictional": true,
+   "customerName": "Harbor Bakery (fictional)",
+   "decidedOn": "2026-05-12",
+   "summary": "Fictional extension: 14 days on AUD 520.00",
+   "features": {
+    "exposure": 52000,
+    "customerExposure": 52000,
+    "extensionDays": 14,
+    "nothingElseOverdue": true,
+    "priorLateShare": "0",
+    "lateUnknown": false,
+    "sizeRatio": "11/10",
+    "isNew": false,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "Pays every invoice on time; a short extension is fine.",
+   "outcome": {
+    "label": "repaid"
+   }
+  },
+  {
+   "id": "fx-ex-02",
+   "kind": "extension",
+   "dataset": "fictional_example",
+   "fictional": true,
+   "customerName": "Kestrel Deli (fictional)",
+   "decidedOn": "2026-05-28",
+   "summary": "Fictional extension: 21 days on AUD 410.00",
+   "features": {
+    "exposure": 41000,
+    "customerExposure": 41000,
+    "extensionDays": 21,
+    "nothingElseOverdue": true,
+    "priorLateShare": "1/10",
+    "lateUnknown": false,
+    "sizeRatio": "9/10",
+    "isNew": false,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "One late payment in ten; an ordinary request.",
+   "outcome": {
+    "label": "repaid"
+   }
+  },
+  {
+   "id": "fx-ex-03",
+   "kind": "extension",
+   "dataset": "fictional_example",
+   "fictional": true,
+   "customerName": "Pinewood Grocer (fictional)",
+   "decidedOn": "2026-06-09",
+   "summary": "Fictional extension: 30 days on AUD 630.00",
+   "features": {
+    "exposure": 63000,
+    "customerExposure": 63000,
+    "extensionDays": 30,
+    "nothingElseOverdue": true,
+    "priorLateShare": "1/5",
+    "lateUnknown": false,
+    "sizeRatio": "6/5",
+    "isNew": false,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "The longest I will allow, for a customer with a good record.",
+   "outcome": {
+    "label": "repaid"
+   }
+  },
+  {
+   "id": "fx-ex-04",
+   "kind": "extension",
+   "dataset": "fictional_example",
+   "fictional": true,
+   "customerName": "Marlow Florist (fictional)",
+   "decidedOn": "2026-06-21",
+   "summary": "Fictional extension: 10 days on AUD 380.00",
+   "features": {
+    "exposure": 38000,
+    "customerExposure": 38000,
+    "extensionDays": 10,
+    "nothingElseOverdue": true,
+    "priorLateShare": "0",
+    "lateUnknown": false,
+    "sizeRatio": "1",
+    "isNew": false,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "Small and short.",
+   "outcome": {
+    "label": "repaid"
+   }
+  },
+  {
+   "id": "fx-ex-05",
+   "kind": "extension",
+   "dataset": "fictional_example",
+   "fictional": true,
+   "customerName": "Tidewater Caterers (fictional)",
+   "decidedOn": "2026-06-30",
+   "summary": "Fictional extension: 45 days on AUD 1,200.00",
+   "features": {
+    "exposure": 120000,
+    "customerExposure": 120000,
+    "extensionDays": 45,
+    "nothingElseOverdue": false,
+    "priorLateShare": "2/5",
+    "lateUnknown": false,
+    "sizeRatio": "3",
+    "isNew": false,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "decline",
+   "ownerReason": "Already late on other invoices and asking for six weeks.",
+   "outcome": {
+    "label": "defaulted"
+   }
+  },
+  {
+   "id": "fx-tr-01",
+   "kind": "trial_credit",
+   "dataset": "fictional_example",
+   "fictional": true,
+   "customerName": "Alder Street Kiosk (fictional)",
+   "decidedOn": "2026-04-10",
+   "summary": "Fictional trial credit: order AUD 400.00, exposure AUD 300.00, 14-day terms",
+   "features": {
+    "exposure": 30000,
+    "orderAmount": 40000,
+    "depositShare": "1/4",
+    "termsDays": 14,
+    "customerExposure": 30000,
+    "isNew": true,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "Deposit paid, small order.",
+   "outcome": {
+    "label": "repaid"
+   }
+  },
+  {
+   "id": "fx-tr-02",
+   "kind": "trial_credit",
+   "dataset": "fictional_example",
+   "fictional": true,
+   "customerName": "Birchwood Pantry (fictional)",
+   "decidedOn": "2026-04-25",
+   "summary": "Fictional trial credit: order AUD 600.00, exposure AUD 450.00, 14-day terms",
+   "features": {
+    "exposure": 45000,
+    "orderAmount": 60000,
+    "depositShare": "1/4",
+    "termsDays": 14,
+    "customerExposure": 45000,
+    "isNew": true,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "Deposit paid and the business is registered.",
+   "outcome": {
+    "label": "repaid"
+   }
+  },
+  {
+   "id": "fx-tr-03",
+   "kind": "trial_credit",
+   "dataset": "fictional_example",
+   "fictional": true,
+   "customerName": "Cobble Lane Cafe (fictional)",
+   "decidedOn": "2026-05-06",
+   "summary": "Fictional trial credit: order AUD 800.00, exposure AUD 600.00, 14-day terms",
+   "features": {
+    "exposure": 60000,
+    "orderAmount": 80000,
+    "depositShare": "1/4",
+    "termsDays": 14,
+    "customerExposure": 60000,
+    "isNew": true,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "At my limit for a new customer, but fine.",
+   "outcome": {
+    "label": "repaid"
+   }
+  },
+  {
+   "id": "fx-tr-04",
+   "kind": "trial_credit",
+   "dataset": "fictional_example",
+   "fictional": true,
+   "customerName": "Dunmore Juice Bar (fictional)",
+   "decidedOn": "2026-05-19",
+   "summary": "Fictional trial credit: order AUD 1,000.00, exposure AUD 750.00, 14-day terms",
+   "features": {
+    "exposure": 75000,
+    "orderAmount": 100000,
+    "depositShare": "1/4",
+    "termsDays": 14,
+    "customerExposure": 75000,
+    "isNew": true,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "Slightly over my usual limit; the deposit covers it. Repaid on time.",
+   "outcome": {
+    "label": "repaid"
+   }
+  },
+  {
+   "id": "fx-tr-05",
+   "kind": "trial_credit",
+   "dataset": "fictional_example",
+   "fictional": true,
+   "customerName": "Elmhurst Noodles (fictional)",
+   "decidedOn": "2026-06-02",
+   "summary": "Fictional trial credit: order AUD 1,000.00, exposure AUD 700.00, 21-day terms",
+   "features": {
+    "exposure": 70000,
+    "orderAmount": 100000,
+    "depositShare": "3/10",
+    "termsDays": 21,
+    "customerExposure": 70000,
+    "isNew": true,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "Over the usual limit, but a good deposit and a trade reference.",
+   "outcome": {
+    "label": "repaid"
+   }
+  },
+  {
+   "id": "fx-tr-06",
+   "kind": "trial_credit",
+   "dataset": "fictional_example",
+   "fictional": true,
+   "customerName": "Foxglove Patisserie (fictional)",
+   "decidedOn": "2026-06-16",
+   "summary": "Fictional trial credit: order AUD 1,200.00, exposure AUD 900.00, 14-day terms",
+   "features": {
+    "exposure": 90000,
+    "orderAmount": 120000,
+    "depositShare": "1/4",
+    "termsDays": 14,
+    "customerExposure": 90000,
+    "isNew": true,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "Larger order; the owner was known to me.",
+   "outcome": {
+    "label": "repaid"
+   }
+  },
+  {
+   "id": "fx-tr-09",
+   "kind": "trial_credit",
+   "dataset": "fictional_example",
+   "fictional": true,
+   "customerName": "Ibis Row Provisions (fictional)",
+   "decidedOn": "2026-06-20",
+   "summary": "Fictional trial credit: order AUD 1,600.00, exposure AUD 800.00, 14-day terms",
+   "features": {
+    "exposure": 80000,
+    "orderAmount": 160000,
+    "depositShare": "1/2",
+    "termsDays": 14,
+    "customerExposure": 80000,
+    "isNew": true,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "Half paid up front, so I was comfortable.",
+   "outcome": {
+    "label": "repaid"
+   }
+  },
+  {
+   "id": "fx-tr-07",
+   "kind": "trial_credit",
+   "dataset": "fictional_example",
+   "fictional": true,
+   "customerName": "Gannet Wholesale (fictional)",
+   "decidedOn": "2026-06-24",
+   "summary": "Fictional trial credit: order AUD 4,000.00, exposure AUD 3,000.00, 30-day terms",
+   "features": {
+    "exposure": 300000,
+    "orderAmount": 400000,
+    "depositShare": "1/4",
+    "termsDays": 30,
+    "customerExposure": 300000,
+    "isNew": true,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "decline",
+   "ownerReason": "Far too large for someone I do not know yet.",
+   "outcome": {
+    "label": "defaulted"
+   }
+  },
+  {
+   "id": "fx-tr-08",
+   "kind": "trial_credit",
+   "dataset": "fictional_example",
+   "fictional": true,
+   "customerName": "Heron Catering Supplies (fictional)",
+   "decidedOn": "2026-07-03",
+   "summary": "Fictional trial credit: order AUD 5,000.00, exposure AUD 3,500.00, 30-day terms",
+   "features": {
+    "exposure": 350000,
+    "orderAmount": 500000,
+    "depositShare": "3/10",
+    "termsDays": 30,
+    "customerExposure": 350000,
+    "isNew": true,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "decline",
+   "ownerReason": "Too much exposure for a first order.",
+   "outcome": {
+    "label": "late"
+   }
+  },
+  {
+   "id": "fe-ex-01",
+   "kind": "extension",
+   "dataset": "fictional_evaluation",
+   "fictional": true,
+   "customerName": "Ironbark Bakehouse (fictional)",
+   "decidedOn": "2026-08-04",
+   "summary": "Fictional extension: 12 days on AUD 450.00",
+   "features": {
+    "exposure": 45000,
+    "customerExposure": 45000,
+    "extensionDays": 12,
+    "nothingElseOverdue": true,
+    "priorLateShare": "0",
+    "lateUnknown": false,
+    "sizeRatio": "1",
+    "isNew": false,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "Routine.",
+   "outcome": {
+    "label": "repaid"
+   }
+  },
+  {
+   "id": "fe-ex-02",
+   "kind": "extension",
+   "dataset": "fictional_evaluation",
+   "fictional": true,
+   "customerName": "Juniper Cafe (fictional)",
+   "decidedOn": "2026-08-11",
+   "summary": "Fictional extension: 20 days on AUD 500.00",
+   "features": {
+    "exposure": 50000,
+    "customerExposure": 50000,
+    "extensionDays": 20,
+    "nothingElseOverdue": true,
+    "priorLateShare": "1/10",
+    "lateUnknown": false,
+    "sizeRatio": "11/10",
+    "isNew": false,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "Good customer.",
+   "outcome": {
+    "label": "repaid"
+   }
+  },
+  {
+   "id": "fe-ex-03",
+   "kind": "extension",
+   "dataset": "fictional_evaluation",
+   "fictional": true,
+   "customerName": "Kingfisher Foods (fictional)",
+   "decidedOn": "2026-08-19",
+   "summary": "Fictional extension: 28 days on AUD 700.00",
+   "features": {
+    "exposure": 70000,
+    "customerExposure": 70000,
+    "extensionDays": 28,
+    "nothingElseOverdue": true,
+    "priorLateShare": "1/5",
+    "lateUnknown": false,
+    "sizeRatio": "13/10",
+    "isNew": false,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "Near my limit but acceptable.",
+   "outcome": {
+    "label": "repaid"
+   }
+  },
+  {
+   "id": "fe-ex-04",
+   "kind": "extension",
+   "dataset": "fictional_evaluation",
+   "fictional": true,
+   "customerName": "Lantern Gelato (fictional)",
+   "decidedOn": "2026-08-26",
+   "summary": "Fictional extension: 7 days on AUD 350.00",
+   "features": {
+    "exposure": 35000,
+    "customerExposure": 35000,
+    "extensionDays": 7,
+    "nothingElseOverdue": true,
+    "priorLateShare": "0",
+    "lateUnknown": false,
+    "sizeRatio": "9/10",
+    "isNew": false,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "Short.",
+   "outcome": {
+    "label": "repaid"
+   }
+  },
+  {
+   "id": "fe-ex-05",
+   "kind": "extension",
+   "dataset": "fictional_evaluation",
+   "fictional": true,
+   "customerName": "Magnolia Deli (fictional)",
+   "decidedOn": "2026-09-02",
+   "summary": "Fictional extension: 30 days on AUD 900.00",
+   "features": {
+    "exposure": 90000,
+    "customerExposure": 90000,
+    "extensionDays": 30,
+    "nothingElseOverdue": true,
+    "priorLateShare": "1/4",
+    "lateUnknown": false,
+    "sizeRatio": "3/2",
+    "isNew": false,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "Paid, though a little late.",
+   "outcome": {
+    "label": "late"
+   }
+  },
+  {
+   "id": "fe-ex-06",
+   "kind": "extension",
+   "dataset": "fictional_evaluation",
+   "fictional": true,
+   "customerName": "Nutmeg Kitchen (fictional)",
+   "decidedOn": "2026-09-09",
+   "summary": "Fictional extension: 15 days on AUD 600.00",
+   "features": {
+    "exposure": 60000,
+    "customerExposure": 60000,
+    "extensionDays": 15,
+    "nothingElseOverdue": true,
+    "priorLateShare": "1/10",
+    "lateUnknown": false,
+    "sizeRatio": "1",
+    "isNew": false,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "decline",
+   "ownerReason": "I knew they were in trouble; the numbers did not show it.",
+   "outcome": {
+    "label": "defaulted"
+   }
+  },
+  {
+   "id": "fe-ex-07",
+   "kind": "extension",
+   "dataset": "fictional_evaluation",
+   "fictional": true,
+   "customerName": "Oakleaf Grocers (fictional)",
+   "decidedOn": "2026-09-15",
+   "summary": "Fictional extension: 21 days on AUD 2,500.00",
+   "features": {
+    "exposure": 250000,
+    "customerExposure": 250000,
+    "extensionDays": 21,
+    "nothingElseOverdue": true,
+    "priorLateShare": "0",
+    "lateUnknown": false,
+    "sizeRatio": "2",
+    "isNew": false,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "decline",
+   "ownerReason": "Far larger than their usual invoices.",
+   "outcome": {
+    "label": "defaulted"
+   }
+  },
+  {
+   "id": "fe-tr-01",
+   "kind": "trial_credit",
+   "dataset": "fictional_evaluation",
+   "fictional": true,
+   "customerName": "Pebble Creek Cafe (fictional)",
+   "decidedOn": "2026-08-06",
+   "summary": "Fictional trial credit: order AUD 600.00, exposure AUD 450.00, 14-day terms",
+   "features": {
+    "exposure": 45000,
+    "orderAmount": 60000,
+    "depositShare": "1/4",
+    "termsDays": 14,
+    "customerExposure": 45000,
+    "isNew": true,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "Deposit and registration checked.",
+   "outcome": {
+    "label": "repaid"
+   }
+  },
+  {
+   "id": "fe-tr-02",
+   "kind": "trial_credit",
+   "dataset": "fictional_evaluation",
+   "fictional": true,
+   "customerName": "Quince Street Bakery (fictional)",
+   "decidedOn": "2026-08-13",
+   "summary": "Fictional trial credit: order AUD 800.00, exposure AUD 600.00, 21-day terms",
+   "features": {
+    "exposure": 60000,
+    "orderAmount": 80000,
+    "depositShare": "1/4",
+    "termsDays": 21,
+    "customerExposure": 60000,
+    "isNew": true,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "Fine.",
+   "outcome": {
+    "label": "repaid"
+   }
+  },
+  {
+   "id": "fe-tr-03",
+   "kind": "trial_credit",
+   "dataset": "fictional_evaluation",
+   "fictional": true,
+   "customerName": "Rosemary Lane Deli (fictional)",
+   "decidedOn": "2026-08-20",
+   "summary": "Fictional trial credit: order AUD 500.00, exposure AUD 300.00, 14-day terms",
+   "features": {
+    "exposure": 30000,
+    "orderAmount": 50000,
+    "depositShare": "2/5",
+    "termsDays": 14,
+    "customerExposure": 30000,
+    "isNew": true,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "Large deposit.",
+   "outcome": {
+    "label": "repaid"
+   }
+  },
+  {
+   "id": "fe-tr-04",
+   "kind": "trial_credit",
+   "dataset": "fictional_evaluation",
+   "fictional": true,
+   "customerName": "Saltmarsh Fish Co (fictional)",
+   "decidedOn": "2026-08-27",
+   "summary": "Fictional trial credit: order AUD 700.00, exposure AUD 520.00, 30-day terms",
+   "features": {
+    "exposure": 52000,
+    "orderAmount": 70000,
+    "depositShare": "9/35",
+    "termsDays": 30,
+    "customerExposure": 52000,
+    "isNew": true,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "Deposit just enough; thirty days is the limit.",
+   "outcome": {
+    "label": "repaid"
+   }
+  },
+  {
+   "id": "fe-tr-05",
+   "kind": "trial_credit",
+   "dataset": "fictional_evaluation",
+   "fictional": true,
+   "customerName": "Thistledown Cafe (fictional)",
+   "decidedOn": "2026-09-03",
+   "summary": "Fictional trial credit: order AUD 800.00, exposure AUD 600.00, 14-day terms",
+   "features": {
+    "exposure": 60000,
+    "orderAmount": 80000,
+    "depositShare": "1/4",
+    "termsDays": 14,
+    "customerExposure": 60000,
+    "isNew": true,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "approve",
+   "ownerReason": "Paid late but paid.",
+   "outcome": {
+    "label": "late"
+   }
+  },
+  {
+   "id": "fe-tr-06",
+   "kind": "trial_credit",
+   "dataset": "fictional_evaluation",
+   "fictional": true,
+   "customerName": "Umber Hill Supplies (fictional)",
+   "decidedOn": "2026-09-10",
+   "summary": "Fictional trial credit: order AUD 4,000.00, exposure AUD 3,000.00, 14-day terms",
+   "features": {
+    "exposure": 300000,
+    "orderAmount": 400000,
+    "depositShare": "1/4",
+    "termsDays": 14,
+    "customerExposure": 300000,
+    "isNew": true,
+    "heldCustomer": false,
+    "evidenceComplete": true
+   },
+   "ownerDecision": "decline",
+   "ownerReason": "Far too large.",
+   "outcome": {
+    "label": "defaulted"
+   }
+  }
+ ]
+}

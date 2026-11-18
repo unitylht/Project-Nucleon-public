@@ -1,0 +1,317 @@
+From 4783ee433139d4d3f5e370db08248c45c1762026 Mon Sep 17 00:00:00 2001
+From: Nucleon Dev <dev@localhost>
+Date: Mon, 26 Oct 2026 11:05:58 +1100
+Subject: [PATCH] feat(client): open allow-listed Nucleon confirmation links
+ from MCP-UI cards
+
+handleUIAction ignored `link` actions. It now handles them without ever
+messaging the model: nucleonLinks.ts accepts only
+http://127.0.0.1:8631 or :18631 with path "/" and hash #/actions/act_<16 hex>
+(no credentials, query, whitespace or non-canonical spelling), and only while
+the user's click is a live transient activation. The page opens in a new tab
+with noopener,noreferrer; anything else is ignored. tool/intent/prompt
+handling, the iframe sandbox and patches 0001/0002 are unchanged.
+
+Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>
+---
+ .../src/utils/__tests__/nucleonLinks.spec.ts  | 186 ++++++++++++++++++
+ client/src/utils/index.ts                     |   7 +
+ client/src/utils/nucleonLinks.ts              |  68 +++++++
+ 3 files changed, 261 insertions(+)
+ create mode 100644 client/src/utils/__tests__/nucleonLinks.spec.ts
+ create mode 100644 client/src/utils/nucleonLinks.ts
+
+diff --git a/client/src/utils/__tests__/nucleonLinks.spec.ts b/client/src/utils/__tests__/nucleonLinks.spec.ts
+new file mode 100644
+index 0000000..8b0aafb
+--- /dev/null
++++ b/client/src/utils/__tests__/nucleonLinks.spec.ts
+@@ -0,0 +1,186 @@
++import { handleUIAction } from '~/utils';
++import { ALLOWED_ORIGINS, validateConfirmLink, openConfirmLink } from '../nucleonLinks';
++
++const ID = 'act_0123456789abcdef';
++const OK = `http://127.0.0.1:8631/#/actions/${ID}`;
++const OK_TEST = `http://127.0.0.1:18631/#/actions/${ID}`;
++
++const setActivation = (isActive: boolean | undefined) => {
++  Object.defineProperty(window.navigator, 'userActivation', {
++    value: isActive === undefined ? undefined : { isActive, hasBeenActive: isActive },
++    configurable: true,
++  });
++};
++
++describe('validateConfirmLink', () => {
++  it('pins the allow-list', () => {
++    expect([...ALLOWED_ORIGINS]).toEqual(['http://127.0.0.1:8631', 'http://127.0.0.1:18631']);
++  });
++
++  it.each([OK, OK_TEST])('accepts %s', (url) => {
++    expect(validateConfirmLink(url)).toBe(url);
++  });
++
++  it.each([
++    ['javascript scheme', 'javascript:alert(1)'],
++    ['data scheme', 'data:text/html,<b>x</b>'],
++    ['file scheme', `file:///etc/passwd#/actions/${ID}`],
++    ['https on allowed host', `https://127.0.0.1:8631/#/actions/${ID}`],
++    ['https other host', `https://evil.example/#/actions/${ID}`],
++    ['suffix host', `http://127.0.0.1:8631.evil.com/#/actions/${ID}`],
++    ['localhost', `http://localhost:8631/#/actions/${ID}`],
++    ['other port', `http://127.0.0.1:8632/#/actions/${ID}`],
++    ['no port', `http://127.0.0.1/#/actions/${ID}`],
++    ['default port spelled', `http://127.0.0.1:80/#/actions/${ID}`],
++    ['credentials', `http://user:pw@127.0.0.1:8631/#/actions/${ID}`],
++    ['username only', `http://user@127.0.0.1:8631/#/actions/${ID}`],
++    ['credential host trick', `http://127.0.0.1:8631@evil.example/#/actions/${ID}`],
++    ['query', `http://127.0.0.1:8631/?x=1#/actions/${ID}`],
++    ['empty query marker', `http://127.0.0.1:8631/?#/actions/${ID}`],
++    ['other path', `http://127.0.0.1:8631/admin#/actions/${ID}`],
++    ['no path', `http://127.0.0.1:8631#/actions/${ID}`],
++    ['dot segment', `http://127.0.0.1:8631/x/..#/actions/${ID}`],
++    ['no hash', 'http://127.0.0.1:8631/'],
++    ['other hash route', `http://127.0.0.1:8631/#/settings/${ID}`],
++    ['uppercase id', `http://127.0.0.1:8631/#/actions/act_0123456789ABCDEF`],
++    ['uppercase prefix', `http://127.0.0.1:8631/#/actions/ACT_0123456789abcdef`],
++    ['short id', 'http://127.0.0.1:8631/#/actions/act_0123456789abcde'],
++    ['long id', `http://127.0.0.1:8631/#/actions/${ID}0`],
++    ['trailing path in hash', `http://127.0.0.1:8631/#/actions/${ID}/x`],
++    ['trailing query in hash', `http://127.0.0.1:8631/#/actions/${ID}?a=1`],
++    ['non-hex id', 'http://127.0.0.1:8631/#/actions/act_0123456789abcdeg'],
++    ['percent-encoded id char', 'http://127.0.0.1:8631/#/actions/act_%30123456789abcdef'],
++    ['percent-encoded slash', `http://127.0.0.1:8631/#%2Factions/${ID}`],
++    ['uppercase host', `http://127.0.0.1:8631/#/actions/${ID}`.replace('http', 'HTTP')],
++    ['leading space', ` ${OK}`],
++    ['trailing space', `${OK} `],
++    ['trailing newline', `${OK}\n`],
++    ['embedded tab', `http://127.0.0.1:8631/\t#/actions/${ID}`],
++    ['embedded newline', `http://127.0.0.1:86\n31/#/actions/${ID}`],
++    ['NUL', `${OK}\u0000`],
++    ['unicode space', `${OK}${String.fromCharCode(0xa0)}`],
++    ['backslash', `http:\\\\127.0.0.1:8631/#/actions/${ID}`],
++    ['empty string', ''],
++    ['not a url', 'not a url'],
++    ['relative', `/#/actions/${ID}`],
++  ])('refuses %s', (_name, url) => {
++    expect(validateConfirmLink(url)).toBeNull();
++  });
++
++  it.each([[undefined], [null], [42], [true], [{ href: OK }], [[OK]]])(
++    'refuses non-string %p',
++    (value) => {
++      expect(validateConfirmLink(value)).toBeNull();
++    },
++  );
++});
++
++describe('openConfirmLink / handleUIAction link', () => {
++  let openSpy: jest.SpyInstance;
++  let warnSpy: jest.SpyInstance;
++  const ask = jest.fn();
++  const link = (url: unknown) => ({ type: 'link', payload: { url } }) as never;
++
++  beforeEach(() => {
++    openSpy = jest.spyOn(window, 'open').mockImplementation(() => null);
++    warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
++    ask.mockClear();
++  });
++
++  afterEach(() => {
++    openSpy.mockRestore();
++    warnSpy.mockRestore();
++    setActivation(undefined);
++  });
++
++  it('opens an allowed link in a new tab with noopener,noreferrer when activated', async () => {
++    setActivation(true);
++    await handleUIAction(link(OK), ask);
++    expect(openSpy).toHaveBeenCalledTimes(1);
++    expect(openSpy).toHaveBeenCalledWith(OK, '_blank', 'noopener,noreferrer');
++    expect(ask).not.toHaveBeenCalled();
++  });
++
++  it('opens the isolated test origin when activated', async () => {
++    setActivation(true);
++    await handleUIAction(link(OK_TEST), ask);
++    expect(openSpy).toHaveBeenCalledWith(OK_TEST, '_blank', 'noopener,noreferrer');
++  });
++
++  it('does nothing without transient activation', async () => {
++    setActivation(false);
++    await handleUIAction(link(OK), ask);
++    expect(openSpy).not.toHaveBeenCalled();
++    expect(ask).not.toHaveBeenCalled();
++  });
++
++  it('does nothing when the userActivation API is absent', async () => {
++    setActivation(undefined);
++    await handleUIAction(link(OK), ask);
++    expect(openSpy).not.toHaveBeenCalled();
++    expect(ask).not.toHaveBeenCalled();
++  });
++
++  it.each([
++    ['javascript:alert(1)'],
++    ['https://evil.example/'],
++    [`http://127.0.0.1:8631.evil.com/#/actions/${ID}`],
++    [`http://127.0.0.1:8631/?x=1#/actions/${ID}`],
++    [42],
++    [undefined],
++  ])('never opens or messages the model for %p, even when activated', async (url) => {
++    setActivation(true);
++    await handleUIAction(link(url), ask);
++    expect(openSpy).not.toHaveBeenCalled();
++    expect(ask).not.toHaveBeenCalled();
++  });
++
++  it.each([[undefined], [null], ['http://127.0.0.1:8631/'], [42]])(
++    'tolerates a malformed payload %p',
++    async (payload) => {
++      setActivation(true);
++      await handleUIAction({ type: 'link', payload } as never, ask);
++      expect(openSpy).not.toHaveBeenCalled();
++      expect(ask).not.toHaveBeenCalled();
++    },
++  );
++
++  it('does not log the refused URL', () => {
++    setActivation(true);
++    openConfirmLink({ url: 'https://secret.example/token' });
++    expect(JSON.stringify(warnSpy.mock.calls)).not.toContain('secret.example');
++  });
++
++  describe('other action types are unchanged', () => {
++    beforeEach(() => setActivation(true));
++
++    it('tool asks the model', async () => {
++      await handleUIAction(
++        { type: 'tool', payload: { toolName: 't', params: { a: 1 } } } as never,
++        ask,
++      );
++      expect(ask).toHaveBeenCalledTimes(1);
++      expect(ask.mock.calls[0][0].text).toContain('message of type `tool`');
++      expect(ask.mock.calls[0][0].text).toContain('`t`');
++    });
++
++    it('intent asks the model', async () => {
++      await handleUIAction({ type: 'intent', payload: { intent: 'go', params: {} } } as never, ask);
++      expect(ask).toHaveBeenCalledTimes(1);
++      expect(ask.mock.calls[0][0].text).toContain('message of type `intent`');
++    });
++
++    it('prompt asks the model', async () => {
++      await handleUIAction({ type: 'prompt', payload: { prompt: 'hello' } } as never, ask);
++      expect(ask).toHaveBeenCalledTimes(1);
++      expect(ask.mock.calls[0][0].text).toContain('hello');
++    });
++
++    it('notify and unknown types do nothing', async () => {
++      await handleUIAction({ type: 'notify', payload: { message: 'x' } } as never, ask);
++      await handleUIAction({ type: 'weird', payload: {} } as never, ask);
++      expect(ask).not.toHaveBeenCalled();
++      expect(openSpy).not.toHaveBeenCalled();
++    });
++  });
++});
+diff --git a/client/src/utils/index.ts b/client/src/utils/index.ts
+index 34addf5..cfbeb96 100644
+--- a/client/src/utils/index.ts
++++ b/client/src/utils/index.ts
+@@ -2,6 +2,7 @@ import React from 'react';
+ import type { UIActionResult } from '@mcp-ui/client';
+ import { TAskFunction } from '~/common';
+ import logger from './logger';
++import { openConfirmLink } from './nucleonLinks';
+ 
+ export * from './map';
+ export * from './json';
+@@ -145,6 +146,12 @@ export const handleUIAction = async (result: UIActionResult, ask: TAskFunction)
+ 
+   const { type, payload } = result;
+ 
++  /* Nucleon patch 0003: a `link` never reaches the model; it opens only an allow-listed page. */
++  if (type === 'link') {
++    openConfirmLink(payload);
++    return;
++  }
++
+   if (!supportedTypes.includes(type)) {
+     return;
+   }
+diff --git a/client/src/utils/nucleonLinks.ts b/client/src/utils/nucleonLinks.ts
+new file mode 100644
+index 0000000..f480ed6
+--- /dev/null
++++ b/client/src/utils/nucleonLinks.ts
+@@ -0,0 +1,68 @@
++/**
++ * Nucleon patch 0003: the only way an embedded MCP-UI resource may open a page.
++ *
++ * Origins a card's `link` action may open. This is a build-time constant: change
++ * it by rebuilding the image. A remote deployment needs an authenticated HTTPS
++ * origin added here; plain-http loopback origins are for the local runtime only.
++ */
++export const ALLOWED_ORIGINS: readonly string[] = [
++  'http://127.0.0.1:8631',
++  'http://127.0.0.1:18631',
++];
++
++const ACTION_HASH = /^#\/actions\/act_[0-9a-f]{16}$/;
++/** Whitespace and C0/C1 control characters anywhere in the raw string. */
++// eslint-disable-next-line no-control-regex
++const FORBIDDEN_CHARS = /[\s\u0000-\u001f\u007f-\u009f]/;
++
++/**
++ * Returns the normalised URL when `raw` is exactly `<allowed origin>/#/actions/act_<16 hex>`
++ * (no credentials, query, other path or encoding tricks), otherwise null.
++ */
++export function validateConfirmLink(raw: unknown): string | null {
++  if (typeof raw !== 'string' || raw.length === 0 || FORBIDDEN_CHARS.test(raw)) {
++    return null;
++  }
++  let url: URL;
++  try {
++    url = new URL(raw);
++  } catch {
++    return null;
++  }
++  if (
++    url.protocol !== 'http:' ||
++    !ALLOWED_ORIGINS.includes(url.origin) ||
++    url.username !== '' ||
++    url.password !== '' ||
++    url.pathname !== '/' ||
++    url.search !== '' ||
++    !ACTION_HASH.test(url.hash) ||
++    /* canonical form only: also rejects a bare `?`, which leaves `search` empty */
++    url.href !== `${url.origin}/${url.hash}` ||
++    url.href !== raw
++  ) {
++    return null;
++  }
++  return url.href;
++}
++
++/** True only while the user's click is still a live (transient) activation. */
++export function hasUserActivation(): boolean {
++  return typeof navigator !== 'undefined' && navigator.userActivation?.isActive === true;
++}
++
++/**
++ * Opens a validated confirmation link in a new tab. Never throws, never reports the URL.
++ * Returns whether a window was requested.
++ */
++export function openConfirmLink(payload: unknown): boolean {
++  const raw =
++    payload != null && typeof payload === 'object' ? (payload as { url?: unknown }).url : undefined;
++  const href = validateConfirmLink(raw);
++  if (href == null || !hasUserActivation()) {
++    console.warn('MCP-UI link action ignored');
++    return false;
++  }
++  window.open(href, '_blank', 'noopener,noreferrer');
++  return true;
++}
+-- 
+2.39.5 (Apple Git-154)
+

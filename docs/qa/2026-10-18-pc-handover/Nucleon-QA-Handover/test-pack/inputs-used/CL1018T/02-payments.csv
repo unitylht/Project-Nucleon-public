@@ -1,0 +1,3 @@
+Customer,Payment date,Amount received,Payment reference,Invoice number
+CL1018T Imported A fictional,2026-10-12,600.00,CL1018T-PAY-001,CL1018T-CSV-001
+CL1018T Imported B fictional,2026-10-12,50.00,CL1018T-PAY-002,

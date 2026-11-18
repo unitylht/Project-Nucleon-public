@@ -1,0 +1,12 @@
+Your tag is PD1815A
+
+Use this exact tag in the guide’s manual names, invoice references, messages and source labels.
+Your CSVs already use it. No editing is needed for your first run.
+In a pair, use one person’s folder and tag consistently.
+Use a new tag throughout if you repeat the run.
+
+Source labels
+PD1815A Invoice test
+PD1815A Payment test
+PD1815A Invalid preview
+PD1815A Revert test

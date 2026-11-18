@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  Keeps this Mac awake while the PoV is public: -d no display sleep, -i no idle sleep, -m no disk idle sleep,
+  -s no system sleep (on AC power), -u declare the user active. Without it the tunnel drops when the Mac sleeps.
+  Install:   cp com.nucleon.caffeinate.plist ~/Library/LaunchAgents/ && launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.nucleon.caffeinate.plist
+  Stop:      launchctl bootout gui/$(id -u)/com.nucleon.caffeinate
+-->
+<plist version="1.0">
+<dict>
+	<key>Label</key>
+	<string>com.nucleon.caffeinate</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>/usr/bin/caffeinate</string>
+		<string>-dimsu</string>
+	</array>
+	<key>RunAtLoad</key>
+	<true/>
+	<key>KeepAlive</key>
+	<true/>
+	<key>ProcessType</key>
+	<string>Background</string>
+</dict>
+</plist>

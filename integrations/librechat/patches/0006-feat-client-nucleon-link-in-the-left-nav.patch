@@ -1,0 +1,139 @@
+From 93fdcd75c61cfe8d96cf3851d7be1610da55d14a Mon Sep 17 00:00:00 2001
+From: unitylht <142583978+unitylht@users.noreply.github.com>
+Date: Sat, 31 Oct 2026 10:45:21 +1100
+Subject: [PATCH] feat(client): Nucleon link in the left nav
+
+Adds a Nucleon icon button to the left rail (also when the sidebar is collapsed)
+that opens the Nucleon address in a new tab (target=_blank, rel=noopener). The
+address is the build-time Vite env VITE_NUCLEON_URL (default
+https://nucleon.dracooz.top); the Dockerfile passes it as a build arg. Changing
+it needs a rebuild. Client only; no server or startup-config change.
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+---
+ Dockerfile                                    |  4 ++
+ .../src/components/Nav/NucleonLinkButton.tsx  | 37 +++++++++++++++++++
+ .../UnifiedSidebar/ExpandedPanel.tsx          |  2 +
+ .../__tests__/ExpandedPanel.spec.tsx          | 14 +++++++
+ client/src/vite-env.d.ts                      |  1 +
+ 5 files changed, 58 insertions(+)
+ create mode 100644 client/src/components/Nav/NucleonLinkButton.tsx
+
+diff --git a/Dockerfile b/Dockerfile
+index ccf6f27..0e940f3 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -56,6 +56,10 @@ RUN \
+ 
+ COPY --chown=node:node . .
+ 
++# Address of the Nucleon link in the left rail (client build-time only; empty = built-in default).
++ARG VITE_NUCLEON_URL=
++ENV VITE_NUCLEON_URL=${VITE_NUCLEON_URL}
++
+ RUN \
+     # React client build with configurable memory
+     NODE_OPTIONS="--max-old-space-size=${NODE_MAX_OLD_SPACE_SIZE}" npm run frontend && \
+diff --git a/client/src/components/Nav/NucleonLinkButton.tsx b/client/src/components/Nav/NucleonLinkButton.tsx
+new file mode 100644
+index 0000000..35d7ff3
+--- /dev/null
++++ b/client/src/components/Nav/NucleonLinkButton.tsx
+@@ -0,0 +1,37 @@
++import { Atom } from 'lucide-react';
++import { Button, TooltipAnchor } from '@librechat/client';
++
++/** Build-time address (Vite env `VITE_NUCLEON_URL`); changing it needs a rebuild of the image. */
++export const NUCLEON_URL: string =
++  (import.meta.env.VITE_NUCLEON_URL as string | undefined)?.trim() || 'https://nucleon.dracooz.top';
++export const NUCLEON_LABEL = 'Nucleon';
++
++interface NucleonLinkButtonProps {
++  side?: 'right' | 'bottom';
++}
++
++/** Entry in the left rail that opens an external page (Nucleon) in a new tab. The label and
++ *  address are constants, not read from any conversation or server data. */
++export default function NucleonLinkButton({ side = 'right' }: NucleonLinkButtonProps) {
++  return (
++    <TooltipAnchor
++      side={side}
++      description={NUCLEON_LABEL}
++      render={
++        <Button asChild variant="ghost" size="icon" className="h-9 w-9 flex-shrink-0">
++          {/* noopener is enough: Nucleon is a sister service and may receive the Referer. */}
++          {/* eslint-disable-next-line react/jsx-no-target-blank */}
++          <a
++            href={NUCLEON_URL}
++            target="_blank"
++            rel="noopener"
++            data-testid="nav-nucleon-link"
++            aria-label={NUCLEON_LABEL}
++          >
++            <Atom className="h-5 w-5 text-text-primary" aria-hidden="true" />
++          </a>
++        </Button>
++      }
++    />
++  );
++}
+diff --git a/client/src/components/UnifiedSidebar/ExpandedPanel.tsx b/client/src/components/UnifiedSidebar/ExpandedPanel.tsx
+index 371cb38..9f78897 100644
+--- a/client/src/components/UnifiedSidebar/ExpandedPanel.tsx
++++ b/client/src/components/UnifiedSidebar/ExpandedPanel.tsx
+@@ -7,6 +7,7 @@ import type { NavLink } from '~/common';
+ import { useShortcutAriaKey, useShortcutHint } from '~/hooks/useKeyboardShortcuts';
+ import { useActivePanel, resolveActivePanel, DEFAULT_PANEL } from '~/Providers';
+ import AgentMarketplaceButton from '~/components/Nav/AgentMarketplaceButton';
++import NucleonLinkButton from '~/components/Nav/NucleonLinkButton';
+ import { CLOSE_SIDEBAR_ID } from '~/components/Chat/Menus/OpenSidebar';
+ import useNewChat from '~/hooks/Chat/useNewChat';
+ import { useLocalize } from '~/hooks';
+@@ -171,6 +172,7 @@ function ExpandedPanel({
+       />
+       <NewChatButton setActive={setActive} />
+       <AgentMarketplaceButton />
++      <NucleonLinkButton />
+       <div className="mx-2 border-b border-border-light" />
+       <div className="flex flex-col gap-1 overflow-y-auto">
+         {links.map((link) => (
+diff --git a/client/src/components/UnifiedSidebar/__tests__/ExpandedPanel.spec.tsx b/client/src/components/UnifiedSidebar/__tests__/ExpandedPanel.spec.tsx
+index feab690..9dedb21 100644
+--- a/client/src/components/UnifiedSidebar/__tests__/ExpandedPanel.spec.tsx
++++ b/client/src/components/UnifiedSidebar/__tests__/ExpandedPanel.spec.tsx
+@@ -204,6 +204,20 @@ describe('ExpandedPanel', () => {
+     });
+   });
+ 
++  describe('NucleonLinkButton', () => {
++    it('renders a Nucleon link that opens in a new tab, expanded and collapsed', () => {
++      for (const expanded of [true, false]) {
++        const { unmount } = renderPanel({ expanded });
++        const link = screen.getByTestId('nav-nucleon-link');
++        expect(link).toHaveAttribute('href', 'https://nucleon.dracooz.top');
++        expect(link).toHaveAttribute('target', '_blank');
++        expect(link).toHaveAttribute('rel', 'noopener');
++        expect(link).toHaveAttribute('aria-label', 'Nucleon');
++        unmount();
++      }
++    });
++  });
++
+   describe('NewChatButton panel switch', () => {
+     it('switches to chat history panel on new chat click when setting is enabled', () => {
+       renderPanel({ expanded: true, initialPanel: 'prompts' });
+diff --git a/client/src/vite-env.d.ts b/client/src/vite-env.d.ts
+index 9ff196f..bbf243c 100644
+--- a/client/src/vite-env.d.ts
++++ b/client/src/vite-env.d.ts
+@@ -4,6 +4,7 @@ interface ImportMetaEnv {
+   readonly VITE_ENABLE_LOGGER: string;
+   readonly VITE_LOGGER_FILTER: string;
+   readonly VITE_FLAT_THREAD: string;
++  readonly VITE_NUCLEON_URL?: string;
+   // Add other env variables here
+ }
+ 
+-- 
+2.39.5 (Apple Git-154)
+

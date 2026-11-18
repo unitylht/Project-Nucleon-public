@@ -1,0 +1,62 @@
+# Situation, capabilities and prepared actions — design and plan (third slice)
+
+> **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax.
+
+**Goal:** The agent sees what the person sees and can obtain anything relevant on demand; its capabilities are configurable by role with availability, permission and confirmation kept apart; the owner can prepare a decision and ask for advice in conversation; next steps come from the workflow; presentation follows the question; a withheld reply recovers.
+
+**Spec:** this document (§0) plus the team's direction of 21 October recorded in `docs/DECISIONS.md` E021 (Task 6). Previous slices: `docs/superpowers/plans/2026-10-20-conversational-desk.md`, `docs/AGENT-COORDINATOR-PROPOSAL.md`. Branch `explore/agent-coordinator-20261019`; preview https://nucleon.dracooz.top/preview/.
+
+## §0 Design decisions
+
+1. **One situation, two readers.** `situation(role, *, thread=None, request_id=None, customer_id=None)` in `server.py` builds the role-filtered picture the page shows and the agent reads: the current case (request line, dates, amount with mark, extension days, day limit and the latest date within it, asked-versus-limit comparison, questions with answers, case-scoped and customer context lines, prior decisions, the stored suggestion with sentence/status/cites/version, the reply draft if decided), the customer (overview, open and overdue invoices with marks, completeness, open cases), the thread focus, and `actions` (§0.5). The desk page's case block renders from the same structure; the agent's user message carries a compact rendering of it at the start of every turn in a case thread, and the `caseDetails(requestId|'current')` and `customerOverview` tools return it for any case or customer. Context retrieval everywhere passes the case id. Diagnosed causes closed: `ownerContext` without the case id; `cases` without briefs; no case tool.
+2. **Capabilities are registered, not hard-coded in prompts.** `coordinator.CAPABILITIES`: each tool has `name, kind ('read'|'prepare'|'act'|'external'), roles, needsConfirmation, defaultEnabled, description`. Three concerns kept apart: *availability* (the tool is in the model's list for this role), *permission* (the server executes it), *confirmation* (a person must press a button before the effect). Overrides in meta `agentTools` (`{tool: {enabled: bool}}`), editable by the owner under Setup → "Agent tools" (a table: tool, what it does, kind, roles, needs confirmation, enabled). Preview default: every implemented tool enabled for its roles; `external` tools do not exist in this slice and the registry refuses to enable a kind it does not implement. Executing a disabled tool is rejected (`FORBIDDEN`) even if the model names it; the model is told which tools it has and nothing more.
+3. **Prepared decision.** `prepareDecision(outcome, days|date, reason?)` (owner, kind `prepare`, needsConfirmation): code resolves "14 days" to a date from the current due date (asks when the due date is unknown), validates like `decide`, stores a `preparedDecision` on the case (version, who, when, outcome, date, reason, suggestionShown) and renders a decision block with the resolved date, the comparison with the asked date and the limit, and one **Confirm decision** button that calls the existing `decide` with those values; nothing is committed without the button; a new preparation replaces the old. Ambiguity ("approve it" with no date, two open cases for the customer) → the tool returns what is missing and the model asks.
+4. **On-demand suggestion.** `requestSuggestion(requestId|'current')` (owner, `act` without external effect, no confirmation): runs the existing guarded suggestion step now, with the case inputs, stores it as the next suggestion version and returns it; the model explains it in words. Explaining the stored suggestion needs no tool: it is in the situation.
+5. **Actions from the workflow.** `actions_for(role, situation) -> [{id, label, kind, allowed, needsConfirmation, why}]` in code, per case and customer: for staff with a case waiting on the owner: `wait_for_owner` (allowed: nothing to enter), `answer_staff_question` when one is open, `add_invoice`/`record_payment` (open the records), `open_request`; for the owner: `decide`, `prepare_decision`, `request_suggestion`, `answer_question`, `add_context`, `turn_on_suggestions`. The prompt says: base any "what next" on `actions`, in the person's goal's terms, never on a generic instruction. Calculable questions (days between dates, within a limit or not) are answered from the situation's computed fields; the model never computes them.
+6. **Presentation follows the question.** `reply` gains `detail: 'none'|'summary'|'full'` and `show` stays; code renders: `none` → prose only, with one "Details" expander holding the run's blocks collapsed; `summary` → prose plus a one-line summary per block (counts, totals with marks) and the expander; `full` → the blocks open. Overlapping blocks are merged by code (an invoice appears once; the overview's invoice list is dropped when the invoices block is shown). The prompt: `none` for short answers unless the person asked for a list.
+7. **Focus follows the subject.** Focus may be `{kind:'customer', customerId}`, `{kind:'draft', name}` or `{kind:'unknown', name}`; the chip reads "About <name>" / "About <name> (not yet a customer)" / "About <name> (not found)"; the records link only for an existing customer; a created draft becomes the customer focus.
+8. **Recovery.** When the guard withholds, the loop re-asks the model once with the exact reason and the tool results ("your reply said …; restate using only these"), then renders the answer; if still withheld, the card says "Here is what the records show about <subject>." with the blocks, and the reason sits under Sources and in the card's `withheld`. The guard is unchanged.
+9. **Provenance in words.** Every block and the situation rendering carry their source labels as the page does (stated as of, exact, as recorded, not recorded, who said what and when, suggestion version); the prompt says to keep the mark with every figure it quotes.
+10. **Boundaries unchanged.** Owner-only context never reaches staff (the situation is role-filtered at the source); the agent commits nothing without a person's confirmation; decisions remain the owner's; no outbound messages exist.
+
+## Global Constraints
+
+As the previous slice (fictional data; guards; relative URLs; Arial; no inline styles; 375/390 px fit; existing tests and checks keep passing: unit 372, desk 60/60, layout 217/217, ui 150/150, conversation mock 169/169), plus: `coordinator-v0.4` recorded in PROMPTS.md with `--print-prompts` matching; the preview is updated only from pushed commits via the preview `nucleonctl deploy`; production never touched; the write-capable checks keep their scratch-only guard.
+
+## Review Focus
+
+1. The situation handed to the agent for staff must be byte-identical in content to what the staff page renders (no owner-only lines, questions, suggestion or `preparedDecision` from the owner). (Task 1 test.)
+2. A disabled tool named by the model is never executed and never listed. (Task 2 test.)
+3. "Approve 14 days, then" with an unknown current due date must ask, not guess. (Task 3 test.)
+4. `requestSuggestion` must go through `validate_suggestion` with the day limit, exactly like the automatic step. (Task 3 test.)
+5. A withheld reply that recovers on the retry must still pass the full guard; a retry can never loosen it. (Task 4 test.)
+
+---
+
+### Task 1: The shared situation and case access
+**Files:** `prototype/server.py` (`situation`, `actions_for` stub returning `[]` until Task 3, `DeskTools.caseDetails`, `_ownerContext` with the case id, `_cases` with the situation summary, `desk_view` case block from `situation`, withheld reason stored on the card), `prototype/coordinator.py` (`desk_messages` carries the situation rendering; `DESK_SYSTEM`: discuss what is on screen; figures from the situation; explain versus decide), `prototype/web/desk.js` (case block rendered from `situation`), tests `prototype/test_situation.py` (+ updates).
+- [ ] Tests first: the owner's situation for DEMO-202 contains the case-scoped "Up to 14 days this time", the limit date, the asked-versus-limit comparison and the stored suggestion; the staff situation equals the staff page content and holds none of the owner-only items; `caseDetails('current')` in a case thread returns the same; a mock "explain the suggestion" turn is not withheld because every figure is in the results; "what guidance have I given for DEMO-202?" lists the case line; the withheld reason is on the card.
+- [ ] Implement; run `test_situation`, `test_desk_agent`, `test_desk_api`, the suite; `desk_check`; commit.
+
+### Task 2: Capability registry, permissions and the Agent tools page
+**Files:** `prototype/coordinator.py` (`CAPABILITIES`, `tools_for(role, overrides)`), `prototype/server.py` (`GET/POST api/agent-tools`, owner; execution check), `prototype/web/setup.js` (+ `app.css`): "Agent tools" section, `deploy/desk_check.js` (a check that disabling a tool removes it), tests `prototype/test_capabilities.py`.
+- [ ] Tests first: registry lists every implemented tool with kind/roles/confirmation; staff never get owner tools; a disabled tool is neither listed nor executed; `external` cannot be enabled; the page shows the table and toggles for the owner only.
+- [ ] Implement; commit.
+
+### Task 3: Prepared decision, on-demand suggestion, workflow actions
+**Files:** `prototype/server.py` (`prepareDecision`, `requestSuggestion`, `actions_for`, `preparedDecision` on the case, `decide` accepts `preparedVersion`), `prototype/coordinator.py` (tool definitions, prompt rules, mock rules), `prototype/web/desk.js` (prepared-decision block with Confirm; actions shown as next steps), tests `prototype/test_prepared_actions.py`.
+- [ ] Tests first: "approve 14 days, then" prepares a decision with the computed date and the comparison, commits only on confirm, re-preparation replaces; unknown due date → asks; staff cannot prepare; `requestSuggestion` runs the guarded step (limit respected, stored as a new version); `actions_for` for staff with two owner-waiting cases has no "enter a request" action and says why; for the owner it lists decide/prepare/suggest; the mock "what should I do next?" answer cites an action.
+- [ ] Implement; commit.
+
+### Task 4: Presentation, focus and recovery
+**Files:** `prototype/coordinator.py` (`detail`, retry on withhold), `prototype/server.py` (block merging, focus kinds), `prototype/web/desk.js` (Details expander, summaries, chip kinds), `deploy/desk_check.js`, tests.
+- [ ] Tests first: a two-sentence ask renders prose with blocks collapsed; an invoice never appears twice when overview and invoices are both shown; "list their invoices" renders full; a draft moves the focus to "(not yet a customer)" with no records link; an unknown name sets an "(not found)" focus; a withheld reply is retried once with the reason and the retry still passes the full guard; the fallback sentence names the subject.
+- [ ] Implement; run `desk_check`, `layout_check --seed` (scratch), `ui_check`; commit.
+
+### Task 5: Validation
+**Files:** `deploy/conversations.json` (+ scenarios in case threads: explain the suggestion; could a shorter extension fit; what have I said; approve 14 days then confirm; ask for a new suggestion; staff "what should I do next" with cases waiting; a disabled tool; the Catering draft with the chip; two-sentence asks with no tables), `deploy/conversation_check.js` (assertions for `detail`, focus kinds, prepared decisions, actions), `docs/qa/CONVERSATION-REVIEW.md` (new section with the live transcripts and the model-reader rubric; human column empty).
+- [ ] Run on the mock (all pass) and on the live model; record.
+
+### Task 6: Records, deploy, verify
+**Files:** PROMPTS.md (`coordinator-v0.4`), `docs/AGENT-COORDINATOR-PROPOSAL.md` (revision 4), `docs/DECISIONS.md` (E021), `docs/UX-REDESIGN.md`, `prototype/README.md`, `docs/DEPLOYMENT.md` (preview; where the Agent tools page is), `docs/project-state.json` + build.
+- [ ] Write; push; deploy to the preview; verify through the public URL as both roles (the review's own messages in the DEMO-202 thread, plus varied wording); record; commit and push.

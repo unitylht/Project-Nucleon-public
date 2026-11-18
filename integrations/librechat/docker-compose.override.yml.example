@@ -1,0 +1,17 @@
+# POC overrides (git-ignored). See ~/Developer/LibreChat-POC.md
+# rc6-nav = patches 0001-0006 (0006 adds the Nucleon link in the left rail, address VITE_NUCLEON_URL at build time). Rollback image: librechat:nucleon-card-v0.8.8-rc5-cf.
+services:
+  api:
+    image: librechat:nucleon-card-v0.8.8-rc6-nav
+    # `!override` replaces (not appends to) the base ports list -> loopback only
+    ports: !override
+      - "127.0.0.1:3080:3080"
+    environment:
+      - SCHEDULES_SINGLE_PROCESS=true   # single replica; silences scheduler startup error
+    volumes:
+      - type: bind
+        source: ./librechat.yaml
+        target: /app/librechat.yaml
+  # Bundled admin panel is not part of this POC; base file would publish it on 0.0.0.0:3000
+  admin-panel:
+    profiles: ["disabled"]

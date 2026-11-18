@@ -1,0 +1,215 @@
+<section id="quick">
+<h2>5. Quick setup and the Doctor</h2>
+<p>The Control panel has every setting. That is its strength and also why it can feel like too much. Two helper pages sit beside it. Neither changes anything on its own. Both are for the Owner.</p>
+
+<h3>Quick setup</h3>
+<p><b>Use it:</b> for your first setup, or whenever the Control panel feels too big. It asks a few plain questions about payment extensions and shows what your answers would do with your own open invoices before you save anything. It always shows three promises: Nucleon never contacts your customer, you can undo any decision the agent makes on the Decide page, and you can pause the agent at any time with one button on the Control panel.</p>
+<p><b>The questions:</b></p>
+<ol>
+<li>How should the agent start? Three choices: it decides from today inside the limits; it decides after you have reviewed some of its recommendations (until you have reviewed 5 and agreed with at least 80%, everything comes to you); or it only recommends and you decide everything.</li>
+<li>The largest invoice the agent may give more time on, by itself. Buttons fill in "A typical open invoice" and "The largest open invoice" from your own records.</li>
+<li>The most one customer may owe in total, for the agent to decide.</li>
+<li>The latest new payment date, in days after the day the customer asks. Optional.</li>
+<li>The most an invoice may be late in total, in days after its first due date.</li>
+<li>Whether the agent may decide even when the customer has other overdue invoices.</li>
+<li>What to do with a customer who paid late before: the agent may still decide, only if at most a quarter of their earlier payments were late, or never (they come to you).</li>
+<li>Customers the agent must never decide for. You tick names from a list.</li>
+<li>Whether the agent may say no by itself to a request for more days than your limit, when the assistant recommends saying no.</li>
+</ol>
+<p><b>The preview</b> answers "If each customer asked today for 14 more days on each open invoice" with three counts (the agent decides, comes to you, never decided by the agent), the main reasons things come to you, examples, and a plain-words summary of what the rules mean. <b>Save these rules</b> stores the answers as an ordinary policy version, so everything stays editable on the Control panel and earlier versions stay.</p>
+[[fig:10-quick-setup.jpg|The Quick setup page with its questions on top and, below them, a preview of how many open invoices the agent would decide, how many would come to the Owner and the reasons, with a summary of the rules in plain words and a Save these rules button.|Quick setup with "It decides from today" chosen. The preview at the bottom is worked out from the Owner's own open invoices. Nothing is saved until the button is pressed.]]
+<p><b>Use the Control panel instead</b> for everything Quick setup does not ask: trial credit and its limits, the 30-day budget, exceptions, a little over a money limit, standing rules for one customer, scheduled changes, the model and the version notes.</p>
+
+<h3>The Doctor</h3>
+<p><b>Use it:</b> when you wonder why things still reach you or why you keep correcting the agent. It answers six questions from your own cases. It never changes a setting. A suggestion opens Quick setup with the answer filled in, so you see the effect before you save. A window selector at the top chooses how far back to look. With fewer than 5 cases it says there are too few to see a pattern.</p>
+<ol>
+<li>Why do so many requests still come to me?</li>
+<li>Why do I keep correcting the agent?</li>
+<li>How much is the agent helping?</li>
+<li>Did the extensions the agent approved get paid?</li>
+<li>Which customers come to me most?</li>
+<li>Which rules never matter, and which block everything?</li>
+</ol>
+[[fig:11-doctor.jpg|The Doctor page with six questions. The first, Why do so many requests still come to me, is open and lists the reasons with counts, with a note that there are too few cases to see a pattern.|The Doctor with one question open. Each question shows a one-line headline before it is opened.]]
+</section>
+
+<section id="scenarios">
+<h2>6. Scenarios to try</h2>
+<p class="callout warn-box">These scenarios only work on the fictional demonstration data. The customers (Bayview Gelato Co, Northside Cafe, Lakeside Kiosk, Harbourline Catering, Cityside Desserts, Riverside Foods), the invoices and the amounts are made up. They do not exist in a real business's records. Do not try them on real data.</p>
+
+<h3>Before you start</h3>
+<p>New to the demonstration data? Read the one-page introduction first: <a href="https://claude.ai/artifact/5cjXfWe67PBNsCjktNk8b2">Nucleon Demo Data</a> (who the six fictional customers are and what each will ask).</p>
+
+<ul>
+<li>Use a new chat with the Staff assistant for each scenario. Sign in to Nucleon as Staff in the same browser, because the "Provide information in Nucleon" button needs the Staff sign-in. Sign in as the Owner in a second browser or a private window.</li>
+<li>The data should be clean: nothing decided yet. If someone has already run these cases, ask whoever runs the demonstration machine to reset the demonstration data. A request that has been decided once returns its stored result if you ask again. A request that still waits for the Owner stays waiting even if you change a setting afterwards.</li>
+<li>The assistant is an AI and words things in its own way. The card under its reply is the truth. The decision card usually appears in 10 to 20 seconds.</li>
+<li>The numbers below are the results of the Nucleon rules on the demonstration data, checked on a practice copy. The assistant's recommendation is its own judgement, so a wording or recommendation may differ.</li>
+</ul>
+
+<h3>The starting rules</h3>
+<p>Every scenario starts from the same rules, the "demonstration policy". If the Control panel does not show them, enter them and press Save. They are the values in the demonstration runbook, with today's labels.</p>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Label on the Control panel</th><th scope="col">Value</th></tr></thead>
+<tbody>
+<tr><th scope="row">Mode</th><td>Delegated</td></tr>
+<tr><th scope="row">Most money one request may involve (the exposure of one decision)</th><td class="num">1000.00</td></tr>
+<tr><th scope="row">Most one customer may owe you in total (the customer's total exposure)</th><td class="num">1500.00</td></tr>
+<tr><th scope="row">The agent may decide payment extensions</th><td>ticked</td></tr>
+<tr><th scope="row">Longest single extension (days after the invoice's current due date)</th><td class="num">30</td></tr>
+<tr><th scope="row">Trial credit for new customers</th><td>On, within the limits below</td></tr>
+<tr><th scope="row">Most trial credit exposure (the order less the deposit received)</th><td class="num">600.00</td></tr>
+<tr><th scope="row">Smallest deposit (% of the order; 0 = none asked)</th><td class="num">25</td></tr>
+<tr><th scope="row">A new customer must confirm their business identity (ABN or ACN) before a trial credit</th><td>ticked</td></tr>
+<tr><th scope="row">Advanced: Most the agent may approve in 30 days (all approvals still in force)</th><td class="num">5000.00</td></tr>
+<tr><th scope="row">Advanced: An extension needs nothing else overdue</th><td>ticked</td></tr>
+<tr><th scope="row">Advanced: Most earlier payments that may have been late (%)</th><td class="num">25</td></tr>
+<tr><th scope="row">Advanced: Longest trial terms (days)</th><td class="num">30</td></tr>
+<tr><th scope="row">Advanced: A trade reference is needed above this exposure</th><td class="num">1000.00</td></tr>
+<tr><th scope="row">Advanced: A deposit Staff only checked counts up to this exposure</th><td class="num">600.00</td></tr>
+<tr><th scope="row">Advanced: Send to the Owner an amount above this many times the customer's median invoice</th><td class="num">3</td></tr>
+<tr><th scope="row">Advanced: Track record: reviewed cases needed before the agent decides</th><td class="num">5</td></tr>
+<tr><th scope="row">Advanced: Track record: how often you must have agreed (%)</th><td class="num">80</td></tr>
+<tr><th scope="row">Everything else (exceptions, a little over a money limit, the agent declining, tacit agreement)</th><td>off or empty</td></tr>
+</tbody></table></div>
+<p class="small">The preset "Fits the fictional records" differs from it: it asks for no deposit and turns on "a little over a money limit". Use it only if you want those differences.</p>
+
+<h3 id="sc1">Scenario 1: approved by the agent</h3>
+<p><b>Starting state:</b> the demonstration policy.</p>
+<p><b>Paste to the Staff assistant:</b></p>
+[[prompt:p1|Bayview Gelato Co asks to move the due date of invoice DEMO-301 from 18 October 2026 to 10 November 2026.]]
+<p><b>What should happen:</b> the card says Approved within the Owner's delegation policy, and the invoice's new date is Tuesday 10 November 2026. The checks: 480 still unpaid on the invoice is inside 1,000; the customer's total of 480 is inside 1,500; 23 days is inside 30; Bayview has paid its earlier invoices on time; nothing else is overdue; the track record is established.</p>
+<p><b>Where to look:</b> on the Decide page the request is under "Autonomous decisions to review" with "Not reviewed yet". Open it and press Agree. The Dashboard counts it under "Decided by the agent". The customer page now shows the invoice as due on 10 November.</p>
+
+<p><b>A second approval, for a new customer:</b></p>
+[[prompt:p2|Northside Cafe is a new customer and wants AUD 800 of stock on 14-day terms; they paid a deposit.]]
+<p><b>What should happen:</b> Approved. The order of 800 less the verified deposit of 200 (reference DEP-NS-01) leaves 600 at stake, which is exactly the limit of 600. The deposit is 25% of the order, exactly the smallest deposit. The business identity is already on file, so Staff have nothing to do.</p>
+
+<h3 id="sc2">Scenario 2: Staff supply information, then the agent approves</h3>
+<p><b>Starting state:</b> the demonstration policy, "A new customer must confirm their business identity" ticked.</p>
+<p><b>Paste to the Staff assistant:</b></p>
+[[prompt:p3|Lakeside Kiosk, a new customer, wants AUD 600 on 14-day terms.]]
+<p><b>What should happen, step one:</b> the card says Nucleon needs information from Staff: a deposit and the business identity. The request does not go to the Owner. Press "Provide information in Nucleon" on the card.</p>
+<p><b>Type these values on the form:</b></p>
+<div class="table-wrap"><table>
+<thead><tr><th scope="col">Field</th><th scope="col">Value</th></tr></thead>
+<tbody>
+<tr><th scope="row">Amount received</th><td class="num">150.00</td></tr>
+<tr><th scope="row">Date received</th><td>23/10/2026 (type it or pick it in the date picker)</td></tr>
+<tr><th scope="row">Payment reference</th><td>DEP-LK-FICT-01</td></tr>
+<tr><th scope="row">How do you know the money arrived?</th><td>I saw it arrive in the bank account or payment system</td></tr>
+<tr><th scope="row">Business registration number (ABN or ACN in Australia; the registry number elsewhere)</th><td>ABN 51 824 753 556</td></tr>
+<tr><th scope="row">Trading name</th><td>Lakeside Kiosk Pty Ltd (fictional)</td></tr>
+<tr><th scope="row">Where did you see this?</th><td>On a document</td></tr>
+<tr><th scope="row">Registered since (optional)</th><td>12/03/2018</td></tr>
+</tbody></table></div>
+<p>The ABN number is a sample that passes the ABN check. The business name is made up. As you type the number, the line under "Registered since" says "This is a well-formed ABN (the number passes the ABN check)". Change the last digit to 7 to see "This number fails the ABN check". Put the correct digit back before you submit, or leave the wrong one in to see that the outcome does not change.</p>
+<p>Press <b>Submit information</b>.</p>
+<p><b>What should happen, step two:</b> the page shows the result: Approved within the Owner's delegation policy, an exposure of 450 on 14-day terms (600 less the 150 deposit). The deposit counts because it was checked by Staff and the exposure of 450 is within the 600 that Staff-checked deposits may cover.</p>
+<p><b>Where to look:</b> as the Owner, open the request from the Decide page. In the Evidence card you read the ABN sentence ("the number passes the ABN check, so it is not a typing mistake. Nucleon has not looked it up"), "Registered since Mon 12 Mar 2018 ... 8 years 7 months", and the link to the Australian Business Register. A line says this is shown for your information and no rule uses it.</p>
+
+<h3 id="sc3">Scenario 3: escalated to the Owner because it is over a limit</h3>
+<p><b>Starting state:</b> the demonstration policy.</p>
+<p><b>Paste to the Staff assistant:</b></p>
+[[prompt:p4|Harbourline Catering, a new customer, wants AUD 5,000 on 14-day terms with a deposit.]]
+<p><b>What should happen:</b> the card says Not approved, sent to the Owner. The order of 5,000 less the verified deposit of 1,000 leaves 4,000 at stake. That is over the limit for one request (1,000), over the trial credit limit (600) and, with the customer's total, over 1,500. The card names the first limit that failed. Nothing is approved.</p>
+<p><b>Where to look:</b> as the Owner, the request is under "Waiting for you" on the Decide page with "Needs your decision". Press Open to see the reason in plain words.</p>
+
+<p><b>Two more reasons a request comes to the Owner:</b></p>
+[[prompt:p5|Cityside Desserts asks to move the due date of invoice DEMO-410 from 28 October 2026 to 11 November 2026.]]
+<p>Reason: size against earlier invoices. The invoice has 900 unpaid. Cityside's typical earlier invoice is 200, so the amount is 4.5 times the median, over the 3 times the Owner allows.</p>
+[[prompt:p6|Riverside Foods asks to move the due date of invoice DEMO-505 from 20 October 2026 to 30 October 2026.]]
+<p>Reason: the records for this customer are incomplete (one invoice has no total and one payment has no received date). The request comes to the Owner because Nucleon cannot tell what the customer owes. Nothing is declined.</p>
+
+<h3 id="sc4">Scenario 4: declined by the Owner</h3>
+<p><b>Starting state:</b> the Harbourline request from Scenario 3 is waiting.</p>
+<p><b>Steps:</b> as the Owner open the Decide page, press Open on Harbourline Catering, type a reason in the box (it is required), for example "Order too large for a first credit", and press <b>Decline</b>.</p>
+<p><b>What should happen:</b> the request is decided as declined under your name. Nucleon sends nothing to the customer. Staff are the ones who tell Harbourline. You can see the decision on the request page and the Dashboard counts it under "Decided by the Owner".</p>
+
+<h3 id="sc5">Scenario 5: declined by the agent (opt-in)</h3>
+<p><b>Starting state:</b> the demonstration policy, then on the Control panel tick <b>The agent may decline an extension on its own</b> and type 60 in <b>Decline an extension longer than (days past the current due date)</b>. Save.</p>
+<p><b>Paste to the Staff assistant (use a request that has not been asked before):</b></p>
+[[prompt:p7|Cityside Desserts asks to move the due date of invoice DEMO-410 from 28 October 2026 to 31 January 2027.]]
+<p><b>What should happen:</b> the request is 95 days past the current due date, over the line of 60. If the assistant recommends declining, the agent declines on its own and the card says "Declined by the agent under the Owner's decline rules". If the assistant recommends approving, the request comes to you with the reason "it is over a decline line the Owner set and the assistant did not recommend declining". The agent never approves a request that is over a line. With the switch off, the same request comes to you whatever the assistant says. The agent never declines a trial credit.</p>
+<p><b>Where to look:</b> the Decide page lists the decline under the agent's decisions with "Declined by the agent". You can reverse it there. Nucleon never tells the customer.</p>
+
+<h3 id="sc6">Scenario 6: change one setting, same request, different outcome</h3>
+<p>This one needs two rounds, because a request that already came to the Owner stays waiting. Ask whoever runs the demonstration machine to reset the data between the rounds.</p>
+<p><b>Round A.</b> Starting state: the demonstration policy. Paste the Cityside request from Scenario 3 (invoice DEMO-410, 28 October to 11 November). The outcome: it comes to the Owner, "size against earlier invoices".</p>
+<p><b>Change one setting.</b> After the reset the Control panel may show version 0 again. If so, enter the starting rules from the table, with one difference: under Advanced, type 5 instead of 3 in <b>Send to the Owner an amount above this many times the customer's median invoice</b>. Add the note "Class demo: size limit 5" and press Save.</p>
+<p><b>Round B.</b> Paste the same sentence again.</p>
+[[prompt:p8|Cityside Desserts asks to move the due date of invoice DEMO-410 from 28 October 2026 to 11 November 2026.]]
+<p><b>What should happen:</b> the amount is 4.5 times the median, which is now inside 5 times, and every other rule is met. The agent approves it. Same customer, same words, one setting changed, a different outcome. The Versions list on the Control panel shows both versions, so you can go back.</p>
+<p><b>A second pair of settings you can compare the same way, on fresh data.</b> Set <b>Most money one request may involve (the exposure of one decision)</b> to 450 and ask Bayview's request (Scenario 1). The extension has 480 unpaid, so it comes to the Owner. Then tick <b>The agent may approve a small amount over a money limit</b> with 10% and empty the two Track record boxes under Advanced, and the same request is approved with the sentence "over the limit by a small margin, inside the allowance you set (up to 10% of the limit)". Why the two Track record boxes: lowering a limit means fewer past practice cases would have been approved by the stricter rules, which can leave the track record under its minimum of 5.</p>
+</section>
+
+<section id="why">
+<h2>7. Why did it come to me?</h2>
+<p>On every request page, the Business risk card and the "Why" sentence at the top say what stopped the agent. Find that sentence, then find it in this table.</p>
+<div class="table-wrap"><table class="wide">
+<thead><tr><th scope="col">What the request page says</th><th scope="col">The likely rule</th><th scope="col">Where to change it</th></tr></thead>
+<tbody>
+<tr><td>The agent only recommends</td><td>Mode is Advisory</td><td>Control panel, Basic: <b>Mode</b></td></tr>
+<tr><td>The Owner has paused the agent's authority</td><td>Delegation is paused</td><td>Control panel, top of the page: <b>Resume delegation</b></td></tr>
+<tr><td>This kind of request is turned off in the policy</td><td>The extensions switch or the trial credit choice is off</td><td>Basic: <b>The agent may decide payment extensions</b> or <b>Trial credit for new customers</b></td></tr>
+<tr><td>Outside what the Owner delegated (exposure of this decision)</td><td>The amount at stake on this request is above the first limit</td><td>Basic: <b>Most money one request may involve (the exposure of one decision)</b></td></tr>
+<tr><td>The customer's total exposure after this decision is over the limit</td><td>The customer owes too much across all invoices</td><td>Basic: <b>Most one customer may owe you in total (the customer's total exposure)</b>, or a standing rule for that customer</td></tr>
+<tr><td>Trial credit exposure is over the limit</td><td>The order less the deposit is above the trial limit</td><td>Basic: <b>Most trial credit exposure (the order less the deposit received)</b>. A bigger deposit also helps.</td></tr>
+<tr><td>Days past the current due date is over the limit</td><td>The extension is longer than allowed</td><td>Basic: <b>Longest single extension (days after the invoice's current due date)</b></td></tr>
+<tr><td>Days after the day the request was received, or days after the original due date, is over</td><td>The optional date limits</td><td>Basic: <b>Latest new payment date</b> or <b>Most an invoice may be late in total</b></td></tr>
+<tr><td>Something else is overdue besides this invoice</td><td>The customer has another overdue invoice</td><td>Advanced: <b>An extension needs nothing else overdue</b></td></tr>
+<tr><td>Late share of earlier payments is over the limit</td><td>The customer has paid late too often</td><td>Advanced: <b>Most earlier payments that may have been late (%)</b></td></tr>
+<tr><td>The amount is some times the median earlier invoice</td><td>Unusually large for this customer</td><td>Advanced: <b>Send to the Owner an amount above this many times the customer's median invoice</b></td></tr>
+<tr><td>Autonomous approvals in 30 days is over the limit</td><td>The agent has already approved a lot this month</td><td>Advanced: <b>Most the agent may approve in 30 days (all approvals still in force)</b></td></tr>
+<tr><td>A trial credit for this customer is already in force, or the customer already has invoices</td><td>Trial credit is for a first order only</td><td>No setting. Decide it yourself, or use an extension for a customer with history.</td></tr>
+<tr><td>Terms are over the limit</td><td>The customer asked for longer trial terms</td><td>Advanced: <b>Longest trial terms (days)</b></td></tr>
+<tr><td>This customer is on your list of customers the agent never decides</td><td>A hold</td><td>Advanced: <b>Customers the agent never decides</b>, or Quick setup</td></tr>
+<tr><td>The evidence contradicts the records</td><td>What Staff confirmed does not match the records</td><td>Correct the records on the Customers page, or ask Staff to confirm again</td></tr>
+<tr><td>More information is needed from Staff</td><td>A deposit, the business identity or a trade reference is missing</td><td>Staff open "Provide information in Nucleon". The rules behind it are <b>Smallest deposit</b>, <b>A new customer must confirm their business identity</b> and <b>A trade reference is needed above this exposure</b>.</td></tr>
+<tr><td>The records are insufficient and Staff cannot supply what is missing</td><td>An invoice has no amount, a payment has no date, or records must be confirmed complete</td><td>Fix the records on the Customers page. For the confirmation rule: Advanced: <b>Records must be confirmed complete above this exposure</b></td></tr>
+<tr><td>Unknown, which is never treated as zero</td><td>The records cannot establish a number</td><td>Fix the records. The agent never guesses.</td></tr>
+<tr><td>Most of the closest comparable reviewed cases were declined by the Owner</td><td>Your own earlier declines</td><td>No setting. It follows your own decisions. The Model page questionnaire "Teach it your limits" adds more examples.</td></tr>
+<tr><td>The track record this policy requires is not established</td><td>Too few reviewed cases, or too little agreement</td><td>Advanced: <b>Track record</b> boxes, and Basic section about which cases count. Review more cases on the Decide page.</td></tr>
+<tr><td>The assistant did not recommend approval</td><td>The assistant's own recommendation was decline or escalate</td><td>No setting. It is the assistant's judgement. To let the agent act on a decline, see <b>The agent may decline an extension on its own</b>.</td></tr>
+<tr><td>The team's model put the chance that you decline at or above your bar</td><td>The extra caution switch</td><td>Control panel, <b>The team's model</b></td></tr>
+<tr><td>Over a decline line you set, but the assistant did not recommend declining</td><td>The agent declining section</td><td>Control panel, <b>When the agent may decline on its own</b></td></tr>
+<tr><td>The Owner changed the policy after this was last assessed</td><td>A new version was saved since</td><td>Information only. The current version is applied.</td></tr>
+</tbody></table></div>
+<p class="small">The order Nucleon works through is: a held customer or contradicting evidence, any limit outside the rules, missing information Staff can supply, facts it cannot establish, the Owner's own switches (advisory, paused, a kind of request turned off), closest earlier cases, the track record, and finally the assistant's recommendation and the model's caution. The first that applies decides. The others are still listed in the reasons.</p>
+</section>
+
+<section id="glossary">
+<h2>8. Glossary</h2>
+<dl class="glossary">
+<dt>Advisory</dt><dd>A mode in which the agent only recommends and every request comes to the Owner.</dd>
+<dt>Agent</dt><dd>The part of Nucleon that decides requests inside the Owner's rules. Its decisions follow fixed rules applied to the facts in the records. The chat assistant gives a recommendation. The rules decide.</dd>
+<dt>Approve, decline, escalate</dt><dd>The three things the assistant can recommend. "Escalate" means "send to the Owner".</dd>
+<dt>Autonomous</dt><dd>Decided by the agent, not by a person.</dd>
+<dt>Comes to the Owner</dt><dd>Waits on the Decide page for the Owner's decision. Also called escalated or sent to the Owner.</dd>
+<dt>Comparable cases</dt><dd>The 5 earlier cases most like this one, used by the exceptions safeguard and shown to the Owner.</dd>
+<dt>Customer's total exposure</dt><dd>Everything the customer would still owe across all invoices if the request is granted.</dd>
+<dt>Decision exposure</dt><dd>The money riding on one request: the unpaid amount on the invoice, or the order less the deposit.</dd>
+<dt>Delegated</dt><dd>A mode in which the agent decides the requests that are inside every rule.</dd>
+<dt>Deposit</dt><dd>Money a new customer paid up front. It counts when Staff confirmed it or Nucleon Records holds the payment.</dd>
+<dt>Evidence</dt><dd>Facts Staff confirm (a deposit, a business identity, a trade reference) that Nucleon needs before it can decide.</dd>
+<dt>Exception</dt><dd>A request a little over a limit that the agent may still approve, when the Owner switched that on and two safeguards hold.</dd>
+<dt>Exposure</dt><dd>Money a customer owes you that you have not been paid yet. What you would lose if they never paid.</dd>
+<dt>Extension (payment extension)</dt><dd>A customer asking for more time to pay an invoice.</dd>
+<dt>Fictional</dt><dd>Made up for the demonstration. Fictional cases are the practice cases that come with the demo data.</dd>
+<dt>Hold</dt><dd>A customer the agent never decides. Every request comes to the Owner.</dd>
+<dt>Median invoice</dt><dd>The typical invoice of a customer: the middle one when their earlier invoices are put in order of size.</dd>
+<dt>Override</dt><dd>The Owner reversing a decision the agent made. Nucleon changes its own record. It does not undo anything Staff already did outside Nucleon.</dd>
+<dt>Paused</dt><dd>The agent decides nothing and every request comes to the Owner.</dd>
+<dt>Policy, version</dt><dd>The saved rules on the Control panel. Every save is a new numbered version, and earlier versions stay.</dd>
+<dt>Preset</dt><dd>A ready-made set of rules saved with one click as a new version.</dd>
+<dt>RECORDED exposure</dt><dd>The exposure shown by the records when they are not confirmed complete. More may be owed.</dd>
+<dt>Registered since</dt><dd>The date the business register shows a business as active from. Shown to the Owner for information.</dd>
+<dt>ABN, ACN</dt><dd>Australian Business Number and Australian Company Number. Nucleon checks an 11-digit ABN for typing mistakes. It does not look it up.</dd>
+<dt>Standing rule</dt><dd>A limit set for one customer that replaces the general one for that customer, optionally until a date.</dd>
+<dt>Tacit agreement ("Treated as agreed")</dt><dd>An agent approval you did not review for the number of days you set, recorded as agreement and labelled that way.</dd>
+<dt>The team's model</dt><dd>A small statistical model fitted on the Owner's own approve and decline decisions. It gives the chance the Owner would decline.</dd>
+<dt>Track record</dt><dd>The agent's score card: of the reviewed cases the rules would approve, how often the Owner agreed.</dd>
+<dt>Trade reference</dt><dd>Another supplier vouching for a customer. Staff record who gave it and what they said.</dd>
+<dt>Trial credit</dt><dd>A first order on credit for a customer with no earlier invoices.</dd>
+</dl>
+</section>

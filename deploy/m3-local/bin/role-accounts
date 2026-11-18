@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+"""Role accounts for LibreChat on 3080 (S6b): owner@nucleon.local and staff@nucleon.local (LibreChat role USER).
+Keeps ~/Developer/nucleon-local/config/role-accounts.json (mode 600). A password is generated once, when the account is first added, and never
+changed afterwards. Makes the owner account the author and ACL owner of "Nucleon ADA Owner (Qwen)" (the admin stays a viewer); the Staff agent stays
+shared to the USER role, so both accounts see it. Run bin/demo-launcher afterwards for the copy buttons. Passwords are never printed.
+Usage: role-accounts"""
+import json, os, re, secrets, subprocess, sys
+
+H = os.path.expanduser('~')
+BASE = os.path.join(H, 'Developer', 'nucleon-local')
+FILE = os.path.join(BASE, 'config', 'role-accounts.json')
+JS = os.path.join(BASE, 'lib', 'librechat-role-accounts.js')
+ALPHABET = 'abcdefghjkmnpqrstuvwxyz23456789'   # no look-alike characters (l/1, o/0)
+ROLES = [('owner', 'Nucleon Owner'), ('staff', 'Nucleon Staff')]
+
+
+def password():
+    return '-'.join(''.join(secrets.choice(ALPHABET) for _ in range(4)) for _ in range(4))
+
+
+def sh(*a, **k):
+    return subprocess.run(a, capture_output=True, text=True, **k)
+
+
+data = json.load(open(FILE)) if os.path.exists(FILE) else {'chatUrl': 'http://127.0.0.1:3080', 'accounts': []}
+have = {a['role'] for a in data['accounts']}
+for role, name in ROLES:
+    if role not in have:
+        data['accounts'].append({'role': role, 'name': name, 'email': role + '@nucleon.local', 'username': role, 'password': password()})
+fd = os.open(FILE, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+os.write(fd, (json.dumps(data, indent=2) + '\n').encode()); os.close(fd); os.chmod(FILE, 0o600)
+
+q = 'print(db.agents.findOne({name:"Nucleon ADA Owner (Qwen)"}).id)'
+owner_agent = sh('docker', 'exec', 'chat-mongodb', 'mongosh', '--quiet', 'LibreChat', '--eval', q).stdout.strip()
+if not re.fullmatch(r'agent_[A-Za-z0-9_-]{21}', owner_agent):
+    sys.exit('no Owner agent in Mongo (run agents/seed_owner_agent_3080.js first)')
+subprocess.run(['docker', 'cp', JS, 'LibreChat:/tmp/role-accounts.js'], check=True)
+payload = json.dumps({'accounts': data['accounts'], 'ownerAgentId': owner_agent, 'ownerRole': 'owner'})
+r = subprocess.run(['docker', 'exec', '-i', 'LibreChat', 'node', '/tmp/role-accounts.js'], input=payload, text=True, capture_output=True)
+subprocess.run(['docker', 'exec', 'LibreChat', 'rm', '-f', '/tmp/role-accounts.js'])
+lines = [l for l in r.stdout.splitlines() + r.stderr.splitlines() if l.startswith(('RESULT ', 'ERROR '))]
+if r.returncode or not lines or not lines[-1].startswith('RESULT '):
+    sys.exit('failed: ' + (lines[-1] if lines else 'no result (exit %d)' % r.returncode))
+res = json.loads(lines[-1][7:])
+for a in res['accounts']:
+    print('%-28s %s' % (a['email'], a['status']))
+print('Owner agent', owner_agent, json.dumps(res['ownerAgent']))
+print('list:', FILE, '(mode 600). Run bin/demo-launcher for the copy buttons.')

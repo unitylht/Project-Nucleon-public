@@ -1,0 +1,506 @@
+From 32bf745892d158e183853fc7a6a685839a2eccaf Mon Sep 17 00:00:00 2001
+From: Nucleon Dev <dev@localhost>
+Date: Mon, 26 Oct 2026 02:22:25 +1100
+Subject: [PATCH] feat(client): reveal card phases and remember manual card
+ disclosure choices
+
+Hardens the MCP-UI default-visibility patch:
+
+- ActivityPhaseGroup: a settled/folded activity section whose calls carry a
+  supported ui_resources attachment is not folded shut, and opens once if the
+  card arrives late (same once-only ref rule as ToolCall/ToolCallGroup).
+- ToolCallGroup: a card group inside a completed phase is no longer held
+  closed by the phase's auto-expand suppression.
+- cardDisclosure.ts: module-scoped, in-memory record of the reader's own
+  collapse/expand choice (keyed by tool-call id, group/phase by first call id)
+  so a remount does not undo it; page-session only, cards only, never written
+  by the automatic reveal.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ .../Messages/Content/ActivityPhaseGroup.tsx   |  39 ++++++-
+ .../Chat/Messages/Content/ToolCall.tsx        |  16 ++-
+ .../Chat/Messages/Content/ToolCallGroup.tsx   |  29 ++++-
+ .../__tests__/ActivityPhaseGroup.test.tsx     | 109 ++++++++++++++++++
+ .../Content/__tests__/ToolCall.test.tsx       |  51 ++++++++
+ .../Content/__tests__/ToolCallGroup.test.tsx  |  21 +++-
+ .../Chat/Messages/Content/cardDisclosure.ts   |  40 +++++++
+ 7 files changed, 291 insertions(+), 14 deletions(-)
+ create mode 100644 client/src/components/Chat/Messages/Content/cardDisclosure.ts
+
+diff --git a/client/src/components/Chat/Messages/Content/ActivityPhaseGroup.tsx b/client/src/components/Chat/Messages/Content/ActivityPhaseGroup.tsx
+index 8c68838..16bacfd 100644
+--- a/client/src/components/Chat/Messages/Content/ActivityPhaseGroup.tsx
++++ b/client/src/components/Chat/Messages/Content/ActivityPhaseGroup.tsx
+@@ -26,6 +26,8 @@ import useSmoothStreaming from '~/hooks/Messages/useSmoothStreaming';
+ import useThrottledValue from '~/hooks/Messages/useThrottledValue';
+ import { AttachmentGroup, StreamingThoughtPeek } from './Parts';
+ import { useMCPIconMap, useMCPServerNames } from '~/hooks/MCP';
++import { getSupportedUIResources } from '~/components/MCPUIResource/supported';
++import { getCardDisclosure, setCardDisclosure, firstToolCallKey } from './cardDisclosure';
+ import { getActivityLabelText } from '~/utils/activityLabels';
+ import { getOutcomeStatus, summarizeSpan } from './outcome';
+ import { sandboxStartingByToolCallId } from '~/store';
+@@ -581,8 +583,17 @@ export default function ActivityPhaseGroup({
+    *  them (border, background, padding, divider) is gone, and with it the
+    *  sideways step its inset used to impose on every folded row. */
+   const foldsIn = shouldAnimateEntrance && hasContent;
+-  const [isExpanded, setIsExpanded] = useState(foldsIn);
+-  const [isSettled, setIsSettled] = useState(!foldsIn);
++  /** A phase whose calls produced an MCP-UI card is not folded shut: the card is the answer the
++   *  reader came for. The reader's own choice (kept for the page session) outranks that, and a
++   *  card that arrives after first render opens the phase once (see the reveal effect below). */
++  const hasCard = useMemo(() => getSupportedUIResources(attachments).length > 0, [attachments]);
++  const disclosureKey = useMemo(
++    () => firstToolCallKey('phase', spanParts ?? liveParts),
++    [spanParts, liveParts],
++  );
++  const manualChoice = hasCard ? getCardDisclosure(disclosureKey) : undefined;
++  const [isExpanded, setIsExpanded] = useState(manualChoice ?? (foldsIn || hasCard));
++  const [isSettled, setIsSettled] = useState(!foldsIn || manualChoice !== undefined);
+   const rootRef = useRef<HTMLDivElement | null>(null);
+   const panelId = useId();
+   const lineId = useId();
+@@ -604,7 +615,8 @@ export default function ActivityPhaseGroup({
+   const cancelEntranceRef = useRef<(() => void) | null>(null);
+   const cancelLayoutReconcileRef = useRef<(() => void) | null>(null);
+   const previousIsExpandedRef = useRef(isExpanded);
+-  const userOverrideRef = useRef(false);
++  const userOverrideRef = useRef(manualChoice !== undefined);
++  const cardRevealedRef = useRef(hasCard || manualChoice !== undefined);
+   const { style: expandStyle, ref: expandRef } = useExpandCollapse(isExpanded);
+   /** A phase label can resolve while an approval card inside it is still
+    *  pending (see ApprovalContext), and ToolApproval owns unsent local
+@@ -619,7 +631,7 @@ export default function ActivityPhaseGroup({
+   );
+ 
+   useEffect(() => {
+-    if (!foldsIn || userOverrideRef.current) {
++    if (!foldsIn || userOverrideRef.current || hasCard) {
+       return;
+     }
+     cancelEntranceRef.current = schedulePostPaint(() => {
+@@ -634,7 +646,19 @@ export default function ActivityPhaseGroup({
+       cancelEntranceRef.current?.();
+       cancelEntranceRef.current = null;
+     };
+-  }, [foldsIn]);
++  }, [foldsIn, hasCard]);
++
++  useEffect(() => {
++    if (!hasCard || cardRevealedRef.current) {
++      return;
++    }
++    cardRevealedRef.current = true;
++    if (!userOverrideRef.current) {
++      mountBody();
++      setIsSettled(true);
++      setIsExpanded(true);
++    }
++  }, [hasCard, mountBody]);
+ 
+   useEffect(() => {
+     const wasExpanded = previousIsExpandedRef.current;
+@@ -658,9 +682,12 @@ export default function ActivityPhaseGroup({
+     cancelEntranceRef.current = null;
+     mountBody();
+     setIsSettled(true);
++    if (hasCard) {
++      setCardDisclosure(disclosureKey, !isExpanded);
++    }
+     onExpansionChange?.(!isExpanded);
+     setIsExpanded(!isExpanded);
+-  }, [mountBody, isExpanded, onExpansionChange]);
++  }, [mountBody, isExpanded, onExpansionChange, hasCard, disclosureKey]);
+ 
+   /** One click to the error from a closed card: open the card the way a
+    *  toggle would, then ask every failed row below to open its own panel. */
+diff --git a/client/src/components/Chat/Messages/Content/ToolCall.tsx b/client/src/components/Chat/Messages/Content/ToolCall.tsx
+index 6fd088f..a88ff61 100644
+--- a/client/src/components/Chat/Messages/Content/ToolCall.tsx
++++ b/client/src/components/Chat/Messages/Content/ToolCall.tsx
+@@ -10,6 +10,7 @@ import {
+ } from 'librechat-data-provider';
+ import type { TAttachment, PartMetadata } from 'librechat-data-provider';
+ import { getSupportedUIResources } from '~/components/MCPUIResource/supported';
++import { getCardDisclosure, setCardDisclosure } from './cardDisclosure';
+ import { useLocalize, useProgress, useExpandCollapse, useLazyCollapseBody } from '~/hooks';
+ import { cn, getToolDisplayLabel, logger, openInNewTab } from '~/utils';
+ import { ToolIcon, getToolIconType, isError } from './ToolOutput';
+@@ -70,10 +71,16 @@ export default function ToolCall({
+   /** A call that produced an MCP-UI card opens by default: the card is the answer, and a
+    *  collapsed row would hide it from a reader (and from a model-omitted caveat inside it). */
+   const hasCard = useMemo(() => getSupportedUIResources(attachments).length > 0, [attachments]);
+-  const [showInfo, setShowInfo] = useState(() => (autoExpand && hasOutput) || hasCard);
++  /** The reader's own choice for this call, remembered for the page session so a remount
++   *  (conversation switch, list re-key) does not undo a collapse. Only consulted for cards. */
++  const disclosureKey = toolCallId ? `call:${toolCallId}` : undefined;
++  const manualChoice = hasCard ? getCardDisclosure(disclosureKey) : undefined;
++  const [showInfo, setShowInfo] = useState(
++    () => manualChoice ?? ((autoExpand && hasOutput) || hasCard),
++  );
+   /** Reveals once: a card that arrives after first render (completion, hydration) opens the
+    *  row a single time, and later renders never override the reader's own collapse. */
+-  const cardRevealedRef = useRef(hasCard);
++  const cardRevealedRef = useRef(hasCard || manualChoice !== undefined);
+   const { style: expandStyle, ref: expandRef } = useExpandCollapse(showInfo);
+   const { shouldRenderBody, mountBody, handleTransitionEnd } = useLazyCollapseBody(showInfo);
+ 
+@@ -311,8 +318,11 @@ export default function ToolCall({
+     if (!showInfo) {
+       onExpand?.();
+     }
++    if (hasCard) {
++      setCardDisclosure(disclosureKey, !showInfo);
++    }
+     setShowInfo((prev) => !prev);
+-  }, [mountBody, onExpand, showInfo]);
++  }, [mountBody, onExpand, showInfo, hasCard, disclosureKey]);
+ 
+   /** A failed row spends its subtitle on the error's first line: what went
+    *  wrong is the fact the reader needs from that slot, ahead of which server
+diff --git a/client/src/components/Chat/Messages/Content/ToolCallGroup.tsx b/client/src/components/Chat/Messages/Content/ToolCallGroup.tsx
+index 8662dd0..1e71ac4 100644
+--- a/client/src/components/Chat/Messages/Content/ToolCallGroup.tsx
++++ b/client/src/components/Chat/Messages/Content/ToolCallGroup.tsx
+@@ -22,6 +22,7 @@ import {
+   useFailedRevealTrigger,
+ } from './reveal';
+ import { getSupportedUIResources } from '~/components/MCPUIResource/supported';
++import { getCardDisclosure, setCardDisclosure, firstToolCallKey } from './cardDisclosure';
+ import { useLocalize, useExpandCollapse, scheduleMessageContentLayoutReconcile } from '~/hooks';
+ import { ASK_USER_QUESTION, getSubmittedAskAnswer } from '~/utils/approval';
+ import { ToolAuthWarning, ToolAuthWarningContext } from './auth';
+@@ -296,12 +297,29 @@ export default function ToolCallGroup({
+     !(showThinking && hasReasoning) &&
+     allCompleted &&
+     (count >= 1 || activityLabelText.length > 0);
+-  const suppressAutoExpand = withinActivityPhase && !hasPendingApproval;
++  /** A completed phase keeps its groups shut so they do not toggle while the phase folds; a
++   *  card is the exception, because the reader opening that phase came to see it. */
++  const suppressAutoExpand = withinActivityPhase && !hasPendingApproval && !hasCard;
+   const initialState = initialExpansionState?.userOverride === true ? initialExpansionState : null;
++  /** The reader's own choice, kept for the page session so a remount does not undo it. */
++  const disclosureKey = useMemo(
++    () =>
++      firstToolCallKey(
++        'group',
++        parts.map(({ part }) => part),
++      ),
++    [parts],
++  );
++  const manualChoice =
++    hasCard && initialState == null ? getCardDisclosure(disclosureKey) : undefined;
+   const [isExpanded, setIsExpanded] = useState(
+-    initialState?.isExpanded ?? (autoExpand || (!autoCollapse && !suppressAutoExpand)),
++    initialState?.isExpanded ??
++      manualChoice ??
++      (autoExpand || (!autoCollapse && !suppressAutoExpand)),
++  );
++  const [userOverride, setUserOverride] = useState(
++    initialState != null || manualChoice !== undefined,
+   );
+-  const [userOverride, setUserOverride] = useState(initialState != null);
+   const [shouldRenderBody, setShouldRenderBody] = useState(isExpanded);
+   const previousIsExpandedRef = useRef(isExpanded);
+   const { style: expandStyle, ref: expandRef } = useExpandCollapse(isExpanded);
+@@ -351,9 +369,12 @@ export default function ToolCallGroup({
+     if (nextExpanded) {
+       setShouldRenderBody(true);
+     }
++    if (hasCard) {
++      setCardDisclosure(disclosureKey, nextExpanded);
++    }
+     setIsExpanded(nextExpanded);
+     onExpansionChange?.({ isExpanded: nextExpanded, userOverride: true });
+-  }, [isExpanded, onExpansionChange]);
++  }, [isExpanded, onExpansionChange, hasCard, disclosureKey]);
+ 
+   const handleToolExpand = useCallback(() => {
+     setUserOverride(true);
+diff --git a/client/src/components/Chat/Messages/Content/__tests__/ActivityPhaseGroup.test.tsx b/client/src/components/Chat/Messages/Content/__tests__/ActivityPhaseGroup.test.tsx
+index fd1a172..ba40ca8 100644
+--- a/client/src/components/Chat/Messages/Content/__tests__/ActivityPhaseGroup.test.tsx
++++ b/client/src/components/Chat/Messages/Content/__tests__/ActivityPhaseGroup.test.tsx
+@@ -4,6 +4,7 @@ import type { TAttachment, TMessageContentParts } from 'librechat-data-provider'
+ import { ROW_GLYPH_SLOT, TOOL_ROW_CLASSES } from '../rows';
+ import ActivityPhaseGroup from '../ActivityPhaseGroup';
+ import { useFailedReveal } from '../reveal';
++import { clearCardDisclosures } from '../cardDisclosure';
+ 
+ const mockUseSmoothStreaming = jest.fn(() => true);
+ const mockScheduleLayoutReconcile = jest.fn((_target: HTMLElement | null) => jest.fn());
+@@ -806,3 +807,111 @@ describe('ActivityPhaseGroup streaming thought peek', () => {
+     expect(screen.getByTestId('activity-phase-cursor')).toBeInTheDocument();
+   });
+ });
++
++describe('ActivityPhaseGroup MCP-UI card visibility', () => {
++  const cardAttachment = (toolCallId: string): TAttachment =>
++    ({
++      type: Tools.ui_resources,
++      messageId: 'm1',
++      toolCallId,
++      conversationId: 'c1',
++      [Tools.ui_resources]: [
++        {
++          resourceId: `res-${toolCallId}`,
++          uri: `ui://test/${toolCallId}`,
++          mimeType: 'text/html',
++          text: '<p>card</p>',
++        },
++      ],
++    }) as unknown as TAttachment;
++  const toolPart = (id: string): TMessageContentParts =>
++    ({
++      type: ContentTypes.TOOL_CALL,
++      [ContentTypes.TOOL_CALL]: { id, name: 'customerOverview', args: '{}', output: 'done' },
++    }) as unknown as TMessageContentParts;
++  const header = () => screen.getByRole('button', { name: LABEL });
++  const panel = () => screen.getByTestId('activity-phase-panel');
++  let frames: Array<FrameRequestCallback | undefined>;
++  const flush = () =>
++    act(() => {
++      for (let i = 0; i < frames.length; i += 1) {
++        const f = frames[i];
++        frames[i] = undefined;
++        f?.(i);
++      }
++    });
++  const phase = (
++    props: Partial<React.ComponentProps<typeof ActivityPhaseGroup>> = {},
++    id = 'call-1',
++  ) => (
++    <ActivityPhaseGroup labelPart={labelPart} hasContent spanParts={[toolPart(id)]} {...props}>
++      <div data-testid="phase-rows" />
++    </ActivityPhaseGroup>
++  );
++
++  beforeEach(() => {
++    clearCardDisclosures();
++    frames = [];
++    mockUseSmoothStreaming.mockReturnValue(true);
++    Object.defineProperty(window, 'requestAnimationFrame', {
++      configurable: true,
++      writable: true,
++      value: jest.fn((cb: FrameRequestCallback) => frames.push(cb)),
++    });
++    Object.defineProperty(window, 'cancelAnimationFrame', {
++      configurable: true,
++      writable: true,
++      value: jest.fn((h: number) => {
++        frames[h - 1] = undefined;
++      }),
++    });
++  });
++
++  test('opens a settled phase whose calls produced a card', () => {
++    render(phase({ attachments: [cardAttachment('call-1')] }));
++    expect(header()).toHaveAttribute('aria-expanded', 'true');
++    expect(within(panel()).getByTestId('phase-rows')).toBeInTheDocument();
++  });
++
++  test('keeps an unrelated phase folded, with or without non-card attachments', () => {
++    render(phase({ attachments: [searchAttachment] }));
++    expect(header()).toHaveAttribute('aria-expanded', 'false');
++    expect(within(panel()).queryByTestId('phase-rows')).not.toBeInTheDocument();
++  });
++
++  test('does not fold a card phase shut after its entrance animation', () => {
++    render(phase({ attachments: [cardAttachment('call-1')], animateEntrance: true }));
++    flush();
++    flush();
++    expect(header()).toHaveAttribute('aria-expanded', 'true');
++  });
++
++  test('still folds an entering phase without a card', () => {
++    render(phase({ animateEntrance: true }));
++    expect(header()).toHaveAttribute('aria-expanded', 'true');
++    flush();
++    flush();
++    expect(header()).toHaveAttribute('aria-expanded', 'false');
++  });
++
++  test('opens once when the card arrives after the first render, then leaves the reader in control', () => {
++    const { rerender } = render(phase());
++    expect(header()).toHaveAttribute('aria-expanded', 'false');
++    rerender(phase({ attachments: [cardAttachment('call-1')] }));
++    expect(header()).toHaveAttribute('aria-expanded', 'true');
++    fireEvent.click(header());
++    expect(header()).toHaveAttribute('aria-expanded', 'false');
++    rerender(phase({ attachments: [cardAttachment('call-1'), cardAttachment('call-2')] }));
++    expect(header()).toHaveAttribute('aria-expanded', 'false');
++  });
++
++  test('keeps a manual collapse across a remount of the phase', () => {
++    const first = render(phase({ attachments: [cardAttachment('call-1')] }));
++    fireEvent.click(header());
++    expect(header()).toHaveAttribute('aria-expanded', 'false');
++    first.unmount();
++    render(phase({ attachments: [cardAttachment('call-1')] }));
++    expect(header()).toHaveAttribute('aria-expanded', 'false');
++    expect(within(panel()).queryByTestId('phase-rows')).not.toBeInTheDocument();
++  });
++});
+diff --git a/client/src/components/Chat/Messages/Content/__tests__/ToolCall.test.tsx b/client/src/components/Chat/Messages/Content/__tests__/ToolCall.test.tsx
+index 834060e..3392fed 100644
+--- a/client/src/components/Chat/Messages/Content/__tests__/ToolCall.test.tsx
++++ b/client/src/components/Chat/Messages/Content/__tests__/ToolCall.test.tsx
+@@ -6,6 +6,7 @@ import { ToolAuthWarningContext } from '../auth';
+ import ToolCall from '../ToolCall';
+ import { logger } from '~/utils';
+ import store from '~/store';
++import { clearCardDisclosures } from '../cardDisclosure';
+ 
+ // Mock dependencies
+ jest.mock('~/hooks', () => ({
+@@ -846,6 +847,56 @@ describe('ToolCall MCP-UI card visibility', () => {
+     container.querySelector(`[data-tool-call-output-id="${id}"]`) as HTMLElement;
+   const wrap = (el: React.ReactElement) => <RecoilRoot>{el}</RecoilRoot>;
+ 
++  beforeEach(() => {
++    clearCardDisclosures();
++  });
++
++  it('keeps a manual collapse across an unmount and remount of the same call', () => {
++    const first = render(
++      wrap(
++        <ToolCall {...baseProps} toolCallId="remount" attachments={cardAttachment('remount')} />,
++      ),
++    );
++    expect(panelOf(first.container, 'remount').style.gridTemplateRows).toBe('1fr');
++    fireEvent.click(screen.getByTestId('progress-text'));
++    expect(panelOf(first.container, 'remount').style.gridTemplateRows).toBe('0fr');
++    first.unmount();
++
++    const second = render(
++      wrap(
++        <ToolCall {...baseProps} toolCallId="remount" attachments={cardAttachment('remount')} />,
++      ),
++    );
++    expect(panelOf(second.container, 'remount').style.gridTemplateRows).toBe('0fr');
++    /** A different call, or a fresh page with nothing recorded, still reveals its card. */
++    const other = render(
++      wrap(<ToolCall {...baseProps} toolCallId="other" attachments={cardAttachment('other')} />),
++    );
++    expect(panelOf(other.container, 'other').style.gridTemplateRows).toBe('1fr');
++  });
++
++  it('keeps a manual expand across a remount and never records an automatic reveal', () => {
++    const attachments = cardAttachment('auto');
++    const first = render(
++      wrap(<ToolCall {...baseProps} toolCallId="auto" attachments={attachments} />),
++    );
++    first.unmount();
++    clearCardDisclosures();
++    const second = render(
++      wrap(<ToolCall {...baseProps} toolCallId="auto" attachments={attachments} />),
++    );
++    expect(panelOf(second.container, 'auto').style.gridTemplateRows).toBe('1fr');
++  });
++
++  it('does not record or consult choices for calls without a card', () => {
++    const first = render(wrap(<ToolCall {...baseProps} toolCallId="plain" />));
++    fireEvent.click(screen.getByTestId('progress-text'));
++    expect(panelOf(first.container, 'plain').style.gridTemplateRows).toBe('1fr');
++    first.unmount();
++    const second = render(wrap(<ToolCall {...baseProps} toolCallId="plain" />));
++    expect(panelOf(second.container, 'plain').style.gridTemplateRows).toBe('0fr');
++  });
++
+   it('opens a call that carries a card without any click', () => {
+     const { container } = render(
+       wrap(<ToolCall {...baseProps} toolCallId="tc1" attachments={cardAttachment('tc1')} />),
+diff --git a/client/src/components/Chat/Messages/Content/__tests__/ToolCallGroup.test.tsx b/client/src/components/Chat/Messages/Content/__tests__/ToolCallGroup.test.tsx
+index 30a312f..d8b42c8 100644
+--- a/client/src/components/Chat/Messages/Content/__tests__/ToolCallGroup.test.tsx
++++ b/client/src/components/Chat/Messages/Content/__tests__/ToolCallGroup.test.tsx
+@@ -1,12 +1,13 @@
+ import React from 'react';
+ import { RecoilRoot } from 'recoil';
+ import { Tools, Constants, ContentTypes } from 'librechat-data-provider';
+-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
++import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
+ import type { TAttachment, TMessageContentParts } from 'librechat-data-provider';
+ import { FailedRevealContext, useFailedReveal } from '../reveal';
+ import { scheduleMessageContentLayoutReconcile } from '~/hooks';
+ import ToolCallGroup from '../ToolCallGroup';
+ import { ToolAuthWarning } from '../auth';
++import { clearCardDisclosures } from '../cardDisclosure';
+ 
+ const mockMCPServerNames: string[] = [];
+ 
+@@ -1422,6 +1423,24 @@ describe('ToolCallGroup MCP-UI card visibility', () => {
+ 
+   beforeEach(() => {
+     mockMCPServerNames.length = 0;
++    clearCardDisclosures();
++  });
++
++  it('opens a card group inside a completed phase, which otherwise keeps its groups shut', () => {
++    render(wrap({ ...propsFor([cardAttachment('t2')]), withinActivityPhase: true }));
++    expect(header()).toHaveAttribute('aria-expanded', 'true');
++    cleanup();
++    render(wrap({ ...propsFor([]), withinActivityPhase: true }));
++    expect(header()).toHaveAttribute('aria-expanded', 'false');
++  });
++
++  it('keeps a manual collapse across a remount of the group', () => {
++    const first = render(wrap(propsFor([cardAttachment('t1')])));
++    fireEvent.click(header());
++    expect(header()).toHaveAttribute('aria-expanded', 'false');
++    first.unmount();
++    render(wrap(propsFor([cardAttachment('t1')])));
++    expect(header()).toHaveAttribute('aria-expanded', 'false');
+   });
+ 
+   it('keeps a completed group without a card collapsed', () => {
+diff --git a/client/src/components/Chat/Messages/Content/cardDisclosure.ts b/client/src/components/Chat/Messages/Content/cardDisclosure.ts
+new file mode 100644
+index 0000000..0b4da9b
+--- /dev/null
++++ b/client/src/components/Chat/Messages/Content/cardDisclosure.ts
+@@ -0,0 +1,40 @@
++import type { TMessageContentParts } from 'librechat-data-provider';
++import { ContentTypes } from 'librechat-data-provider';
++
++/**
++ * The reader's own open/closed choice for a disclosure that opens by default because it holds an
++ * MCP-UI card. Module-scoped and in memory only: it survives a remount while the page lives (a
++ * conversation switch, a list re-key) and is gone on reload, so a saved conversation with no
++ * recorded choice still reveals its card. Only manual toggles are written here; the automatic
++ * reveal never is.
++ */
++const choices = new Map<string, boolean>();
++
++export const getCardDisclosure = (key: string | undefined): boolean | undefined =>
++  key == null ? undefined : choices.get(key);
++
++export const setCardDisclosure = (key: string | undefined, open: boolean): void => {
++  if (key != null) {
++    choices.set(key, open);
++  }
++};
++
++/** Test seam: the store is process-global. */
++export const clearCardDisclosures = (): void => choices.clear();
++
++/** A stable key for a disclosure that wraps tool calls: the first call's provider id. */
++export const firstToolCallKey = (
++  prefix: string,
++  parts: ReadonlyArray<TMessageContentParts | undefined> | undefined,
++): string | undefined => {
++  for (const part of parts ?? []) {
++    if (part?.type !== ContentTypes.TOOL_CALL) {
++      continue;
++    }
++    const id = (part[ContentTypes.TOOL_CALL] as { id?: string } | undefined)?.id;
++    if (typeof id === 'string' && id.length > 0) {
++      return `${prefix}:${id}`;
++    }
++  }
++  return undefined;
++};
+-- 
+2.39.5 (Apple Git-154)
+

@@ -1,0 +1,3 @@
+Customer,Payment date,Amount received,Payment reference,Invoice number
+TESTTAG Imported A fictional,2026-10-12,600.00,TESTTAG-PAY-001,TESTTAG-CSV-001
+TESTTAG Imported B fictional,2026-10-12,50.00,TESTTAG-PAY-002,

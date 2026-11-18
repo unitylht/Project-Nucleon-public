@@ -1,0 +1,166 @@
+{
+ "prepare": {
+  "actionId": "act_0b3adb6b12863e84",
+  "expiresAt": "2026-10-27T00:10:12.048592+00:00",
+  "preview": {
+   "completeness": {
+    "asOf": "2026-10-18",
+    "asOfText": "Sun 18 Oct 2026",
+    "balanceEstablished": false,
+    "caveatText": "Not a confirmed balance: invoice records are not confirmed complete; payment records are not confirmed complete. No payments are recorded, which does not show that none were made. The opening balance, and what it includes, is not fully settled.",
+    "invoices": {
+     "completeTo": null,
+     "contradicted": 0,
+     "lastActivity": "2026-10-01",
+     "lastActivityText": "Thu 1 Oct 2026",
+     "recordedCount": 2,
+     "state": "notConfirmed"
+    },
+    "payments": {
+     "completeTo": null,
+     "contradicted": 0,
+     "lastActivity": null,
+     "recordedCount": 0,
+     "state": "notConfirmed"
+    },
+    "reasons": [
+     "invoices_not_confirmed",
+     "payments_not_confirmed",
+     "no_payments_recorded",
+     "no_opening_balance"
+    ]
+   },
+   "draftedByAssistant": {
+    "reason": null
+   },
+   "effect": "Opens a payment-extension request for the owner to decide.",
+   "fromRecords": {
+    "customer": {
+     "id": "customer_2d85580f6e1dbaa7",
+     "name": "Bayside Café"
+    },
+    "invoice": {
+     "amount": "AUD 800.00",
+     "amountAsOf": "2026-10-16",
+     "amountAsOfText": "Fri 16 Oct 2026",
+     "amountText": "AUD 800.00 (stated as of Fri 16 Oct)",
+     "currentDueDate": "2026-10-25",
+     "currentDueDateText": "Sun 25 Oct 2026",
+     "id": "invoice_03000b36f96b1048",
+     "issuedOn": "2026-10-01",
+     "issuedOnText": "Thu 1 Oct 2026",
+     "mark": "stated as of Fri 16 Oct",
+     "reference": "DEMO-502"
+    }
+   },
+   "proposedChange": {
+    "currentDueDate": "2026-10-25",
+    "currentDueDateText": "Sun 25 Oct 2026",
+    "days": 16,
+    "requestedDueDate": "2026-11-10",
+    "requestedDueDateText": "Tue 10 Nov 2026"
+   },
+   "requires": {
+    "confirmation": "A person signed in to Nucleon as staff must confirm this exact proposal before anything is submitted.",
+    "ownerDecision": "The owner decides the request; confirming submits it for review and approves nothing."
+   }
+  },
+  "status": "proposed",
+  "subject": {
+   "customerId": "customer_2d85580f6e1dbaa7",
+   "name": "Bayside Café"
+  },
+  "supersededActionIds": []
+ },
+ "status": {
+  "confirmed": null,
+  "createdAt": "2026-10-26T00:10:12.048592+00:00",
+  "expiresAt": "2026-10-27T00:10:12.048592+00:00",
+  "id": "act_0b3adb6b12863e84",
+  "kind": "open_request",
+  "outcome": null,
+  "params": {
+   "currentDueDate": "2026-10-25",
+   "currentDueDateText": "Sun 25 Oct 2026",
+   "customerId": "customer_2d85580f6e1dbaa7",
+   "customerName": "Bayside Café",
+   "days": 16,
+   "invoiceId": "invoice_03000b36f96b1048",
+   "invoiceReference": "DEMO-502",
+   "reasonDraft": null,
+   "requestedDueDate": "2026-11-10",
+   "requestedDueDateText": "Tue 10 Nov 2026"
+  },
+  "preparedBy": {
+   "role": "staff"
+  },
+  "preview": {
+   "completeness": {
+    "asOf": "2026-10-18",
+    "asOfText": "Sun 18 Oct 2026",
+    "balanceEstablished": false,
+    "caveatText": "Not a confirmed balance: invoice records are not confirmed complete; payment records are not confirmed complete. No payments are recorded, which does not show that none were made. The opening balance, and what it includes, is not fully settled.",
+    "invoices": {
+     "completeTo": null,
+     "contradicted": 0,
+     "lastActivity": "2026-10-01",
+     "lastActivityText": "Thu 1 Oct 2026",
+     "recordedCount": 2,
+     "state": "notConfirmed"
+    },
+    "payments": {
+     "completeTo": null,
+     "contradicted": 0,
+     "lastActivity": null,
+     "recordedCount": 0,
+     "state": "notConfirmed"
+    },
+    "reasons": [
+     "invoices_not_confirmed",
+     "payments_not_confirmed",
+     "no_payments_recorded",
+     "no_opening_balance"
+    ]
+   },
+   "draftedByAssistant": {
+    "reason": null
+   },
+   "effect": "Opens a payment-extension request for the owner to decide.",
+   "fromRecords": {
+    "customer": {
+     "id": "customer_2d85580f6e1dbaa7",
+     "name": "Bayside Café"
+    },
+    "invoice": {
+     "amount": "AUD 800.00",
+     "amountAsOf": "2026-10-16",
+     "amountAsOfText": "Fri 16 Oct 2026",
+     "amountText": "AUD 800.00 (stated as of Fri 16 Oct)",
+     "currentDueDate": "2026-10-25",
+     "currentDueDateText": "Sun 25 Oct 2026",
+     "id": "invoice_03000b36f96b1048",
+     "issuedOn": "2026-10-01",
+     "issuedOnText": "Thu 1 Oct 2026",
+     "mark": "stated as of Fri 16 Oct",
+     "reference": "DEMO-502"
+    }
+   },
+   "proposedChange": {
+    "currentDueDate": "2026-10-25",
+    "currentDueDateText": "Sun 25 Oct 2026",
+    "days": 16,
+    "requestedDueDate": "2026-11-10",
+    "requestedDueDateText": "Tue 10 Nov 2026"
+   },
+   "requires": {
+    "confirmation": "A person signed in to Nucleon as staff must confirm this exact proposal before anything is submitted.",
+    "ownerDecision": "The owner decides the request; confirming submits it for review and approves nothing."
+   }
+  },
+  "request": null,
+  "requestId": null,
+  "status": "proposed",
+  "subject": null,
+  "version": 1
+ }
+}

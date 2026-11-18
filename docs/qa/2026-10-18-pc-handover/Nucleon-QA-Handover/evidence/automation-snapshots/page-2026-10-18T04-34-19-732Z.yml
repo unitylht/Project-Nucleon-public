@@ -1,0 +1,10 @@
+- main [ref=e3]:
+  - generic [ref=e4]:
+    - heading "Nucleon" [level=1] [ref=e5]
+    - paragraph [ref=e6]: Payment extension requests. Enter the staff, owner or demo console code for this demonstration.
+    - generic [ref=e7]:
+      - generic [ref=e8]: Access code
+      - textbox "Access code" [active] [ref=e9]
+      - alert
+    - alert
+    - button "Sign in" [ref=e10] [cursor=pointer]

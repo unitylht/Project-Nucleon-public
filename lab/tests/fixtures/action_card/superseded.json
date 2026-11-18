@@ -1,0 +1,96 @@
+{
+ "status": {
+  "confirmed": null,
+  "createdAt": "2026-10-26T00:10:12.085570+00:00",
+  "expiresAt": "2026-10-27T00:10:12.085570+00:00",
+  "id": "act_aa1c9bd6e7e09df6",
+  "kind": "open_request",
+  "outcome": {
+   "code": "SUPERSEDED",
+   "message": "A newer proposal for this invoice replaced it."
+  },
+  "params": {
+   "currentDueDate": "2026-10-20",
+   "currentDueDateText": "Tue 20 Oct 2026",
+   "customerId": "customer_87b77e28b347349b",
+   "customerName": "Bayside Café",
+   "days": 14,
+   "invoiceId": "invoice_765d552b3f7fa3cd",
+   "invoiceReference": "DEMO-501",
+   "reasonDraft": "Cash flow timing, paying on the 3rd.",
+   "requestedDueDate": "2026-11-03",
+   "requestedDueDateText": "Tue 3 Nov 2026"
+  },
+  "preparedBy": {
+   "role": "staff"
+  },
+  "preview": {
+   "completeness": {
+    "asOf": "2026-10-18",
+    "asOfText": "Sun 18 Oct 2026",
+    "balanceEstablished": false,
+    "caveatText": "Not a confirmed balance: invoice records are not confirmed complete; payment records are not confirmed complete. No payments are recorded, which does not show that none were made. The opening balance, and what it includes, is not fully settled.",
+    "invoices": {
+     "completeTo": null,
+     "contradicted": 0,
+     "lastActivity": "2026-10-01",
+     "lastActivityText": "Thu 1 Oct 2026",
+     "recordedCount": 2,
+     "state": "notConfirmed"
+    },
+    "payments": {
+     "completeTo": null,
+     "contradicted": 0,
+     "lastActivity": null,
+     "recordedCount": 0,
+     "state": "notConfirmed"
+    },
+    "reasons": [
+     "invoices_not_confirmed",
+     "payments_not_confirmed",
+     "no_payments_recorded",
+     "no_opening_balance"
+    ]
+   },
+   "draftedByAssistant": {
+    "reason": "Cash flow timing, paying on the 3rd."
+   },
+   "effect": "Opens a payment-extension request for the owner to decide.",
+   "fromRecords": {
+    "customer": {
+     "id": "customer_87b77e28b347349b",
+     "name": "Bayside Café"
+    },
+    "invoice": {
+     "amount": "AUD 1,200.00",
+     "amountAsOf": "2026-10-16",
+     "amountAsOfText": "Fri 16 Oct 2026",
+     "amountText": "AUD 1,200.00 (stated as of Fri 16 Oct)",
+     "currentDueDate": "2026-10-20",
+     "currentDueDateText": "Tue 20 Oct 2026",
+     "id": "invoice_765d552b3f7fa3cd",
+     "issuedOn": "2026-10-01",
+     "issuedOnText": "Thu 1 Oct 2026",
+     "mark": "stated as of Fri 16 Oct",
+     "reference": "DEMO-501"
+    }
+   },
+   "proposedChange": {
+    "currentDueDate": "2026-10-20",
+    "currentDueDateText": "Tue 20 Oct 2026",
+    "days": 14,
+    "requestedDueDate": "2026-11-03",
+    "requestedDueDateText": "Tue 3 Nov 2026"
+   },
+   "requires": {
+    "confirmation": "A person signed in to Nucleon as staff must confirm this exact proposal before anything is submitted.",
+    "ownerDecision": "The owner decides the request; confirming submits it for review and approves nothing."
+   }
+  },
+  "request": null,
+  "requestId": null,
+  "status": "superseded",
+  "subject": null,
+  "version": 1
+ }
+}
